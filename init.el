@@ -1,0 +1,34 @@
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
+(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lib")
+(add-to-list 'load-path "~/.emacs.d/config")
+
+(load-library "environment.el")
+
+;;; if local-environment.el file is found in load-path, load it, else skip
+(let ((local-environment-file (locate-file "local-environment.el" load-path)))
+  (when local-environment-file
+    (load-file local-environment-file)))
+
+(load-library "auto-complete-config-personal.el")
+(load-library "helper-functions.el")
+(load-library "window-settings.el")
+(load-library "settings.el")
+(load-library "elisp-config.el")
+(when (eq system-type 'darwin)
+  (load-library "osx-config.el"))
+(load-library "ido-conf.el")
+(load-library "python-config.el")
+(load-library "org-config.el")
+(load-library "jape-config.el")
+;;; clojure test suite
+(load-library "kibit-config.el")
+(load-library "paredit-config.el")
+(load-library "clojure-mode-config.el")
+(load-library "js-config.el")
+(load-library "malabar-mode-config.el")
+(load-library "live-fontify-hex-config.el")
+(load-library "diminish-config.el")
+(load-library "bindings.el")
