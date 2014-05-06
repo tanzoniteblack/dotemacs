@@ -1,0 +1,12 @@
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+*.elc
+/.cask/
+/tmp/
+/srecode-map.el
+/semanticdb/
+/.DS_Store
+/url/
+/local-environment.el
+/ac-comphist.dat
