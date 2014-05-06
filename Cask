@@ -6,7 +6,6 @@
 
 ;;; emacs appearance
 (depends-on "powerline")
-(depends-on "diminish")
 (depends-on "moe-theme")
 (depends-on "buffer-move")
 (depends-on "rainbow-delimiters")
