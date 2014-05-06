@@ -67,6 +67,7 @@
 (depends-on "paredit")
 (depends-on "mic-paren")
 (depends-on "ace-jump-mode")
+(depends-on "projectile")
 
 ;;; other
 (depends-on "htmlize")

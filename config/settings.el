@@ -302,3 +302,11 @@ the mode-line."
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+;;; projectile-mode
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+;;; add to the globally ignored files
+(dolist (file-name '("*~" "*.elc"))
+  (add-to-list 'projectile-globally-ignored-files file-name))
