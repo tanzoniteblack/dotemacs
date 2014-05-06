@@ -7,6 +7,7 @@
 ;;; emacs appearance
 (depends-on "powerline")
 (depends-on "moe-theme")
+(depends-on "diminish")
 (depends-on "buffer-move")
 (depends-on "rainbow-delimiters")
 (depends-on "popup")

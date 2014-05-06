@@ -29,4 +29,5 @@
 (load-library "js-config.el")
 (load-library "malabar-mode-config.el")
 (load-library "live-fontify-hex-config.el")
+(load-library "diminish-config.el")
 (load-library "bindings.el")
