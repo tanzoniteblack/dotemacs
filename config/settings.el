@@ -309,3 +309,14 @@ the mode-line."
 ;;; add to the globally ignored files
 (dolist (file-name '("*~" "*.elc"))
   (add-to-list 'projectile-globally-ignored-files file-name))
+
+;;; respect ansi colors
+(require 'ansi-color)
+(ansi-color-for-comint-mode-on)
+
+;;; ansi colors in compilation mode
+(ignore-errors
+  (defun my-colorize-compilation-buffer ()
+    (when (eq major-mode 'compilation-mode)
+      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
