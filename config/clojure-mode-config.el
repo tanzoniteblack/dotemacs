@@ -108,8 +108,8 @@
 (eval-after-load "cider"
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "TAB") 'auto-complete))
+;; (eval-after-load "cider"
+;;   '(define-key cider-mode-map (kbd "TAB") 'auto-complete))
 
 ;; Specify the print length to be 100 to stop infinite sequences killing
 ;; things. This might be dangerous for some people relying on

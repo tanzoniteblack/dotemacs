@@ -12,3 +12,5 @@
 /ac-comphist.dat
 /projectile-bookmarks.eld
 /projectile.cache
+/config/local-environment.el
+/tramp

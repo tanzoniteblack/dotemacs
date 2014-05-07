@@ -62,6 +62,8 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 ;; and for python, since it doesn't inherit from prog-mode
 (add-hook 'python-mode-hook 'linum-mode)
+;; and just because I like it, text-mode as well
+(add-hook 'text-mode-hook 'linum-mode)
 ;; modify linum space
 (setq linum-format "%2d ")
 
