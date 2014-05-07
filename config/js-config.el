@@ -10,6 +10,13 @@
                            (flycheck-mode)
                            (tern-mode t)))
 
+(setq js2-basic-offset 2
+	  js2-bounce-indent-p t)
+
+(setq js2-mode-hook
+  '(lambda () (progn
+    (set-variable 'indent-tabs-mode nil))))
+
 (eval-after-load 'tern
   '(progn
      (require 'tern-auto-complete)
