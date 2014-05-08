@@ -78,7 +78,7 @@
       color-theme-is-global t)
 
 ;;; Line-wrapping
-(set-default 'fill-column 72)
+(set-default 'fill-column 80)
 
 ;;; ;get rid of clutter
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
