@@ -6,3 +6,5 @@
 (diminish 'git-gutter-mode "")
 (diminish 'volatile-highlights-mode "")
 (diminish 'highlight-symbol-mode "")
+(diminish 'eldoc-mode "")
+(setq projectile-mode-line-lighter "Proj")
