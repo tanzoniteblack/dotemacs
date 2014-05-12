@@ -7,3 +7,4 @@
 (diminish 'volatile-highlights-mode "")
 (diminish 'highlight-symbol-mode "")
 (diminish 'eldoc-mode "")
+(diminish 'magit-auto-revert-mode "")
