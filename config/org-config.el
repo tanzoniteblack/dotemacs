@@ -17,9 +17,6 @@
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
-;; set e-mail address for org-mode
-(setq user-mail-address "rnsmith2@gmail.com")
-
 ;; global todo list files
 (setq org-agenda-files (list "~/Dropbox/.org/yummly.org"
                              "~/Dropbox/.org/home.org"))

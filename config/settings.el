@@ -307,7 +307,7 @@ the mode-line."
 ;;; projectile-mode
 (require 'projectile)
 (projectile-global-mode)
-(setq projectile-mode-line-lighter " Proj")
+(setq projectile-mode-line-lighter "Proj")
 ;;; add to the globally ignored files
 (dolist (file-name '("*~" "*.elc"))
   (add-to-list 'projectile-globally-ignored-files file-name))

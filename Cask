@@ -61,7 +61,6 @@
 (depends-on "highlight-symbol")
 (depends-on "git-gutter-fringe")
 (depends-on "fringe-helper")
-(depends-on "csv-mode")
 (depends-on "magit")
 (depends-on "auto-complete")
 (depends-on "paredit")
