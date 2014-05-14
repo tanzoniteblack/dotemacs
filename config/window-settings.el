@@ -87,3 +87,9 @@
 
 ;;; remove bells
 (setq ring-bell-function 'ignore)
+
+;; Highlight tabulations
+(setq highlight-tabs t)
+
+;; Show trailing white spaces
+(setq show-trailing-whitespace t)

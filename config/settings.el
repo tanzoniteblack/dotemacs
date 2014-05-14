@@ -2,6 +2,10 @@
 (require 'mic-paren)
 (paren-activate)
 
+;;; Save backup files in dedicated directory
+(setq backup-directory-alist '(("." . "~/.saves")))
+
+;;; undo tree
 (require 'undo-tree)
 (global-undo-tree-mode)
 
@@ -322,3 +326,6 @@ the mode-line."
     (when (eq major-mode 'compilation-mode)
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+
+;;; view regexp in buffer
+(require 'visual-regexp)

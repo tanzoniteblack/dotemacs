@@ -76,6 +76,7 @@
 (depends-on "browse-kill-ring")
 (depends-on "expand-region")
 (depends-on "exec-path-from-shell")
+(depends-on "visual-regexp")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")
