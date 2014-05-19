@@ -205,6 +205,8 @@ the mode-line."
 (setq ido-enable-flex-matching t)
 ;; don't leave the current directory if we don't find the file we typed
 (setq ido-auto-merge-work-directories-length -1)
+;; ido file type ordering preferences
+(setq ido-file-extensions-order '(".org" ".clj"))
 
 ;;; highlight-symbol
 (require 'highlight-symbol)
