@@ -56,12 +56,16 @@
 (depends-on "vala-mode")
 (depends-on "elpy")
 
+;;; git
+(depends-on "magit")
+(depends-on "git-gutter-fringe")
+(depends-on "gitconfig-mode")
+(depends-on "gitignore-mode")
+
 ;;; general programming
 (depends-on "flycheck")
 (depends-on "highlight-symbol")
-(depends-on "git-gutter-fringe")
 (depends-on "fringe-helper")
-(depends-on "magit")
 (depends-on "auto-complete")
 (depends-on "paredit")
 (depends-on "mic-paren")

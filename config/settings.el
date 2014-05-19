@@ -131,6 +131,8 @@ the mode-line."
 ;;; magit
 (require 'git-commit-mode)
 (require 'git-rebase-mode)
+(require 'gitignore-mode)
+(require 'gitconfig-mode)
 (require 'magit)
 
 (add-hook 'magit-log-edit-mode-hook
