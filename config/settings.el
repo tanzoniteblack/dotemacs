@@ -329,3 +329,6 @@ the mode-line."
 
 ;;; view regexp in buffer
 (require 'visual-regexp)
+
+;;; warn when opening files bigger than 100MB (default is 10MB)
+(setq large-file-warning-threshold 100000000)
