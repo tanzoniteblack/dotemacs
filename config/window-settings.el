@@ -9,12 +9,13 @@
 
 (defvar default-font "Ubuntu Mono")
 (defvar default-font-height 120)
+;;; fraktur font for when we're feeling odd:
+;; (setq default-font "UnifrakturMaguntia")
+;; (setq default-font-height 130)
 
 (when (eq system-type 'darwin)
   (setq default-font "Menlo")
   (setq default-font-height 125))
-;; (setq default-font "Meslo LG S")
-;; (setq default-font "Consolas")
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (when (member default-font (font-family-list))
