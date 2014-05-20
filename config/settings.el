@@ -224,12 +224,11 @@ the mode-line."
 ;;; groovy
 (require 'groovy-mode)
 (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
-
 ;;; make Groovy mode electric by default.
-(add-hook 'groovy-mode-hook
-          '(lambda ()
-             (require 'groovy-electric)
-             (groovy-electric-mode)))
+;; (add-hook 'groovy-mode-hook
+;;           '(lambda ()
+;;              (require 'groovy-electric)
+;;              (groovy-electric-mode)))
 
 ;;; json
 (require 'json-mode)
