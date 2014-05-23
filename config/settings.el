@@ -299,6 +299,9 @@ the mode-line."
 
 ;;; ace-jump-mode
 (require 'ace-jump-mode)
+;;; ace-window
+(require 'ace-window)
+(global-set-key (kbd "C-x o") 'ace-window)
 
 ;;; web-mode
 (require 'web-mode)
