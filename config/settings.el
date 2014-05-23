@@ -338,3 +338,6 @@ the mode-line."
 
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
+
+;;; open Cask files in lisp-mode
+(add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
