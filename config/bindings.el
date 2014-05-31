@@ -187,3 +187,6 @@
   '(progn
      (define-key global-map (kbd "C-c r") 'vr/replace)
      (define-key global-map (kbd "C-c q") 'vr/query-replace)))
+
+;;; next error
+(global-set-key (kbd "M-'") 'next-error)
