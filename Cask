@@ -11,7 +11,6 @@
 (depends-on "buffer-move")
 (depends-on "rainbow-delimiters")
 (depends-on "popup")
-(depends-on "volatile-highlights")
 
 ;;; elisp
 (depends-on "auto-compile")
