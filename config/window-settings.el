@@ -25,9 +25,9 @@
 (defun toggle-fullscreen ()
   "Toggle full screen on X11"
   (interactive)
-  (set-frame-parameter
-   nil 'fullscreen
-   (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
+  (if (executable-find "wmctrl")
+      (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen")
+    (set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
 (setq display-time-day-and-date nil)
 (setq display-time-24hr-format t)
