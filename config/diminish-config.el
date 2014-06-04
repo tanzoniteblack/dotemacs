@@ -4,7 +4,6 @@
 (diminish 'elisp-slime-nav-mode "")
 (diminish 'undo-tree-mode "")
 (diminish 'git-gutter-mode "")
-(diminish 'volatile-highlights-mode "")
 (diminish 'highlight-symbol-mode "")
 (diminish 'eldoc-mode "")
 (diminish 'magit-auto-revert-mode "")

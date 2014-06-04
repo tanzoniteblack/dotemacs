@@ -164,6 +164,9 @@ the mode-line."
 (when (executable-find "gocode")
   (require 'go-autocomplete)
   (require 'auto-complete-config))
+(define-key go-mode-map (kbd "M-.") 'godef-jump)
+(define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
+(define-key go-mode-map (kbd "C-S-f") 'gofmt)
 
 ;;; flycheck mode
 (require 'flycheck)
@@ -282,10 +285,6 @@ the mode-line."
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
-
-;;; temp highlight changes
-(require 'volatile-highlights)
-(volatile-highlights-mode t)
 
 ;;; browse kill ring
 (require 'browse-kill-ring)
