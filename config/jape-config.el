@@ -4,6 +4,8 @@
 (autoload 'jape-mode "jape-mode" "Mode for editing GATE's JAPE files")
 (add-hook 'jape-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'jape-mode-hook 'linum-mode)
+(add-hook 'jape-mode-hook 'subword-mode)
+(add-hook 'jape-mode-hook 'auto-complete-mode)
 (defvar jape-indent)
 
 ;; set tab for jape-mode
