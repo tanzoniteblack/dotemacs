@@ -15,6 +15,7 @@
 ;;; elisp
 (depends-on "auto-compile")
 (depends-on "elisp-slime-nav")
+(depends-on "feature-mode")
 
 ;;; emacs nicities
 (depends-on "flx-ido")
