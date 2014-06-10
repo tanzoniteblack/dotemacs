@@ -215,6 +215,7 @@ the mode-line."
 
 ;;; highlight-symbol
 (require 'highlight-symbol)
+(setq highlight-symbol-idle-delay 0.5)
 (global-set-key [(control f3)] 'highlight-symbol-at-point)
 (global-set-key [f3] 'highlight-symbol-next)
 (global-set-key [(shift f3)] 'highlight-symbol-prev)
@@ -249,7 +250,7 @@ the mode-line."
 
 ;;; load-other modes
 (require 'scala-mode2)
-(require 'vala-mode)
+;; (require 'vala-mode)
 (require 'd-mode)
 
 ;;; shouldn't need?

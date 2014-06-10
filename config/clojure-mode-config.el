@@ -110,10 +110,3 @@
 
 ;; (eval-after-load "cider"
 ;;   '(define-key cider-mode-map (kbd "TAB") 'auto-complete))
-
-;; Specify the print length to be 100 to stop infinite sequences killing
-;; things. This might be dangerous for some people relying on
-;; *print-length* being larger. Consider a work around
-(defun live-nrepl-set-print-length ()
-  (nrepl-send-string-sync "(set! *print-length* 100)" "clojure.core"))
-(add-hook 'nrepl-connected-hook 'live-nrepl-set-print-length)
