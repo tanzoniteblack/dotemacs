@@ -1,3 +1,8 @@
+;;; global-company-mode for completions
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay t)
+
 ;; more intelligent paren highlighting
 (require 'mic-paren)
 (paren-activate)
@@ -141,7 +146,7 @@ the mode-line."
             (auto-fill-mode 1)))
 
 (global-set-key (kbd "C-x g") 'magit-status)
-(add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
+;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
 (setq
  ;; use ido to look for branches
  magit-completing-read-function 'magit-ido-completing-read
@@ -162,8 +167,8 @@ the mode-line."
 ;;; go
 (require 'go-mode)
 (when (executable-find "gocode")
-  (require 'go-autocomplete)
-  (require 'auto-complete-config))
+  (require 'company-go)
+  (add-to-list 'company-backends 'company-go))
 (define-key go-mode-map (kbd "M-.") 'godef-jump)
 (define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
 (define-key go-mode-map (kbd "C-S-f") 'gofmt)

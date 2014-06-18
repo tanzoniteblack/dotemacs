@@ -29,17 +29,17 @@
 (depends-on "kibit-mode")
 (depends-on "align-cljlet")
 (depends-on "clj-refactor")
-(depends-on "ac-nrepl")
 
 ;;; web development
 (depends-on "js2-mode")
 (depends-on "json-mode")
 (depends-on "tern")
-(depends-on "tern-auto-complete")
+(depends-on "company-tern")
 (depends-on "handlebars-mode")
 (depends-on "web-mode")
 
 ;;; java
+(depends-on "emacs-eclim")
 (depends-on "malabar-mode")
 (depends-on "cedet")
 (depends-on "semantic")
@@ -47,7 +47,7 @@
 
 ;;; go
 (depends-on "go-mode")
-(depends-on "go-autocomplete")
+(depends-on "company-go")
 
 ;;; other languages
 (depends-on "scala-mode2")
@@ -66,7 +66,7 @@
 (depends-on "flycheck")
 (depends-on "highlight-symbol")
 (depends-on "fringe-helper")
-(depends-on "auto-complete")
+(depends-on "company")
 (depends-on "paredit")
 (depends-on "mic-paren")
 (depends-on "ace-jump-mode")

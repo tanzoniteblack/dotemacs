@@ -19,8 +19,8 @@
 
 (eval-after-load 'tern
   '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)
+	 (require 'company-tern)
+	 (add-to-list 'company-backends 'company-tern)
      (define-key tern-mode-keymap [(meta ?.)] 'tern-find-definition)
      (define-key tern-mode-keymap [(control meta ?.)] 'tern-find-definition-by-name)
      (define-key tern-mode-keymap [(meta ?,)] 'tern-pop-find-definition)

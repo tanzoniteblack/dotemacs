@@ -11,7 +11,6 @@
   (when local-environment-file
     (load-file local-environment-file)))
 
-(load-library "auto-complete-config-personal.el")
 (load-library "helper-functions.el")
 (load-library "window-settings.el")
 (load-library "settings.el")
@@ -27,7 +26,8 @@
 (load-library "paredit-config.el")
 (load-library "clojure-mode-config.el")
 (load-library "js-config.el")
-(load-library "malabar-mode-config.el")
+;; (load-library "malabar-mode-config.el")
+(load-library "java-config.el")
 (load-library "live-fontify-hex-config.el")
 (load-library "diminish-config.el")
 (load-library "bindings.el")
