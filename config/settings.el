@@ -2,6 +2,7 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay t)
+(global-set-key (kbd "C-<tab>") 'company-manual-begin)
 
 ;; more intelligent paren highlighting
 (require 'mic-paren)
