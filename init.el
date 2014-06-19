@@ -24,7 +24,7 @@
 (load-library "paredit-config.el")
 (load-library "clojure-mode-config.el")
 (load-library "js-config.el")
-(load-library "java-config.el")F
+(load-library "java-config.el")
 (load-library "live-fontify-hex-config.el")
 (load-library "diminish-config.el")
 (load-library "bindings.el")
