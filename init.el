@@ -21,13 +21,10 @@
 (load-library "python-config.el")
 (load-library "org-config.el")
 (load-library "jape-config.el")
-;;; clojure test suite
-(load-library "kibit-config.el")
 (load-library "paredit-config.el")
 (load-library "clojure-mode-config.el")
 (load-library "js-config.el")
-;; (load-library "malabar-mode-config.el")
-(load-library "java-config.el")
+(load-library "java-config.el")F
 (load-library "live-fontify-hex-config.el")
 (load-library "diminish-config.el")
 (load-library "bindings.el")

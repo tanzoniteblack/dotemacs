@@ -26,7 +26,6 @@
 ;;; clojure
 (depends-on "clojure-mode")
 (depends-on "cider")
-(depends-on "kibit-mode")
 (depends-on "align-cljlet")
 (depends-on "clj-refactor")
 
