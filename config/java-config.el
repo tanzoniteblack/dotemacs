@@ -1,4 +1,6 @@
 (require 'eclim)
+(require 'eclimd)
+(setq eclimd-wait-for-process nil)
 (global-eclim-mode)
 
 (require 'company-emacs-eclim)
