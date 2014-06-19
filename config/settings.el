@@ -3,6 +3,8 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay t)
 (global-set-key (kbd "C-<tab>") 'company-manual-begin)
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
 
 ;; more intelligent paren highlighting
 (require 'mic-paren)
