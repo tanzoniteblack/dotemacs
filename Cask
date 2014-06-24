@@ -30,11 +30,10 @@
 (depends-on "clj-refactor")
 
 ;;; web development
-(depends-on "js2-mode")
+(depends-on "js3-mode")
 (depends-on "json-mode")
 (depends-on "tern")
 (depends-on "company-tern")
-(depends-on "handlebars-mode")
 (depends-on "web-mode")
 
 ;;; java
@@ -47,6 +46,7 @@
 ;;; go
 (depends-on "go-mode")
 (depends-on "company-go")
+(depends-on "go-eldoc")
 
 ;;; other languages
 (depends-on "scala-mode2")
