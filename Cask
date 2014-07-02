@@ -57,7 +57,7 @@
 
 ;;; git
 (depends-on "magit")
-(depends-on "git-gutter-fringe")
+(depends-on "git-gutter-fringe+")
 (depends-on "gitconfig-mode")
 (depends-on "gitignore-mode")
 
