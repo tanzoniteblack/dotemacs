@@ -34,9 +34,6 @@
 ;; show images
 (setq org-display-inline-images t)
 
-;;; turn off git-gutter-mode
-(add-hook 'org-mode-hook '(lambda () (git-gutter-mode 0)))
-
 ;; turn off auto-complete for org-mode
 (add-hook 'org-mode-hook '(lambda () (auto-complete-mode 0)))
 
