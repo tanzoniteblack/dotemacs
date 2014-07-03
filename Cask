@@ -38,7 +38,6 @@
 
 ;;; java
 (depends-on "emacs-eclim")
-(depends-on "malabar-mode")
 (depends-on "cedet")
 (depends-on "semantic")
 (depends-on "dtrt-indent")
@@ -57,7 +56,7 @@
 
 ;;; git
 (depends-on "magit")
-(depends-on "git-gutter-fringe+")
+(depends-on "git-gutter-fringe")
 (depends-on "gitconfig-mode")
 (depends-on "gitignore-mode")
 
