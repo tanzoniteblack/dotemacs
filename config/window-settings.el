@@ -14,8 +14,8 @@
 ;; (setq default-font-height 130)
 
 (when (eq system-type 'darwin)
-  (setq default-font "Menlo")
-  (setq default-font-height 125))
+  (setq default-font "Menlo"
+		default-font-height 125))
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (when (member default-font (font-family-list))
@@ -29,8 +29,8 @@
       (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen")
     (set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
-(setq display-time-day-and-date nil)
-(setq display-time-24hr-format t)
+(setq display-time-day-and-date nil
+      display-time-24hr-format t)
 (display-time)
 
 ;;; always reuse frames when calling display-buffer
@@ -78,9 +78,12 @@
 (set-default 'fill-column 80)
 
 ;;; ;get rid of clutter
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
 
 ;;; remove bells
 (setq ring-bell-function 'ignore)

@@ -1,6 +1,6 @@
 ;;; global-company-mode for completions
 (require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+(global-company-mode)
 (setq company-idle-delay .2)
 (global-set-key (kbd "C-<tab>") 'company-manual-begin)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
@@ -19,7 +19,6 @@
 
 ;;; autocompile emacs-lisp files
 (require 'auto-compile)
-
 (auto-compile-on-load-mode 1)
 (auto-compile-on-save-mode 1)
 
@@ -28,10 +27,10 @@
 
 ;;use file path to ensure buffer name uniqueness
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t)
-(setq uniquify-ignore-buffers-re "^\\*")
+(setq uniquify-buffer-name-style 'forward
+      uniquify-separator "/"
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*")
 
 ;;store history of recently opened files
 (require 'recentf)
@@ -59,7 +58,7 @@
       shift-select-mode nil
       require-final-newline t
       truncate-partial-width-windows nil
-      delete-by-moving-to-trash nil
+      delete-by-moving-to-trash t
       confirm-nonexistent-file-or-buffer nil
       query-replace-highlight t
       next-error-highlight t
@@ -93,10 +92,9 @@
 ;;saving the file
 (defvar live-ignore-whitespace-modes '(markdown-mode))
 (defun live-cleanup-whitespace ()
-  (if (not (member major-mode live-ignore-whitespace-modes))
-      (let ((whitespace-style '(trailing empty)) )
-        (whitespace-cleanup))))
-
+  (when (not (member major-mode live-ignore-whitespace-modes))
+    (let ((whitespace-style '(trailing empty)) )
+      (whitespace-cleanup))))
 (add-hook 'before-save-hook 'live-cleanup-whitespace)
 
 ;; savehist keeps track of some history
