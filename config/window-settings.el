@@ -15,12 +15,18 @@
 
 (when (eq system-type 'darwin)
   (setq default-font "Menlo"
-		default-font-height 125))
+        default-font-height 125))
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (when (member default-font (font-family-list))
   (set-face-attribute 'default nil :family default-font :height default-font-height :weight 'normal)
   '(variable-pitch ((t (:family default-font :slant normal :weight regular :height default-font-height)))))
+
+;;; On home laptop, start maximized
+(when (executable-find "wmctrl")
+  (shell-command (concat "wmctrl -i -r "
+						 (frame-parameter nil 'outer-window-id)
+						 " -btoggle,maximized_vert,maximized_horz")))
 
 (defun toggle-fullscreen ()
   "Toggle full screen on X11"
