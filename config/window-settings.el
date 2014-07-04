@@ -22,11 +22,16 @@
   (set-face-attribute 'default nil :family default-font :height default-font-height :weight 'normal)
   '(variable-pitch ((t (:family default-font :slant normal :weight regular :height default-font-height)))))
 
+(defun toggle-maximized ()
+  "Toggle whether window is maximized or not (currently only supports X11 with wmctrl installed)"
+  (interactive)
+  (when (executable-find "wmctrl")
+	(shell-command (concat "wmctrl -i -r "
+						   (frame-parameter nil 'outer-window-id)
+						   " -btoggle,maximized_vert,maximized_horz"))))
+
 ;;; On home laptop, start maximized
-(when (executable-find "wmctrl")
-  (shell-command (concat "wmctrl -i -r "
-						 (frame-parameter nil 'outer-window-id)
-						 " -btoggle,maximized_vert,maximized_horz")))
+(toggle-maximized)
 
 (defun toggle-fullscreen ()
   "Toggle full screen on X11"
