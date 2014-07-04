@@ -27,7 +27,7 @@
 (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
                               auto-mode-alist))
 
-(dolist (x '(scheme emacs-lisp lisp clojure))
+(dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
 
@@ -88,13 +88,3 @@
 
 (add-hook 'clojure-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
-
-(add-hook 'cider-repl-mode-hook 'paredit-mode)
-
-;; hook AC into completion-at-point
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
-(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
