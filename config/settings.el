@@ -349,3 +349,5 @@ the mode-line."
 
 ;;; open Cask files in lisp-mode
 (add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
+
+(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
