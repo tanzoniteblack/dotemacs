@@ -78,8 +78,7 @@
 (setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode shell-mode cider-inspector-mode magit-status-mode special-mode))
 
 (defun linum-on ()
-  "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off. Also turns off numbering in starred modes like *scratch*"
-
+  "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off."
   (unless (or (minibufferp)
               (apply 'derived-mode-p linum-disabled-modes-list)
               (> (buffer-size) (* 5 1024 1024))) ;; disable linum on buffer greater than 5MB, otherwise it's unbearably slow
