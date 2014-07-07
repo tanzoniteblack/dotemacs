@@ -251,7 +251,6 @@ the mode-line."
 (define-key nxml-mode-map (kbd "C-S-f") 'beautify-xml)
 (add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode))
-(add-hook 'nxml-mode-hook 'linum-mode)
 
 ;;; quit settings
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
@@ -351,3 +350,14 @@ the mode-line."
 (add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
 
 (add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
+
+(defun large-file-protector ()
+  "Function to be run when opening a file to detect if special large-file changes need made."
+  (when (> (buffer-size) (* 8 1024 1024))
+	(highlight-symbol-mode -1)
+	(company-mode -1)
+	(git-gutter-mode -1)
+	(setq buffer-read-only t)
+	(buffer-disable-undo)))
+
+(add-hook 'find-file-hook 'large-file-protector)

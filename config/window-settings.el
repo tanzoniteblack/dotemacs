@@ -26,9 +26,9 @@
   "Toggle whether window is maximized or not (currently only supports X11 with wmctrl installed)"
   (interactive)
   (when (executable-find "wmctrl")
-	(shell-command (concat "wmctrl -i -r "
-						   (frame-parameter nil 'outer-window-id)
-						   " -btoggle,maximized_vert,maximized_horz"))))
+    (shell-command (concat "wmctrl -i -r "
+                           (frame-parameter nil 'outer-window-id)
+                           " -btoggle,maximized_vert,maximized_horz"))))
 
 ;;; On home laptop, start maximized
 (toggle-maximized)
@@ -72,8 +72,18 @@
 
 ;;; global linum-mode
 (global-linum-mode)
-;; modify linum space
+;;; modify linum space
 (setq linum-format "%2d ")
+;;; disable linum for certain modes
+(setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode shell-mode))
+
+(defun linum-on ()
+  "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off. Also turns off numbering in starred modes like *scratch*"
+
+  (unless (or (minibufferp)
+              (member major-mode linum-disabled-modes-list)
+              (> (buffer-size) (* 5 1024 1024))) ;; disable linum on buffer greater than 5MB, otherwise it's unbearably slow
+    (linum-mode 1)))
 
 ;;; color directories in file completion
 (require 'dircolors)
