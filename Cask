@@ -53,6 +53,7 @@
 (depends-on "groovy-mode")
 (depends-on "vala-mode")
 (depends-on "elpy")
+(depends-on "rust-mode")
 
 ;;; git
 (depends-on "magit")
