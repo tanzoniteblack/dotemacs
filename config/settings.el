@@ -262,9 +262,6 @@ the mode-line."
 ;; (require 'vala-mode)
 (require 'd-mode)
 
-;;; shouldn't need?
-;;; (add-hook 'cider-mode-hook '(lambda () (auto-complete-mode 1)))
-
 ;;; show human readable file sizes in dired
 (setq dired-listing-switches "-alh")
 
