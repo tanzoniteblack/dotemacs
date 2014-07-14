@@ -154,7 +154,9 @@ the mode-line."
  ;; don't put "origin-" in front of new branch names by default
  magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
  ;; highlight word/letter changes in hunk diffs
- magit-diff-refine-hunk t)
+ magit-diff-refine-hunk t
+ ;; don't attempt to save unsaved buffers
+ magit-save-some-buffers nil)
 
 ;;; irc defaults
 (setq rcirc-default-nick "tanzoniteblack")
