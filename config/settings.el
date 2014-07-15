@@ -360,3 +360,5 @@ the mode-line."
 	(buffer-disable-undo)))
 
 (add-hook 'find-file-hook 'large-file-protector)
+
+(add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
