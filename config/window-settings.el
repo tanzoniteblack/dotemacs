@@ -113,3 +113,6 @@
 
 ;; Show trailing white spaces
 (setq show-trailing-whitespace t)
+
+;;; add font-lock for dash.el
+(eval-after-load "dash" '(dash-enable-font-lock))
