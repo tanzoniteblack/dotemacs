@@ -88,3 +88,5 @@
 
 (add-hook 'clojure-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
+
+(require 'clojure-mode-extra-font-locking)
