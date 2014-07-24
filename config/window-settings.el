@@ -75,7 +75,7 @@
 ;;; modify linum space
 (setq linum-format "%2d ")
 ;;; disable linum for certain modes
-(setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode shell-mode cider-inspector-mode magit-status-mode special-mode))
+(setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode cider-repl-mode fundamental-mode shell-mode cider-inspector-mode magit-status-mode special-mode))
 
 (defun linum-on ()
   "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off."
