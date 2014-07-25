@@ -260,7 +260,7 @@ the mode-line."
 ;;; load-other modes
 (require 'scala-mode2)
 ;; (require 'vala-mode)
-(require 'd-mode)
+;; (require 'd-mode)
 
 ;;; show human readable file sizes in dired
 (setq dired-listing-switches "-alh")
