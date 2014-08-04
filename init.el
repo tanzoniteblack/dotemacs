@@ -21,7 +21,7 @@
 (load-library "python-config.el")
 (load-library "org-config.el")
 (load-library "jape-config.el")
-(load-library "paredit-config.el")
+(load-library "smartparens-personal-config.el")
 (load-library "clojure-mode-config.el")
 (load-library "js-config.el")
 (load-library "java-config.el")

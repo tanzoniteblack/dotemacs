@@ -67,7 +67,7 @@
 (depends-on "highlight-symbol")
 (depends-on "fringe-helper")
 (depends-on "company")
-(depends-on "paredit")
+(depends-on "smartparens")
 (depends-on "mic-paren")
 (depends-on "ace-jump-mode")
 (depends-on "ace-window")

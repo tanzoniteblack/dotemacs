@@ -271,9 +271,6 @@ the mode-line."
 ;;; turn on highligh-symbol-mode for programming modes
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
-;; add paredit-mode for slime
-(add-hook 'slime-repl-mode-hook 'paredit-mode)
-
 ;;; removing whitespace before saving annoys me
 (remove-hook 'before-save-hook 'whitespace-cleanup)
 

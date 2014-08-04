@@ -28,7 +28,7 @@
                               auto-mode-alist))
 
 (dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
-  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'enable-paredit-mode)
+  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'smartparens-strict-mode)
   (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
 
 (require 'clj-refactor)
