@@ -1,0 +1,14 @@
+(require 'smartparens-config)
+
+(smartparens-global-mode t)
+(show-smartparens-global-mode t)
+
+(--each sp--lisp-modes
+  (eval-after-load (symbol-name it)
+	'(progn
+	   (eval-after-load 'rainbow-delimiters-mode
+		 '(add-hook (intern (concat (symbol-name it) "-hook")) 'rainbow-delimiters-mode))
+	   '(add-hook (intern (concat (symbol-name it) "-hook")) 'smartparens-strict-mode))))
+
+(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
