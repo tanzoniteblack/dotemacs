@@ -10,5 +10,7 @@
 		 '(add-hook (intern (concat (symbol-name it) "-hook")) 'rainbow-delimiters-mode))
 	   '(add-hook (intern (concat (symbol-name it) "-hook")) 'smartparens-strict-mode))))
 
+;; custom keybindings for smartparens mode
 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
 (define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+(define-key smartparens-strict-mode-map (kbd "M-d") 'sp-kill-sexp)
