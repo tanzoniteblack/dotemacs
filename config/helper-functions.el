@@ -51,6 +51,21 @@
   (interactive)
   (just-one-space -1))
 
+(defun delete-adjacent-whitespace (&optional backward-only)
+  "Delete all whitespace around point.
+If BACKWARD-ONLY is non-nil, only delete them before point."
+  (interactive "*P")
+  (let ((orig-pos (point)))
+    (delete-region
+     (if backward-only
+         orig-pos
+       (progn
+         (skip-chars-forward "[:space:]\n")
+         (constrain-to-field nil orig-pos t)))
+     (progn
+       (skip-chars-backward "[:space:]\n")
+       (constrain-to-field nil orig-pos)))))
+
 (defun live-backwards-kill-line ()
   "Kill all characters on current line before point. Same as
   passing 0 as an argument to kill-line"
@@ -116,7 +131,7 @@
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
-        (message "Aborting")))
+    (message "Aborting")))
 
 ;; monkypatch basic-save-buffer to make saving buffers with no
 ;; associated file name more intuitive.
@@ -143,28 +158,28 @@ Before and after saving the buffer, this function runs
           ;; If buffer has no file name, ask user for one.
           (set-window-buffer (frame-selected-window) (current-buffer))
           (when (or buffer-file-name
-                   (y-or-n-p "Buffer has no associated file and not saved. Save it? "))
+                    (y-or-n-p "Buffer has no associated file and not saved. Save it? "))
 
-              (or buffer-file-name
-                  (let ((filename
-                         (expand-file-name
-                          (read-file-name (concat "File to save buffer " (buffer-name) " in: ")) nil)))
-                    (if (file-exists-p filename)
-                        (if (file-directory-p filename)
-                            ;; Signal an error if the user specified the name of an
-                            ;; existing directory.
-                            (error "%s is a directory" filename)
-                          (unless (y-or-n-p (format "File `%s' exists; overwrite? "
-                                                    filename))
-                            (error "Canceled")))
-                      ;; Signal an error if the specified name refers to a
-                      ;; non-existing directory.
-                      (let ((dir (file-name-directory filename)))
-                        (unless (file-directory-p dir)
-                          (if (file-exists-p dir)
-                              (error "%s is not a directory" dir)
-                            (error "%s: no such directory" dir)))))
-                    (set-visited-file-name filename)))
+            (or buffer-file-name
+                (let ((filename
+                       (expand-file-name
+                        (read-file-name (concat "File to save buffer " (buffer-name) " in: ")) nil)))
+                  (if (file-exists-p filename)
+                      (if (file-directory-p filename)
+                          ;; Signal an error if the user specified the name of an
+                          ;; existing directory.
+                          (error "%s is a directory" filename)
+                        (unless (y-or-n-p (format "File `%s' exists; overwrite? "
+                                                  filename))
+                          (error "Canceled")))
+                    ;; Signal an error if the specified name refers to a
+                    ;; non-existing directory.
+                    (let ((dir (file-name-directory filename)))
+                      (unless (file-directory-p dir)
+                        (if (file-exists-p dir)
+                            (error "%s is not a directory" dir)
+                          (error "%s: no such directory" dir)))))
+                  (set-visited-file-name filename)))
             (or (verify-visited-file-modtime (current-buffer))
                 (not (file-exists-p buffer-file-name))
                 (yes-or-no-p
