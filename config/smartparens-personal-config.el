@@ -20,6 +20,7 @@
 
 
 (sp-with-modes '(clojure-mode cider-mode)
-  (sp-local-pair "#{" "}"))
+  (sp-local-pair "#{" "}")
+  (sp-local-pair "`" nil :actions nil))
 
 (sp-local-pair 'markdown-mode "`" nil :actions nil)
