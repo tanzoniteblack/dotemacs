@@ -161,6 +161,7 @@ the mode-line."
 ;;; irc defaults
 (setq rcirc-default-nick "tanzoniteblack")
 (setq erc-nick "tanzoniteblack")
+(setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
