@@ -90,3 +90,7 @@
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 
 (require 'clojure-mode-extra-font-locking)
+
+;; Fancy docstrings for schema/defn when in the form:
+;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
+(put 'schema/defn 'clojure-doc-string-elt 4)
