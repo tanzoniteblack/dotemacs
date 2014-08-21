@@ -17,6 +17,7 @@
 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
 
 (define-key smartparens-strict-mode-map (kbd "M-d") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
 
 
 (sp-with-modes '(clojure-mode cider-mode)
