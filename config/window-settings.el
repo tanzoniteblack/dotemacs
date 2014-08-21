@@ -47,12 +47,13 @@
 ;;; always reuse frames when calling display-buffer
 (setq-default display-buffer-reuse-frames t)
 
+(when window-system
 ;;; git-gutter-fringe-mode
-(require 'git-gutter-fringe)
-(setq git-gutter-fr:side 'right-fringe)
-(setq-default left-fringe-width 2)
-(setq-default right-fringe-width 12)
-(global-git-gutter-mode)
+  (require 'git-gutter-fringe)
+  (setq git-gutter-fr:side 'right-fringe)
+  (setq-default left-fringe-width 2)
+  (setq-default right-fringe-width 12)
+  (global-git-gutter-mode))
 
 ;;; powerline
 (require 'powerline)
