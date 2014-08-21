@@ -1,9 +1,15 @@
 (require 'diminish)
 
-(diminish 'paredit-mode "Par")
-(diminish 'elisp-slime-nav-mode "")
-(diminish 'undo-tree-mode "")
-(diminish 'git-gutter-mode "")
-(diminish 'highlight-symbol-mode "")
-(diminish 'eldoc-mode "")
-(diminish 'magit-auto-revert-mode "")
+(defvar diminish-modes '((paredit-mode "Par")
+						 (elisp-slime-nav-mode "")
+						 (undo-tree-mode "")
+						 (git-gutter-mode "")
+						 (highlight-symbol-mode "")
+						 (eldoc-mode "")
+						 (magit-auto-revert-mode "")))
+
+(--each diminish-modes
+  (let ((mode-name (car it))
+        (lighter (cadr it)))
+	(eval-after-load mode-name
+      (diminish mode-name lighter))))
