@@ -61,8 +61,9 @@
 
 ;;; color theme
 (require 'moe-theme)
-(moe-dark)
-;; (moe-light)
+(if window-system
+    (moe-dark)
+  (moe-light))
 
 ;;; powerline color
 (setq moe-theme-mode-line-color 'purple)
