@@ -25,3 +25,4 @@
   (sp-local-pair "`" nil :actions nil))
 
 (sp-local-pair 'markdown-mode "`" nil :actions nil)
+(sp-local-pair 'gfm-mode "`" nil :actions nil)

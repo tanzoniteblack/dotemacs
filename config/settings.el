@@ -288,8 +288,10 @@ the mode-line."
 (require 'markdown-mode)
 (autoload 'markdown-mode "markdown-mode.el"
   "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . gfm-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
+(setq markdown-command "gfm"
+	  markdown-command-needs-filename t)
 
 ;;; browse kill ring
 (require 'browse-kill-ring)
