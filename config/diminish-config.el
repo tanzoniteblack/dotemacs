@@ -1,9 +1,15 @@
 (require 'diminish)
 
-(ignore-errors (diminish 'paredit-mode "Par"))
-(ignore-errors (diminish 'elisp-slime-nav-mode ""))
-(ignore-errors (diminish 'undo-tree-mode ""))
-(ignore-errors (diminish 'git-gutter-mode ""))
-(ignore-errors (diminish 'highlight-symbol-mode ""))
-(ignore-errors (diminish 'eldoc-mode ""))
-(ignore-errors (diminish 'magit-auto-revert-mode ""))
+(setq diminish-modes '((elisp-slime-nav-mode . "")
+                       (paredit-mode . "Par")
+                       (elisp-slime-nav-mode . "")
+                       (undo-tree-mode . "")
+                       (git-gutter-mode . "")
+                       (highlight-symbol-mode . "")
+                       (eldoc-mode . "")
+                       (magit-auto-revert-mode . "")))
+
+(--each diminish-modes
+  (let ((mode (car it))
+        (lighter (cdr it)))
+    (with-demoted-errors (diminish mode lighter))))
