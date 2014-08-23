@@ -168,7 +168,7 @@ the mode-line."
                             (sql-set-product 'postgres)
                             (setq indent-tabs-mode nil)))
 
-;;; go
+;;; golang
 (require 'go-mode)
 (when (executable-find "gocode")
   (require 'company-go)
@@ -178,6 +178,7 @@ the mode-line."
 (define-key go-mode-map (kbd "M-.") 'godef-jump)
 (define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
 (define-key go-mode-map (kbd "C-S-f") 'gofmt)
+(define-key go-mode-map (kbd "M-<return>") 'godef-describe)
 
 ;;; flycheck mode
 (require 'flycheck)
