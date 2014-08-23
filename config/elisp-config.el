@@ -10,6 +10,7 @@
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
 
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key emacs-lisp-mode-map (kbd "C-c C-k") 'eval-buffer)
 
 (defun live-lisp-describe-thing-at-point ()
   "Show the documentation of the Elisp function and variable near point.
