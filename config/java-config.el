@@ -40,7 +40,7 @@ save the pointer marker if tag is found"
 
 (define-key java-mode-map (kbd "M-.") 'eclim-goto-definition)
 (define-key java-mode-map (kbd "M-,") 'eclim-pop-tag-mark)
-(define-key java-mode-map (kbd "C-c C-d") 'eclim-java-show-documentation-for-current-element)
+(define-key java-mode-map (kbd "M-<return>") 'eclim-java-show-documentation-for-current-element)
 
 (defun eclim-run-test ()
   "Attempt to run all junit tests provided in current buffer."
