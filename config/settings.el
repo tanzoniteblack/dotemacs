@@ -1,7 +1,8 @@
 ;;; global-company-mode for completions
 (require 'company)
 (global-company-mode)
-(setq company-idle-delay .2)
+(setq company-idle-delay .2
+	  company-tooltip-flip-when-above t)
 (global-set-key (kbd "C-<tab>") 'company-manual-begin)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)

@@ -22,6 +22,7 @@
 (depends-on "smex")
 (depends-on "window-number")
 (depends-on "recentf")
+(depends-on "discover-my-major")
 
 ;;; clojure
 (depends-on "clojure-mode")
