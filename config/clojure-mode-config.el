@@ -27,10 +27,6 @@
 (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
                               auto-mode-alist))
 
-(dolist (x '(scheme emacs-lisp lisp clojure cider-repl))
-  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'smartparens-strict-mode)
-  (add-hook (intern (concat (symbol-name x) "-mode-hook")) 'rainbow-delimiters-mode))
-
 (require 'clj-refactor)
 (add-hook 'clojure-mode-hook (lambda ()
                                (clj-refactor-mode 1)
