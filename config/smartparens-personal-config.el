@@ -5,12 +5,12 @@
 (show-smartparens-global-mode t)
 
 ;; turn on rainbow delimiters-mode and smartparens-strict for all lisps
+(require 'rainbow-delimiters)
 (--each sp--lisp-modes
   (eval-after-load (symbol-name it)
-	'(progn
-	   (eval-after-load 'rainbow-delimiters-mode
-	   	 '(add-hook (intern (concat (symbol-name it) "-hook")) 'rainbow-delimiters-mode))
-	   '(add-hook (intern (concat (symbol-name it) "-hook")) 'smartparens-strict-mode))))
+    (progn
+      (add-hook (intern (concat (symbol-name it) "-hook")) 'rainbow-delimiters-mode)
+      (add-hook (intern (concat (symbol-name it) "-hook")) 'smartparens-strict-mode))))
 
 ;; custom keybindings for smartparens mode
 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
