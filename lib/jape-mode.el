@@ -69,7 +69,7 @@
 
 (defvar jape-mode-syntax-table
   (let ((jape-mode-syntax-table (make-syntax-table)))
-                                        ; Comment styles are same as C++
+	;; Comment styles are same as C++
     (modify-syntax-entry ?/ ". 124b" jape-mode-syntax-table)
     (modify-syntax-entry ?* ". 23" jape-mode-syntax-table)
     (modify-syntax-entry ?\n "> b" jape-mode-syntax-table)
@@ -86,19 +86,6 @@
   (setq-local comment-start "//")
   (use-local-map jape-mode-map)
   (setq font-lock-defaults '(jape-font-lock-keywords)))
-;; (defun jape-mode ()
-;;   "Major mode for editing GATE's JAPE files."
-;;   (interactive)
-;;   (kill-all-local-variables)
-;;   ;; (set-syntax-table jape-mode-syntax-table)
-;;   ;; (use-local-map jape-mode-map)
-;;   (set (make-local-variable 'font-lock-defaults) '(jape-font-lock-keywords))
-;;                                         ; (set (make-local-variable 'indent-line-function) 'jape-indent-line)
-;;   (set (make-local-variable 'comment-start) "//")
-;;   (setq major-mode 'jape-mode)
-;;   (setq mode-name "JAPE")
-;;   (run-hooks 'jape-mode-hook))
-
 
 (provide 'jape-mode)
 ;;; jape-mode.el ends here
