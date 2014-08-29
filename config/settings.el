@@ -364,3 +364,5 @@ the mode-line."
 (add-hook 'find-file-hook 'large-file-protector)
 
 (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
+
+(require 'jape-mode)

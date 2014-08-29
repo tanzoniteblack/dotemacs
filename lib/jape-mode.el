@@ -1,10 +1,31 @@
-;; An Emacs editing mode mode for GATE's JAPE files
+;;; jape-mode -- An Emacs editing mode mode for GATE's JAPE files
+
 ;; Copyright (C) 2005 Ilya Goldin -- http://www.pitt.edu/~goldin
+;; Copyright (C) 2014 Ryan Smith -- http://www.github.com/tanzoniteblack
+
+;; Authors: Ryan Smith <rnsmith2@gmail.com>
+;;      Ilya Goldin
+;; URL: http://github.com/tanzoniteblack/jape-mode
+;; Keywords: languages jape gate
+;; Version: 0.2.1
+;; Package-Requires: ((emacs "24.1"))
+
+;;; Commentary:
+
+;; Provides basic font-lock for the JAPE (Java Annotation Pattern Engine)
+;; https://gate.ac.uk/sale/tao/splitch8.html#x12-2150008 language used with GATE
+;; (General Architecture for Text Engineering) https://gate.ac.uk/ created by
+;; the University of Sheffield.
+
+;; Originally based on "An Emacs language mode creation tutorial" by
+;; Scott Andrew Borton, http://two-wugs.net/emacs/mode-tutorial.html
+
+;;; License:
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 2 of the
-;; License, or (at your option) any later version. If you have
+;; License, or (at your option) any later version.  If you have
 ;; received this program together with the GATE software, you may
 ;; choose to use this program under the whatever license applies to
 ;; GATE itself.
@@ -18,55 +39,66 @@
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-;; version 0.1.1
-
-;; Based heavily on "An Emacs language mode creation tutorial" by
-;; Scott Andrew Borton, http://two-wugs.net/emacs/mode-tutorial.html
-
+;;; Code:
 (defvar jape-mode-hook nil)
 
 (defvar jape-mode-map
-;  (let ((jape-mode-map (make-keymap)))
   (let ((jape-mode-map (make-sparse-keymap)))
-;    (define-key jape-mode-map "\C-j" 'newline-and-indent)
     jape-mode-map)
   "Keymap for JAPE major mode")
 
 (add-to-list 'auto-mode-alist '("\\.jape\\'" . jape-mode))
 
-(defconst jape-font-lock-keywords-1
-  (list
-; (regexp-opt '("Phase:" "Multiphase:" "Input:" "Rule:" "Options:") t)
-   '("\\(\\(?:Input\\|Multiphase\\|Macro\\|Options\\|\\(?:Phas\\|Rul\\)e\\):\\)" .
-     font-lock-builtin-face)
-   '("\\('\\w*'\\)" . font-lock-variable-name-face))
-  "Minimal highlighting expressions for JAPE mode")
-
-(defvar jape-font-lock-keywords jape-font-lock-keywords-1
-  "Default highlighting expressions for JAPE mode")
+(defconst jape-font-lock-keywords
+  (list '("\\(Input\\|Phases\\|Macro\\|Options\\|Imports\\):" (1 font-lock-builtin-face))
+		;; Input: Foo Bar
+		'("\\(Input\\):\\s-+\\(\\(?:\\w+\\s-*\\)+\\)" (1 font-lock-builtin-face) (2 font-lock-type-face))
+		;; -->
+		'("-->" . font-lock-builtin-face)
+		;; Rule: Foo; Phase: Foo; Multiphase: Foo;
+		'("\\(Phase\\|Multiphase\\):\\s-+\\(\\w+\\)" (1 font-lock-builtin-face) (2 font-lock-type-face))
+		;; Rule: Foo;
+		'("\\(Rule\\):\\s-+\\(\\w+\\)" (1 font-lock-builtin-face) (2 font-lock-function-name-face))
+		;; Priority: 100
+		'("\\(Priority\\):\\s-+\\([0-9]+\\)" (1 font-lock-builtin-face) (2 font-lock-keyword-face))
+		;; {Number}:number
+        '("\\(:\\w+\\)" . font-lock-variable-name-face)
+        ;; font lock operators as functions, i.e. + * ? == !=, etc.
+        '("\\(|\\|\\(?:=\\|!\\)=\\|?\\|+\\|*\\)" . font-lock-function-name-face))
+  "Default highlighting expressions for JAPE mode.")
 
 (defvar jape-mode-syntax-table
   (let ((jape-mode-syntax-table (make-syntax-table)))
-
-; Comment styles are same as C++
+                                        ; Comment styles are same as C++
     (modify-syntax-entry ?/ ". 124b" jape-mode-syntax-table)
     (modify-syntax-entry ?* ". 23" jape-mode-syntax-table)
     (modify-syntax-entry ?\n "> b" jape-mode-syntax-table)
     jape-mode-syntax-table)
-  "Syntax table for jape-mode")
+  "Syntax table for jape-mode.")
 
-(defun jape-mode ()
-  "Major mode for editing GATE's JAPE files"
-  (interactive)
-  (kill-all-local-variables)
+;;;###autoload
+(define-derived-mode jape-mode prog-mode "JAPE"
+  "Major mode for editting GATE's JAPE files.
+
+\\{jape-mode-map}"
   (set-syntax-table jape-mode-syntax-table)
+  (setq-local indent-tabs-mode nil)
+  (setq-local comment-start "//")
   (use-local-map jape-mode-map)
-  (set (make-local-variable 'font-lock-defaults) '(jape-font-lock-keywords))
-; (set (make-local-variable 'indent-line-function) 'jape-indent-line)
-  (set (make-local-variable 'comment-start) "//")
-  (setq major-mode 'jape-mode)
-  (setq mode-name "JAPE")
-  (run-hooks 'jape-mode-hook))
+  (setq font-lock-defaults '(jape-font-lock-keywords)))
+;; (defun jape-mode ()
+;;   "Major mode for editing GATE's JAPE files."
+;;   (interactive)
+;;   (kill-all-local-variables)
+;;   ;; (set-syntax-table jape-mode-syntax-table)
+;;   ;; (use-local-map jape-mode-map)
+;;   (set (make-local-variable 'font-lock-defaults) '(jape-font-lock-keywords))
+;;                                         ; (set (make-local-variable 'indent-line-function) 'jape-indent-line)
+;;   (set (make-local-variable 'comment-start) "//")
+;;   (setq major-mode 'jape-mode)
+;;   (setq mode-name "JAPE")
+;;   (run-hooks 'jape-mode-hook))
 
 
 (provide 'jape-mode)
+;;; jape-mode.el ends here
