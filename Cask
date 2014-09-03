@@ -83,6 +83,8 @@
 (depends-on "expand-region")
 (depends-on "exec-path-from-shell")
 (depends-on "visual-regexp")
+(depends-on "yaml-mode")
+(depends-on "jape-mode")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")
