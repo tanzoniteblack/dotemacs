@@ -6,7 +6,6 @@
 
 ;;window and buffer movement
 (global-set-key (kbd "C-c w s") 'swap-windows)
-(global-set-key (kbd "C-c w r") 'rotate-windows)
 (global-set-key (kbd "C-c w p") 'buf-move-up)
 (global-set-key (kbd "C-c w n") 'buf-move-down)
 (global-set-key (kbd "C-c w b") 'buf-move-left)
@@ -25,9 +24,6 @@
 ;;redefine help shortcut
 (global-set-key (kbd "M-h") 'help-command)
 (define-key org-mode-map (kbd "M-h") 'help-command)
-
-;;kill line backwards
-(global-set-key (kbd "M-k") 'live-backwards-kill-line)
 
 ;;kill regions
 (global-set-key (kbd "C-x C-k") 'kill-region)
