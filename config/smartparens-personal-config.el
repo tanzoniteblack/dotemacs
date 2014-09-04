@@ -6,11 +6,13 @@
 
 ;; turn on rainbow delimiters-mode and smartparens-strict for all lisps
 (require 'rainbow-delimiters)
-(--each sp--lisp-modes
-  (eval-after-load (symbol-name it)
-    (progn
-      (add-hook (intern (concat (symbol-name it) "-hook")) 'rainbow-delimiters-mode)
-      (add-hook (intern (concat (symbol-name it) "-hook")) 'smartparens-strict-mode))))
+(defun enable-lisp-hooks (mode-name)
+  "Enable lisp-y goodness for MODE-NAME."
+  (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
+	(when (not (member mode-name rainbow-delimiters-ignore-modes))
+ 	  (add-hook mode-hook 'rainbow-delimiters-mode))
+	(add-hook mode-hook 'smartparens-strict-mode)))
+(-each sp--lisp-modes 'enable-lisp-hooks)
 
 ;; custom keybindings for smartparens mode
 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
