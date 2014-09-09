@@ -26,7 +26,7 @@
 ;;; clojure
 (depends-on "clojure-mode")
 (depends-on "clojure-mode-extra-font-locking")
-(depends-on "cider")
+(depends-on "cider" :git "git@github.com:clojure-emacs/cider.git" :ref "950c38ab1637a228041bc7804716a520ba52b0fc" :files ("*.el"))
 (depends-on "clj-refactor")
 
 ;;; web development
