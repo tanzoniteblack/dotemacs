@@ -8,7 +8,7 @@
 (define-key global-map "\C-c7" 'org-mark-ring-goto)
 (setq org-startup-indented nil)
 (setq org-hide-leading-stars t)
-(setq org-startup-truncated nil)
+;; (setq org-startup-truncated nil)
 
 ;; if all children of a TODO are done, then change status of TODO to DONE
 (defun org-summary-todo (n-done n-not-done)
@@ -34,9 +34,6 @@
 ;; show images
 (setq org-display-inline-images t)
 
-;; turn off auto-complete for org-mode
-(add-hook 'org-mode-hook '(lambda () (auto-complete-mode 0)))
-
 ;;; remap ace-jump-word-mode (org-mode automatically disables)
 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'ace-jump-word-mode)))
 
@@ -51,6 +48,3 @@
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
-
-;;; convert org buffer to html and open email message
-(require 'org-mime)
