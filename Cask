@@ -83,6 +83,7 @@
 (depends-on "visual-regexp")
 (depends-on "yaml-mode")
 (depends-on "jape-mode")
+(depends-on "dockerfile-mode")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")
