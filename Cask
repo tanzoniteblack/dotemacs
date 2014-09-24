@@ -20,6 +20,7 @@
 ;;; emacs nicities
 (depends-on "flx-ido")
 (depends-on "smex")
+(depends-on "window-number")
 (depends-on "recentf")
 
 ;;; clojure

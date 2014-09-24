@@ -13,6 +13,7 @@
 ;; (setq default-font "UnifrakturMaguntia")
 ;; (setq default-font-height 130)
 
+;; OS X tends to display things small, and Ubuntu Mono looks odd on it
 (when (eq system-type 'darwin)
   (setq default-font "Menlo"
         default-font-height 125))

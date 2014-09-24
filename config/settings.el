@@ -292,3 +292,7 @@
 (add-hook 'find-file-hook 'large-file-protector)
 
 (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
+
+;; window-number-mode
+(require 'window-number)
+(window-number-meta-mode 1)
