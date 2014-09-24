@@ -248,9 +248,6 @@
 ;;; turn on highligh-symbol-mode for programming modes
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
-;;; removing whitespace before saving annoys me
-(remove-hook 'before-save-hook 'whitespace-cleanup)
-
 (delete-selection-mode 1)
 
 ;; start the emacs server
