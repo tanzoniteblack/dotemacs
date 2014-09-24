@@ -36,7 +36,6 @@
 
 ;; File
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
-(global-set-key (kbd "C-x f") 'live-recentf-ido-find-file)
 (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

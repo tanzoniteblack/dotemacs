@@ -1,5 +1,3 @@
-(require 'diminish)
-
 (setq diminish-modes '((elisp-slime-nav-mode . "")
                        (paredit-mode . "Par")
                        (elisp-slime-nav-mode . "")
