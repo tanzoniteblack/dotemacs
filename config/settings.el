@@ -182,8 +182,6 @@
 (global-flycheck-mode)
 
 ;;; random keybindings
-;; swap kill-region to C-x C-k, and move backward-kill-word to C-w to make it more convenient
-(global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 
 ;; bind kill-paragraph and backward-kill-paragraph
