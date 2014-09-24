@@ -1,9 +1,5 @@
 ;; Default Emacs Live bindings
 
-;; winner undo and redo
-(global-set-key (kbd "C-c b") 'winner-undo)
-(global-set-key (kbd "C-c f") 'winner-redo)
-
 ;;window and buffer movement
 (global-set-key (kbd "C-c w s") 'swap-windows)
 (global-set-key (kbd "C-c w p") 'buf-move-up)
@@ -19,7 +15,6 @@
 
 ;;make ^h delete rather than help
 (global-set-key (kbd "C-h") 'delete-backward-char)
-(define-key paredit-mode-map (kbd "C-h") 'paredit-backward-delete)
 
 ;;redefine help shortcut
 (global-set-key (kbd "M-h") 'help-command)
@@ -36,25 +31,17 @@
 (global-set-key  (kbd "M-n") 'outline-next-visible-heading)
 
 ;; Search
-(global-set-key (kbd "C-s")   'isearch-forward)
-(global-set-key (kbd "C-r")   'isearch-backward)
-(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-s") 'isearch-forward)
+(global-set-key (kbd "C-r") 'isearch-backward)
 
 ;; File
-(global-set-key (kbd "C-x M-f")   'ido-find-file-other-window)
-(global-set-key (kbd "C-x f")     'live-recentf-ido-find-file)
-(global-set-key (kbd "C-x C-r")   'ido-recentf-open)
-(global-set-key (kbd "C-x C-b")   'ibuffer)
+(global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+(global-set-key (kbd "C-x f") 'live-recentf-ido-find-file)
+(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; If you want to be able to M-x without meta
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-
-;; Magit
-(global-set-key (kbd "C-x g") 'magit-status)
-
-;; Ace jump mode
-(global-set-key (kbd "C-o") 'ace-jump-mode)
 
 ;; Show documentation/information with M-RET
 (define-key lisp-mode-shared-map (kbd "M-RET") 'live-lisp-describe-thing-at-point)
@@ -64,12 +51,6 @@
 (global-set-key (kbd "C-x !") 'insert-date)
 
 (setq shift-select-mode t)
-
-;;; visual regexp replacements
-(eval-after-load 'visual-regexp
-  '(progn
-     (define-key global-map (kbd "C-c r") 'vr/replace)
-     (define-key global-map (kbd "C-c q") 'vr/query-replace)))
 
 ;;; next error
 (global-set-key (kbd "M-'") 'next-error)

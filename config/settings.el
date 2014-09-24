@@ -161,9 +161,6 @@
 (add-to-list 'flycheck-checkers 'postgresql)
 (global-flycheck-mode)
 
-;;; random keybindings
-(global-set-key "\C-x\C-k" 'kill-region)
-
 ;; bind ace-jump-mode to C-c spc
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
