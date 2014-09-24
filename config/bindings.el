@@ -74,9 +74,6 @@
 ;;; next error
 (global-set-key (kbd "M-'") 'next-error)
 
-;;; json-mode beautify
-(define-key json-mode-map (kbd "C-S-f") 'json-mode-beautify)
-
 ;;; eval-buffer
 (define-key emacs-lisp-mode-map (kbd "C-c m b") 'eval-buffer)
 

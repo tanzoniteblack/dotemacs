@@ -201,7 +201,9 @@
 (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
 
 ;;; json
+(require 'json-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
+(define-key json-mode-map (kbd "C-S-f") 'json-mode-beautify)
 
 ;;; xml
 (require 'nxml-mode)
