@@ -8,23 +8,18 @@
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
 
 ;; more intelligent paren highlighting
-(require 'mic-paren)
 (paren-activate)
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist '(("." . "~/.saves")))
 
 ;;; undo tree
-(require 'undo-tree)
 (global-undo-tree-mode)
 
 ;;; autocompile emacs-lisp files
 (require 'auto-compile)
 (auto-compile-on-load-mode 1)
 (auto-compile-on-save-mode 1)
-
-;;; general emacs nicities
-(require 'buffer-move)
 
 ;;use file path to ensure buffer name uniqueness
 (require 'uniquify)
@@ -33,22 +28,11 @@
       uniquify-after-kill-buffer-p t
       uniquify-ignore-buffers-re "^\\*")
 
-;;store history of recently opened files
-(require 'recentf)
-(setq recentf-save-file (concat live-tmp-dir "recentf")
-      recentf-max-saved-items 200)
-(recentf-mode t)
-
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file (concat live-tmp-dir "places"))
-
-;;enable winner mode for C-c-(<left>|<right>) to navigate the history
-;;of buffer changes i.e. undo a split screen
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
 
 (setq initial-major-mode 'lisp-interaction-mode
       redisplay-dont-pause t
@@ -82,6 +66,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;default to unified diffs
+(require 'ediff)
 (setq diff-switches "-u"
       ediff-window-setup-function 'ediff-setup-windows-plain)
 
@@ -116,22 +101,17 @@
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;; spell checking
+(require 'ispell)
 (setq ispell-program-name "aspell" ; use aspell instead of ispell
       ispell-extra-args '("--sug-mode=ultra"))
 (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 
 ;;; magit
-(require 'git-commit-mode)
-(require 'git-rebase-mode)
-(require 'gitignore-mode)
-(require 'gitconfig-mode)
 (require 'magit)
-
 (add-hook 'magit-log-edit-mode-hook
           (lambda ()
             (set-fill-column 72)
             (auto-fill-mode 1)))
-
 (global-set-key (kbd "C-x g") 'magit-status)
 ;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
 (setq
@@ -145,7 +125,7 @@
  magit-save-some-buffers nil)
 
 ;;; irc defaults
-(setq rcirc-default-nick "tanzoniteblack")
+(require 'erc)
 (setq erc-nick "tanzoniteblack")
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 
@@ -218,16 +198,9 @@
 (setq-default tab-width 4 indent-tabs-mode t)
 
 ;;; groovy
-(require 'groovy-mode)
 (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
-;;; make Groovy mode electric by default.
-;; (add-hook 'groovy-mode-hook
-;;           '(lambda ()
-;;              (require 'groovy-electric)
-;;              (groovy-electric-mode)))
 
 ;;; json
-(require 'json-mode)
 (add-hook 'json-mode-hook 'flycheck-mode)
 
 ;;; xml
@@ -268,17 +241,10 @@
 (setq browse-kill-ring-display-duplicates nil)
 (setq browse-kill-ring-highlight-inserted-item nil)
 
-;;; expand region
-(require 'expand-region)
-
-;;; ace-jump-mode
-(require 'ace-jump-mode)
 ;;; ace-window
-(require 'ace-window)
 (global-set-key (kbd "C-x o") 'ace-window)
 
 ;;; web-mode
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
@@ -297,7 +263,6 @@
   (add-to-list 'projectile-globally-ignored-files file-name))
 
 ;;; respect ansi colors
-(require 'ansi-color)
 (ansi-color-for-comint-mode-on)
 
 ;;; ansi colors in compilation mode
@@ -307,15 +272,13 @@
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
-;;; view regexp in buffer
-(require 'visual-regexp)
-
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
 
 ;;; open Cask files in lisp-mode
 (add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
 
+;; recognize .zsh files for sh-mode
 (add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
 
 (defun large-file-protector ()
@@ -330,5 +293,3 @@
 (add-hook 'find-file-hook 'large-file-protector)
 
 (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
-
-(require 'jape-mode)
