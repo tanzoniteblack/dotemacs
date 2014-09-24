@@ -73,12 +73,11 @@
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-;;disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-(setq utf-translate-cjk-mode nil)
 
+;; by default don't indent with tabs
 (set-default 'indent-tabs-mode nil)
 (auto-compression-mode t)
-(show-paren-mode 1)
+(show-paren-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -94,7 +93,7 @@
 (defvar live-ignore-whitespace-modes '(markdown-mode))
 (defun live-cleanup-whitespace ()
   (when (not (member major-mode live-ignore-whitespace-modes))
-    (let ((whitespace-style '(trailing empty)) )
+    (let ((whitespace-style '(trailing empty)))
       (whitespace-cleanup))))
 (add-hook 'before-save-hook 'live-cleanup-whitespace)
 
@@ -115,15 +114,6 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-;;; select windows by m-#
-(require 'window-number)
-(autoload 'window-number-meta-mode "window-number"
-  "A global minor mode that enables use of the M- prefix to select
-windows, use `window-number-mode' to display the window numbers in
-the mode-line."
-  t)
-(window-number-meta-mode 1)
 
 ;;; recent files
 (require 'recentf)
