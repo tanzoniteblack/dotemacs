@@ -115,11 +115,6 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-;;; recent files
-(require 'recentf)
-(recentf-mode t)
-(setq recentf-max-saved-items 50)
-
 ;;; spell checking
 (setq ispell-program-name "aspell" ; use aspell instead of ispell
       ispell-extra-args '("--sug-mode=ultra"))
