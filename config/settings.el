@@ -184,10 +184,6 @@
 ;;; random keybindings
 (global-set-key "\C-x\C-k" 'kill-region)
 
-;; bind kill-paragraph and backward-kill-paragraph
-(global-set-key (kbd "C-M-}") 'kill-paragraph)
-(global-set-key (kbd "C-M-{") 'backward-kill-paragraph)
-
 ;; bind ace-jump-mode to C-c spc
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
