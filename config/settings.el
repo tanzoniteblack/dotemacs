@@ -248,6 +248,7 @@
 ;;; turn on highligh-symbol-mode for programming modes
 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
 
+;; overwrite selection rather than insert before selection
 (delete-selection-mode 1)
 
 ;; start the emacs server
@@ -257,14 +258,8 @@
 
 (cua-mode 0)
 
-;;; markdown-mode
-(require 'markdown-mode)
-(autoload 'markdown-mode "markdown-mode.el"
-  "Major mode for editing Markdown files" t)
+;; use gfm-mode (github formatted md) instead of regular markdown-mode
 (add-to-list 'auto-mode-alist '("\\.md" . gfm-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
-(setq markdown-command "gfm"
-	  markdown-command-needs-filename t)
 
 ;;; browse kill ring
 (require 'browse-kill-ring)
