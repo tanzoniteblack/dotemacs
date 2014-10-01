@@ -30,7 +30,7 @@
 (depends-on "clj-refactor")
 
 ;;; web development
-(depends-on "js3-mode")
+(depends-on "js2-mode")
 (depends-on "json-mode")
 (depends-on "tern")
 (depends-on "company-tern")

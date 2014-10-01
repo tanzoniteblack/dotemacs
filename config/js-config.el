@@ -1,6 +1,6 @@
-(require 'js3-mode)
+(require 'js2-mode)
 (autoload 'tern-mode "tern.el" nil t)
-(add-hook 'js3-mode-hook 'tern-mode)
+(add-hook 'js2-mode-hook 'tern-mode)
 
 (eval-after-load 'tern
   '(progn
