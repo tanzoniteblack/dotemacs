@@ -62,6 +62,7 @@
     (moe-dark)
   (moe-light))
 
+;;; set moe-theme powerline color
 (moe-theme-set-color 'purple)
 
 ;;; expression highlight
