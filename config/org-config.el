@@ -24,10 +24,6 @@
 ;; org folder
 (setq org-directory "~/Dropbox/.org/")
 
-;; set custom TODO keywords
-(setq org-todo-keywords
-      '((sequence "TODO" "|" "DONE" "UNNEC")))
-
 ;; make source code blocks fontify in native formatting mode
 (setq org-src-fontify-natively t)
 
