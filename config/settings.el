@@ -2,7 +2,7 @@
 (require 'company)
 (global-company-mode)
 (setq company-idle-delay .2
-	  company-tooltip-flip-when-above t)
+      company-tooltip-flip-when-above t)
 (global-set-key (kbd "C-<tab>") 'company-manual-begin)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
@@ -282,12 +282,18 @@
 
 (defun large-file-protector ()
   "Function to be run when opening a file to detect if special large-file changes need made."
-  (when (> (buffer-size) (* 8 1024 1024))
-	(highlight-symbol-mode -1)
-	(company-mode -1)
-	(git-gutter-mode -1)
-	(setq buffer-read-only t)
-	(buffer-disable-undo)))
+  (let ((too-many-bytes (> (buffer-size) (* 8 1024 1024)))
+        (too-many-lines (> (count-lines (point-min) (point-max)) 9000)))
+    (when too-many-bytes
+      (setq buffer-read-only t)
+      (buffer-disable-undo))
+    (when (or too-many-bytes too-many-lines)
+      (highlight-symbol-mode -1)
+      (company-mode -1)
+      (git-gutter-mode -1)
+	  (smartparens-mode -1)
+	  (paren-deactivate)
+	  (show-paren-mode -1))))
 
 (add-hook 'find-file-hook 'large-file-protector)
 
@@ -296,3 +302,5 @@
 ;; window-number-mode
 (require 'window-number)
 (window-number-meta-mode 1)
+
+(add-to-list 'auto-mode-alist '("\\.gate$" . xml-mode))
