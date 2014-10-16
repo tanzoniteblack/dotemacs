@@ -84,6 +84,7 @@
 (depends-on "yaml-mode")
 (depends-on "jape-mode")
 (depends-on "dockerfile-mode")
+(depends-on "vlf")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")

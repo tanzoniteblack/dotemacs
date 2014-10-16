@@ -291,13 +291,15 @@
       (highlight-symbol-mode -1)
       (company-mode -1)
       (git-gutter-mode -1)
-	  (smartparens-mode -1)
-	  (paren-deactivate)
-	  (show-paren-mode -1))))
+      (smartparens-mode -1)
+      (paren-deactivate)
+      (show-paren-mode -1))))
 
 (add-hook 'find-file-hook 'large-file-protector)
 
 (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
+
+(require 'vlf-integrate)
 
 ;; window-number-mode
 (require 'window-number)
