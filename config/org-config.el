@@ -32,6 +32,7 @@
 
 ;;; remap ace-jump-word-mode (org-mode automatically disables)
 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'ace-jump-word-mode)))
+(define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
 
 ;;; enable flyspell-mode on load of org buffer
 (add-hook 'org-mode-hook 'flyspell-mode)
