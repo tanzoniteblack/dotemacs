@@ -6,6 +6,7 @@
 (global-set-key (kbd "C-<tab>") 'company-manual-begin)
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
+(setq company-backends (remove 'company-eclim company-backends))
 
 ;; more intelligent paren highlighting
 (paren-activate)
@@ -306,3 +307,6 @@
 (window-number-meta-mode 1)
 
 (add-to-list 'auto-mode-alist '("\\.gate$" . xml-mode))
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))

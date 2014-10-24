@@ -37,7 +37,6 @@
 (depends-on "web-mode")
 
 ;;; java
-(depends-on "emacs-eclim")
 (depends-on "cedet")
 (depends-on "semantic")
 (depends-on "dtrt-indent")
