@@ -14,3 +14,4 @@
      (define-key tern-mode-keymap [(control ?c) (control ?d)] 'tern-get-docs)))
 
 (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
+(add-to-list 'auto-mode-alist '(".jshintrc" . json-mode))
