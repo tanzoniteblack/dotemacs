@@ -196,7 +196,6 @@
 (setq-default tab-width 4 indent-tabs-mode t)
 
 ;;; groovy
-(add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
 
 ;;; json
 (require 'json-mode)
@@ -231,9 +230,6 @@
 
 (cua-mode 0)
 
-;; use gfm-mode (github formatted md) instead of regular markdown-mode
-(add-to-list 'auto-mode-alist '("\\.md" . gfm-mode))
-
 ;;; browse kill ring
 (require 'browse-kill-ring)
 (setq browse-kill-ring-highlight-current-entry t)
@@ -243,16 +239,6 @@
 
 ;;; ace-window
 (global-set-key (kbd "C-x o") 'ace-window)
-
-;;; web-mode
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
 ;;; projectile-mode
 (require 'projectile)
@@ -275,12 +261,6 @@
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
 
-;;; open Cask files in lisp-mode
-(add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
-
-;; recognize .zsh files for sh-mode
-(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
-
 (defun large-file-protector ()
   "Function to be run when opening a file to detect if special large-file changes need made."
   (let ((too-many-bytes (> (buffer-size) (* 8 1024 1024)))
@@ -298,15 +278,11 @@
 
 (add-hook 'find-file-hook 'large-file-protector)
 
-(add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
-
 (require 'vlf-integrate)
 
 ;; window-number-mode
 (require 'window-number)
 (window-number-meta-mode 1)
-
-(add-to-list 'auto-mode-alist '("\\.gate$" . xml-mode))
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))

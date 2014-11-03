@@ -14,6 +14,7 @@
 (load-library "helper-functions.el")
 (load-library "window-settings.el")
 (load-library "settings.el")
+(load-library "file-settings.el")
 (load-library "elisp-config.el")
 (when (eq system-type 'darwin)
   (load-library "osx-config.el"))
