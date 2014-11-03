@@ -30,8 +30,3 @@
 
 (sp-local-pair 'markdown-mode "`" nil :actions nil)
 (sp-local-pair 'gfm-mode "`" nil :actions nil)
-
-(sp-with-modes '(org-mode)
-  (sp-local-pair "~" "~")
-  (sp-local-pair "*" "*")
-  (sp-local-pair "=" "="))
