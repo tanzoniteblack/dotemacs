@@ -63,6 +63,8 @@
 
 (add-hook 'clojure-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'subword-mode)
+(add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-repl-use-clojure-font-lock t)
 
 (require 'clojure-mode-extra-font-locking)
 
