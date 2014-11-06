@@ -33,7 +33,7 @@
 ;;when you previously visited. Save file is set to live-tmp-dir/places
 (require 'saveplace)
 (setq-default save-place t)
-(make-directory (concat live-tmp-dir "places") t)
+(make-directory live-tmp-dir t)
 (setq save-place-file (concat live-tmp-dir "places"))
 
 (setq initial-major-mode 'lisp-interaction-mode
