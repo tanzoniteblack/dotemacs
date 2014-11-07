@@ -21,5 +21,6 @@
 
 ;; recognize .zsh files for sh-mode
 (add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh-theme$" . sh-mode))
 
 (add-to-list 'auto-minor-mode-alist '("My Clippings.txt" . read-only-mode))
