@@ -58,9 +58,7 @@
 
 ;;; color theme
 (require 'moe-theme)
-(if window-system
-    (moe-dark)
-  (moe-light))
+(moe-dark)
 
 ;;; set moe-theme powerline color
 (powerline-moe-theme)
