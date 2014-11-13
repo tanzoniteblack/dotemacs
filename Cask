@@ -84,6 +84,7 @@
 (depends-on "jape-mode")
 (depends-on "dockerfile-mode")
 (depends-on "vlf")
+(depends-on "git-link")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")
