@@ -13,3 +13,7 @@
 (define-key tern-mode-keymap (kbd "C-c C-c") #'tern-get-type)
 (define-key tern-mode-keymap (kbd "C-c C-d") #'tern-get-docs)
 (define-key tern-mode-keymap (kbd "M-<return>") #'tern-get-docs)
+
+(setq
+ ;; Autocomplete end tag when finished writing opening tag
+ web-mode-auto-close-style 2)
