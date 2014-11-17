@@ -17,25 +17,6 @@
 (define-key clojure-mode-map (kbd "C-:") 'cljr-cycle-stringlike)
 (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-(defun live-warn-when-cider-not-connected ()
-  (interactive)
-  (message "nREPL server not connected. Run M-x cider or M-x cider-jack-in to connect."))
-
-(define-key clojure-mode-map (kbd "C-M-x")   'live-warn-when-cider-not-connected)
-(define-key clojure-mode-map (kbd "C-x C-e") 'live-warn-when-cider-not-connected)
-(define-key clojure-mode-map (kbd "C-c C-e") 'live-warn-when-cider-not-connected)
-(define-key clojure-mode-map (kbd "C-c C-l") 'live-warn-when-cider-not-connected)
-(define-key clojure-mode-map (kbd "C-c C-r") 'live-warn-when-cider-not-connected)
-
-(defun live-delete-and-extract-sexp ()
-  "Delete the sexp and return it."
-  (interactive)
-  (let* ((begin (point)))
-    (forward-sexp)
-    (let* ((result (buffer-substring-no-properties begin (point))))
-      (delete-region begin (point))
-      result)))
-
 (defun format-buffer ()
   "format buffer"
   (interactive)
