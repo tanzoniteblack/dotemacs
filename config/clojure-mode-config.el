@@ -9,9 +9,6 @@
           (lambda ()
             (setq buffer-save-without-query t)))
 
-(setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode))
-                              auto-mode-alist))
-
 (require 'clj-refactor)
 (add-hook 'clojure-mode-hook (lambda ()
                                (clj-refactor-mode 1)
