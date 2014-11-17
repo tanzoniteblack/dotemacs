@@ -81,13 +81,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
       (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
-
 ;; monkypatch basic-save-buffer to make saving buffers with no
 ;; associated file name more intuitive.
 (defun live-mp-new-basic-save-buffer ()
@@ -189,5 +182,5 @@ Before and after saving the buffer, this function runs
             (vc-after-save)
             (run-hooks 'after-save-hook)))
       (message "(No changes need to be saved)"))))
-(defalias 'live-mp-orig-basic-save-buffer 'basic-save-buffer)
-(defalias 'basic-save-buffer 'live-mp-new-basic-save-buffer)
+(defalias 'live-mp-orig-basic-save-buffer #'basic-save-buffer)
+(defalias 'basic-save-buffer #'live-mp-new-basic-save-buffer)

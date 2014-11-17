@@ -3,9 +3,9 @@
 (global-company-mode)
 (setq company-idle-delay .2
       company-tooltip-flip-when-above t)
-(global-set-key (kbd "C-<tab>") 'company-manual-begin)
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(global-set-key (kbd "C-<tab>") #'company-manual-begin)
+(define-key company-active-map (kbd "C-n") #'company-select-next)
+(define-key company-active-map (kbd "C-p") #'company-select-previous)
 (setq company-backends (remove 'company-eclim company-backends))
 
 ;; more intelligent paren highlighting
@@ -82,7 +82,7 @@
   (when (not (member major-mode live-ignore-whitespace-modes))
     (let ((whitespace-style '(trailing empty)))
       (whitespace-cleanup))))
-(add-hook 'before-save-hook 'live-cleanup-whitespace)
+(add-hook 'before-save-hook #'live-cleanup-whitespace)
 
 ;; savehist keeps track of some history
 (setq savehist-additional-variables
@@ -97,10 +97,10 @@
 ;;; smex
 (require 'smex)
 (smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "M-x") #'smex)
+(global-set-key (kbd "M-X") #'smex-major-mode-commands)
 ;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(global-set-key (kbd "C-c C-c M-x") #'execute-extended-command)
 
 ;;; spell checking
 (require 'ispell)
@@ -114,7 +114,7 @@
           (lambda ()
             (set-fill-column 72)
             (auto-fill-mode 1)))
-(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x g") #'magit-status)
 ;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
 (setq
  ;; use ido to look for branches
@@ -140,13 +140,13 @@
 (require 'go-mode)
 (when (executable-find "gocode")
   (require 'company-go)
-  (add-to-list 'company-backends 'company-go)
+  (add-to-list 'company-backends #'company-go)
   (require 'go-eldoc)
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
-(define-key go-mode-map (kbd "M-.") 'godef-jump)
-(define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
-(define-key go-mode-map (kbd "C-S-f") 'gofmt)
-(define-key go-mode-map (kbd "M-<return>") 'godef-describe)
+  (add-hook 'go-mode-hook #'go-eldoc-setup))
+(define-key go-mode-map (kbd "M-.") #'godef-jump)
+(define-key go-mode-map (kbd "M-,") #'pop-tag-mark)
+(define-key go-mode-map (kbd "C-S-f") #'gofmt)
+(define-key go-mode-map (kbd "M-<return>") #'godef-describe)
 
 ;;; flycheck mode
 (require 'flycheck)
@@ -164,17 +164,17 @@
 (global-flycheck-mode)
 
 ;; bind ace-jump-mode to C-c spc
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") #'ace-jump-mode)
 
 ;; set key for expand-region
-(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-=") #'er/expand-region)
 
 ;;; enable (up/down)case-region
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
 ;;; set-up M-` as alternative to C-x 5 0 for switching frames
-(global-set-key "\M-`" 'other-frame)
+(global-set-key "\M-`" #'other-frame)
 
 ;;; ido settings
 ;; if exact match not found, look for other files containing these characters
@@ -187,10 +187,10 @@
 ;;; highlight-symbol
 (require 'highlight-symbol)
 (setq highlight-symbol-idle-delay 0.5)
-(global-set-key [(control f3)] 'highlight-symbol-at-point)
-(global-set-key [f3] 'highlight-symbol-next)
-(global-set-key [(shift f3)] 'highlight-symbol-prev)
-(global-set-key [(meta f3)] 'highlight-symbol-prev)
+(global-set-key [(control f3)] #'highlight-symbol-at-point)
+(global-set-key [f3] #'highlight-symbol-next)
+(global-set-key [(shift f3)] #'highlight-symbol-prev)
+(global-set-key [(meta f3)] #'highlight-symbol-prev)
 
 ;;; c style
 (setq-default c-basic-offset 4 c-default-style "linux")
@@ -200,26 +200,26 @@
 
 ;;; json
 (require 'json-mode)
-(add-hook 'json-mode-hook 'flycheck-mode)
-(define-key json-mode-map (kbd "C-S-f") 'json-mode-beautify)
+(add-hook 'json-mode-hook #'flycheck-mode)
+(define-key json-mode-map (kbd "C-S-f") #'json-mode-beautify)
 
 ;;; xml
 (require 'nxml-mode)
-(define-key nxml-mode-map (kbd "C-S-f") 'beautify-xml)
+(define-key nxml-mode-map (kbd "C-S-f") #'beautify-xml)
 (add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode))
 
 ;;; quit settings
-(global-set-key (kbd "C-x C-c") 'ask-before-closing)
+(global-set-key (kbd "C-x C-c") #'ask-before-closing)
 
 ;;; show human readable file sizes in dired
 (setq dired-listing-switches "-alh")
 
 ;; turn on rainbow delimiters for all programming modes (in theory, in practice we need to specify a few more)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;;; turn on highligh-symbol-mode for programming modes
-(add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
 ;; overwrite selection rather than insert before selection
 (delete-selection-mode 1)
@@ -239,7 +239,7 @@
 (setq browse-kill-ring-highlight-inserted-item nil)
 
 ;;; ace-window
-(global-set-key (kbd "C-x o") 'ace-window)
+(global-set-key (kbd "C-x o") #'ace-window)
 
 ;;; projectile-mode
 (require 'projectile)
@@ -257,7 +257,7 @@
   (defun my-colorize-compilation-buffer ()
     (when (eq major-mode 'compilation-mode)
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
-  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook #'my-colorize-compilation-buffer))
 
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
@@ -277,7 +277,7 @@
       (paren-deactivate)
       (show-paren-mode -1))))
 
-(add-hook 'find-file-hook 'large-file-protector)
+(add-hook 'find-file-hook #'large-file-protector)
 (require 'vlf-integrate)
 
 ;; window-number-mode
@@ -309,4 +309,4 @@ the checking happens for all pairs in auto-minor-mode-alist"
             (funcall (cdar alist) 1))
         (setq alist (cdr alist))))))
 
-(add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
+(add-hook 'find-file-hook #'enable-minor-mode-based-on-extension)

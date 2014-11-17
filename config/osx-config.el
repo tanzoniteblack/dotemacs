@@ -14,9 +14,9 @@
       (process-send-string proc text)
       (process-send-eof proc))))
 
- (when (not window-system)
-   (setq interprogram-cut-function 'live-paste-to-osx)
-   (setq interprogram-paste-function 'live-copy-from-osx))
+(when (not window-system)
+  (setq interprogram-cut-function #'live-paste-to-osx)
+  (setq interprogram-paste-function #'live-copy-from-osx))
 
 ;; Work around a bug on OS X where system-name is a fully qualified
 ;; domain name

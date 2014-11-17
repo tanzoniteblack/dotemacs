@@ -2,15 +2,15 @@
 
 ;;; elisp tag navigation
 (require 'elisp-slime-nav)
-(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+(add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
 
 (add-to-list 'auto-mode-alist '("\\.el$" . emacs-lisp-mode))
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
+(add-hook 'ielm-mode-hook #'eldoc-mode)
 
-(define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
-(define-key emacs-lisp-mode-map (kbd "C-c C-k") 'eval-buffer)
+(define-key lisp-mode-shared-map (kbd "RET") #'reindent-then-newline-and-indent)
+(define-key emacs-lisp-mode-map (kbd "C-c C-k") #'eval-buffer)
 
 (defun live-lisp-describe-thing-at-point ()
   "Show the documentation of the Elisp function and variable near point.
