@@ -16,7 +16,7 @@
 ;; OS X tends to display things small, and Ubuntu Mono looks odd on it
 (when (eq system-type 'darwin)
   (setq default-font "Menlo"
-        default-font-height 125))
+        default-font-height 135))
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (when (member default-font (font-family-list))
