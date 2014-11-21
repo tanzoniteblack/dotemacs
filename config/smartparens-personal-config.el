@@ -24,7 +24,7 @@
 (define-key smartparens-mode-map (kbd "s-S") #'sp-split-sexp)
 
 
-(sp-with-modes '(clojure-mode cider-mode)
+(sp-with-modes '(clojure-mode cider-repl-mode)
   (sp-local-pair "#{" "}")
   (sp-local-pair "`" nil :actions nil)
   (sp-local-pair "@(" ")")
