@@ -29,7 +29,7 @@
 (add-hook 'clojure-mode-hook #'subword-mode)
 (add-hook 'cider-repl-mode-hook #'subword-mode)
 (add-hook 'clojure-mode-hook #'cider-turn-on-eldoc-mode)
-
+(setq cider-annotate-completion-candidates t)
 (require 'clojure-mode-extra-font-locking)
 
 ;; Fancy docstrings for schema/defn when in the form:
