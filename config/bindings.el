@@ -59,3 +59,5 @@
 (global-set-key (kbd "<RET>") #'electric-indent-just-newline)
 
 (global-set-key (kbd "M-\\") #'delete-adjacent-whitespace)
+
+(global-set-key (kbd "M-,") #'pop-tag-mark)
