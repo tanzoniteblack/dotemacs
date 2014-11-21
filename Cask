@@ -39,6 +39,7 @@
 ;;; java
 (depends-on "cedet")
 (depends-on "semantic")
+(depends-on "malabar-mode")
 (depends-on "dtrt-indent")
 
 ;;; go
