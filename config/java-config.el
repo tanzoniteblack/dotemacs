@@ -12,3 +12,4 @@
 (define-key malabar-mode-map (kbd "M-.") #'malabar-jump-to-thing)
 (define-key malabar-mode-map (kbd "M-,") #'pop-global-mark)
 (define-key malabar-mode-map (kbd "C-c C-k") #'malabar-compile-file)
+(define-key malabar-mode-map (kbd "M-<return>") #'malabar-show-javadoc)
