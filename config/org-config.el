@@ -1,6 +1,9 @@
 (require 'org)
 (require 'org-install)
 
+(setq org-completion-use-ido t
+	  org-outline-path-complete-in-steps nil)
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (define-key global-map "\C-cl" #'org-store-link)
 (define-key global-map "\C-ca" #'org-agenda)
