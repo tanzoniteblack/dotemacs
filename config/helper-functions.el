@@ -70,10 +70,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   (interactive)
   (let ((b (if mark-active (min (point) (mark)) (point-min)))
         (e (if mark-active (max (point) (mark)) (point-max))))
-    (shell-command-on-region b e
-                             (concat (if (executable-find "env") "env " "")
-                                     "python3 -c 'import sys ;import xml.dom.minidom;s=sys.stdin.read();print(xml.dom.minidom.parseString(s).toprettyxml(newl=\"\"))'")
-                             (current-buffer) t)))
+    (shell-command-on-region b e "xmllint --format -" (current-buffer) t)))
 
 (defun sudo-edit (&optional arg)
   (interactive "P")
