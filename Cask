@@ -86,6 +86,7 @@
 (depends-on "dockerfile-mode")
 (depends-on "vlf")
 (depends-on "git-link")
+(depends-on "rainbow-identifiers")
 
 ;;; org-mode
 (depends-on "org-plus-contrib")
