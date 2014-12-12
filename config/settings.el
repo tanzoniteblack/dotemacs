@@ -161,6 +161,11 @@
   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
   :modes sql-mode)
 (add-to-list 'flycheck-checkers 'postgresql)
+
+
+(custom-set-variables
+ '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+
 (global-flycheck-mode)
 
 ;; bind ace-jump-mode to C-c spc

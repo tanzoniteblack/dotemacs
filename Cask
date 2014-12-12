@@ -63,6 +63,7 @@
 
 ;;; general programming
 (depends-on "flycheck")
+(depends-on "flycheck-pos-tip")
 (depends-on "highlight-symbol")
 (depends-on "fringe-helper")
 (depends-on "company")
