@@ -27,7 +27,7 @@
 (load-library "smartparens-personal-config.el")
 (load-library "clojure-mode-config.el")
 (load-library "js-config.el")
-(load-library "java-config.el")
+;; (load-library "java-config.el")
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
 (load-library "diminish-config.el")
