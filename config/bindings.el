@@ -26,8 +26,8 @@
 (global-set-key (kbd "C-SPC") #'set-mark-command)
 
 ;;fast vertical naviation
-(global-set-key  (kbd "M-p") #'outline-previous-visible-heading)
-(global-set-key  (kbd "M-n") #'outline-next-visible-heading)
+(global-set-key (kbd "M-p") #'outline-previous-visible-heading)
+(global-set-key (kbd "M-n") #'outline-next-visible-heading)
 
 ;; Search
 (global-set-key (kbd "C-s") #'isearch-forward)
