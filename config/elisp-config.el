@@ -33,8 +33,3 @@
                              (and (symbolp obj) (fboundp obj) obj))))))
            (describe-function sym))
           ((setq sym (variable-at-point)) (describe-variable sym)))))
-
-;; font lock first word in ()
-(font-lock-add-keywords 'emacs-lisp-mode
-                        '(("(\\s-*\\(\\_<\\(?:\\sw\\|\\s_\\)+\\)\\_>"
-                           1 'font-lock-keyword-face)))
