@@ -1,15 +1,20 @@
-(require 'cedet)
-(require 'semantic)
-(load "semantic/loaddefs.el")
-(semantic-mode 1)
-(require 'malabar-mode)
-(add-to-list #'auto-mode-alist '("\\.java\\'" . malabar-mode))
 (require 'dtrt-indent)
 (add-hook #'java-mode-hook #'dtrt-indent-mode)
 
-(add-to-list #'company-semantic-modes #'malabar-mode)
+(require 'eclim)
+(add-hook #'java-mode-hook #'eclim-mode)
+(require 'company-emacs-eclim)
+(company-emacs-eclim-setup)
 
-(define-key malabar-mode-map (kbd "M-.") #'malabar-jump-to-thing)
-(define-key malabar-mode-map (kbd "M-,") #'pop-global-mark)
-(define-key malabar-mode-map (kbd "C-c C-k") #'malabar-compile-file)
-(define-key malabar-mode-map (kbd "M-<return>") #'malabar-show-javadoc)
+(when (eq system-type 'darwin)
+  (custom-set-variables
+   '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
+   '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
+
+(define-key eclim-mode-map (kbd "M-.") #'eclim-java-find-declaration)
+(define-key eclim-mode-map (kbd "M-,") #'pop-global-mark)
+(define-key eclim-mode-map (kbd "M-<return>") #'eclim-java-show-documentation-for-current-element)
+
+(setq help-at-pt-display-when-idle t)
+(setq help-at-pt-timer-delay 0.1)
+(help-at-pt-set-timer)

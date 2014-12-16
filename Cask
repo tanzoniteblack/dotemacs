@@ -37,10 +37,8 @@
 (depends-on "web-mode")
 
 ;;; java
-(depends-on "cedet")
-(depends-on "semantic")
-(depends-on "malabar-mode")
 (depends-on "dtrt-indent")
+(depends-on "emacs-eclim")
 
 ;;; go
 (depends-on "go-mode")
