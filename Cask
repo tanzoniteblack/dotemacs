@@ -25,7 +25,6 @@
 
 ;;; clojure
 (depends-on "clojure-mode")
-(depends-on "clojure-mode-extra-font-locking")
 (depends-on "cider")
 (depends-on "clj-refactor")
 
