@@ -3,8 +3,11 @@
 
 (require 'eclim)
 (add-hook #'java-mode-hook #'eclim-mode)
+
 (require 'company-emacs-eclim)
 (company-emacs-eclim-setup)
+
+(add-hook #'java-mode-hook #'subword-mode)
 
 (when (eq system-type 'darwin)
   (custom-set-variables
