@@ -317,3 +317,4 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (add-hook 'find-file-hook #'enable-minor-mode-based-on-extension)
 
 (add-hook 'prog-mode-hook #'rainbow-identifiers-mode)
+(add-hook 'org-mode-hook #'rainbow-identifiers-mode)
