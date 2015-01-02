@@ -283,7 +283,7 @@
       (show-paren-mode -1))))
 
 (add-hook 'find-file-hook #'large-file-protector)
-(require 'vlf-integrate)
+(require 'vlf-setup)
 
 ;; window-number-mode
 (require 'window-number)
