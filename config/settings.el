@@ -242,7 +242,6 @@
 (cua-mode 0)
 
 ;;; browse kill ring
-(require 'browse-kill-ring)
 (use-package browse-kill-ring
   :config (setq browse-kill-ring-highlight-current-entry t
                 browse-kill-ring-no-duplicates t
