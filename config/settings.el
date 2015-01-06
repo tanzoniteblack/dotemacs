@@ -142,17 +142,17 @@
   :commands go-mode
   :init (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
   :config (progn (use-package company-go
-				   :if (executable-find "gocode")
-				   :commands company-go
-				   :init (add-to-list #'company-backends #'company-go))
-				 (use-package go-eldoc
-				   :if (executable-find "gocode")
-				   :commands go-eldoc-setup
-				   :init (add-to-list #'go-mode-hook #'go-eldoc-setup))
-				 (bind-key "M-." 'godef-jump go-mode-map)
-				 (bind-key "M-," 'pop-tag-mark go-mode-map)
-				 (bind-key "C-S-F" 'gofmt go-mode-map)
-				 (bind-key "M-<return>" 'godef-describe go-mode-map)))
+                   :if (executable-find "gocode")
+                   :commands company-go
+                   :init (add-to-list #'company-backends #'company-go))
+                 (use-package go-eldoc
+                   :if (executable-find "gocode")
+                   :commands go-eldoc-setup
+                   :init (add-to-list #'go-mode-hook #'go-eldoc-setup))
+                 (bind-key "M-." 'godef-jump go-mode-map)
+                 (bind-key "M-," 'pop-tag-mark go-mode-map)
+                 (bind-key "C-S-F" 'gofmt go-mode-map)
+                 (bind-key "M-<return>" 'godef-describe go-mode-map)))
 
 ;;; flycheck mode
 (require 'flycheck)
@@ -197,23 +197,24 @@
 (setq ido-file-extensions-order '(".org" ".clj"))
 
 ;;; highlight-symbol
-(require 'highlight-symbol)
-(setq highlight-symbol-idle-delay 0.5)
-(global-set-key [(control f3)] #'highlight-symbol-at-point)
-(global-set-key [f3] #'highlight-symbol-next)
-(global-set-key [(shift f3)] #'highlight-symbol-prev)
-(global-set-key [(meta f3)] #'highlight-symbol-prev)
+(use-package highlight-symbol
+  :bind (("C-<f3>" . highlight-symbol-at-point)
+         ("<f3>" . highlight-symbol-next)
+         ("S-<f3>" . highlight-symbol-prev)
+         ("M-<f3>" . highlight-symbol-prev))
+  :config (progn (setq highlight-symbol-idle-delay 0.5)))
 
 ;;; c style
 (setq-default c-basic-offset 4 c-default-style "linux")
 (setq-default tab-width 4 indent-tabs-mode t)
 
-;;; groovy
-
 ;;; json
-(require 'json-mode)
-(add-hook 'json-mode-hook #'flycheck-mode)
-(define-key json-mode-map (kbd "C-S-f") #'json-mode-beautify)
+(use-package json-mode
+  :defer t
+  :init (progn (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+               (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode)))
+  :config (progn (add-hook 'json-mode-hook #'flycheck-mode)
+                 (bind-key "C-S-f" 'json-mode-beautify json-mode-map)))
 
 ;;; xml
 (require 'nxml-mode)
