@@ -1,5 +1,3 @@
-(require 'use-package)
-
 ;;; global-company-mode for completions
 (use-package company
   :commands global-company-mode

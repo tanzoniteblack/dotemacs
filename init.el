@@ -4,6 +4,8 @@
 
 (cask-initialize)
 
+(require 'use-package)
+
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
 
