@@ -424,3 +424,12 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
+
+(use-package elpy
+  :init (elpy-enable)
+  :config (progn (setq elpy-rpc-backend "jedi")
+                 (define-key elpy-mode-map (kbd "M-.") #'elpy-goto-definition)
+                 (define-key elpy-mode-map (kbd "M-,") #'pop-tag-mark)
+                 (define-key elpy-mode-map (kbd "M-<RET>") #'elpy-doc)
+                 (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
+                 (add-hook 'python-mode-hook #'highlight-symbol-mode)))

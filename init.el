@@ -24,7 +24,6 @@
 (when (eq system-type 'darwin)
   (load-library "osx-config.el"))
 (load-library "ido-conf.el")
-(load-library "python-config.el")
 (load-library "smartparens-personal-config.el")
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
