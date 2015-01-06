@@ -1,3 +1,5 @@
+(require 'use-package)
+
 ;;; global-company-mode for completions
 (require 'company)
 (global-company-mode)
@@ -136,17 +138,21 @@
                             (sql-set-product 'postgres)
                             (setq indent-tabs-mode nil)))
 
-;;; golang
-(require 'go-mode)
-(when (executable-find "gocode")
-  (require 'company-go)
-  (add-to-list 'company-backends #'company-go)
-  (require 'go-eldoc)
-  (add-hook 'go-mode-hook #'go-eldoc-setup))
-(define-key go-mode-map (kbd "M-.") #'godef-jump)
-(define-key go-mode-map (kbd "M-,") #'pop-tag-mark)
-(define-key go-mode-map (kbd "C-S-f") #'gofmt)
-(define-key go-mode-map (kbd "M-<return>") #'godef-describe)
+(use-package go-mode
+  :commands go-mode
+  :init (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
+  :config (progn (use-package company-go
+				   :if (executable-find "gocode")
+				   :commands company-go
+				   :init (add-to-list #'company-backends #'company-go))
+				 (use-package go-eldoc
+				   :if (executable-find "gocode")
+				   :commands go-eldoc-setup
+				   :init (add-to-list #'go-mode-hook #'go-eldoc-setup))
+				 (bind-key "M-." 'godef-jump go-mode-map)
+				 (bind-key "M-," 'pop-tag-mark go-mode-map)
+				 (bind-key "C-S-F" 'gofmt go-mode-map)
+				 (bind-key "M-<return>" 'godef-describe go-mode-map)))
 
 ;;; flycheck mode
 (require 'flycheck)
@@ -168,11 +174,12 @@
 
 (global-flycheck-mode)
 
-;; bind ace-jump-mode to C-c spc
-(define-key global-map (kbd "C-c SPC") #'ace-jump-mode)
 
-;; set key for expand-region
-(global-set-key (kbd "C-=") #'er/expand-region)
+(use-package ace-jump-mode
+  :bind ("C-c SPC" . ace-jump-mode))
+
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 
 ;;; enable (up/down)case-region
 (put 'upcase-region 'disabled nil)
