@@ -7,35 +7,35 @@
                  (bind-key "C-<tab>" 'company-manual-begin)
                  (bind-key "C-n" 'company-select-next company-active-map)
                  (bind-key "C-p" 'company-select-previous company-active-map)))
-;; (setq company-backends (remove 'company-eclim company-backends))
 
 ;; more intelligent paren highlighting
-(paren-activate)
+(use-package mic-paren
+  :init (paren-activate))
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist '(("." . "~/.saves")))
 
-;;; undo tree
-(global-undo-tree-mode)
+(use-package undo-tree
+  :init (global-undo-tree-mode))
 
 ;;; autocompile emacs-lisp files
-(require 'auto-compile)
-(auto-compile-on-load-mode 1)
-(auto-compile-on-save-mode 1)
+(use-package auto-compile
+  :init (progn (auto-compile-on-load-mode 1)
+               (auto-compile-on-save-mode 1)))
 
 ;;use file path to ensure buffer name uniqueness
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward
-      uniquify-separator "/"
-      uniquify-after-kill-buffer-p t
-      uniquify-ignore-buffers-re "^\\*")
+(use-package uniquify
+  :init (setq uniquify-buffer-name-style 'forward
+              uniquify-separator "/"
+              uniquify-after-kill-buffer-p t
+              uniquify-ignore-buffers-re "^\\*"))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
-(require 'saveplace)
-(setq-default save-place t)
-(make-directory live-tmp-dir t)
-(setq save-place-file (concat live-tmp-dir "places"))
+(use-package save-place
+  :init (progn (setq-default save-place t)
+               (make-directory live-tmp-dir t)
+               (setq save-place-file (concat live-tmp-dir "places"))))
 
 (setq initial-major-mode 'lisp-interaction-mode
       redisplay-dont-pause t
@@ -50,7 +50,8 @@
       confirm-nonexistent-file-or-buffer nil
       query-replace-highlight t
       next-error-highlight t
-      next-error-highlight-no-select t)
+      next-error-highlight-no-select t
+      x-select-enable-clipboard t)
 
 ;;set all coding systems to utf-8
 (set-language-environment 'utf-8)
@@ -69,12 +70,9 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;default to unified diffs
-(require 'ediff)
-(setq diff-switches "-u"
-      ediff-window-setup-function 'ediff-setup-windows-plain)
-
-;; make emacs use the clipboard
-(setq x-select-enable-clipboard t)
+(use-package ediff
+  :init (setq diff-switches "-u"
+              ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;;remove all trailing whitespace and trailing blank lines before
 ;;saving the file
@@ -96,41 +94,47 @@
 (savehist-mode t)
 
 ;;; smex
-(require 'smex)
-(smex-initialize)
-(global-set-key (kbd "M-x") #'smex)
-(global-set-key (kbd "M-X") #'smex-major-mode-commands)
+(use-package smex
+  :init (smex-initialize)
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)))
+
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") #'execute-extended-command)
 
 ;;; spell checking
-(require 'ispell)
-(setq ispell-program-name "aspell" ; use aspell instead of ispell
-      ispell-extra-args '("--sug-mode=ultra"))
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
+(use-package ispell
+  :config (setq ispell-program-name "aspell" ; use aspell instead of ispell
+                ispell-extra-args '("--sug-mode=ultra")))
+
+(use-package flyspell-mode
+  :commands flyspell-mode
+  :init (add-hook 'text-mode-hook 'flyspell-mode)
+  :idle (flyspell-mode))
 
 ;;; magit
-(require 'magit)
-(add-hook 'magit-log-edit-mode-hook
-          (lambda ()
-            (set-fill-column 72)
-            (auto-fill-mode 1)))
-(global-set-key (kbd "C-x g") #'magit-status)
-;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
-(setq
- ;; use ido to look for branches
- magit-completing-read-function 'magit-ido-completing-read
- ;; don't put "origin-" in front of new branch names by default
- magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
- ;; highlight word/letter changes in hunk diffs
- magit-diff-refine-hunk t
- ;; don't attempt to save unsaved buffers
- magit-save-some-buffers nil)
+(use-package magit
+  :bind (("C-x g" . magit-status))
+  :config (progn (add-hook 'magit-log-edit-mode-hook
+                           (lambda ()
+                             (set-fill-column 72)
+                             (auto-fill-mode 1)))
+                 ;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
+                 (setq
+                  ;; use ido to look for branches
+                  magit-completing-read-function 'magit-ido-completing-read
+                  ;; don't put "origin-" in front of new branch names by default
+                  magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
+                  ;; highlight word/letter changes in hunk diffs
+                  magit-diff-refine-hunk t
+                  ;; don't attempt to save unsaved buffers
+                  magit-save-some-buffers nil)))
 
-;;; irc defaults
-(require 'erc)
-(setq erc-nick "tanzoniteblack")
-(setq erc-hide-list '("JOIN" "PART" "QUIT"))
+
+(use-package erc
+  :commands erc
+  :config (progn (setq erc-nick "tanzoniteblack")
+                 (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
@@ -154,25 +158,20 @@
                  (bind-key "M-<return>" 'godef-describe go-mode-map)))
 
 ;;; flycheck mode
-(require 'flycheck)
-(add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-(flycheck-define-checker postgresql
-  "A SQL syntax checker using pgsanity. Linter is designed to work
+(use-package flycheck
+  :config (progn (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+                 (flycheck-define-checker postgresql
+                   "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
   SQL as well.
 
   See URL `https://github.com/markdrago/pgsanity'."
-  :command ("pgsanity" source)
-  :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-  :modes sql-mode)
-(add-to-list 'flycheck-checkers 'postgresql)
-
-
-(custom-set-variables
- '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
-
-(global-flycheck-mode)
-
+                   :command ("pgsanity" source)
+                   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
+                   :modes sql-mode)
+                 (add-to-list 'flycheck-checkers 'postgresql)
+                 (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+                 (global-flycheck-mode)))
 
 (use-package ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
@@ -188,12 +187,12 @@
 (global-set-key "\M-`" #'other-frame)
 
 ;;; ido settings
-;; if exact match not found, look for other files containing these characters
-(setq ido-enable-flex-matching t)
-;; don't leave the current directory if we don't find the file we typed
-(setq ido-auto-merge-work-directories-length -1)
-;; ido file type ordering preferences
-(setq ido-file-extensions-order '(".org" ".clj"))
+(setq ;; if exact match not found, look for other files containing these characters
+ ido-enable-flex-matching t
+ ;; don't leave the current directory if we don't find the file we typed
+ ido-auto-merge-work-directories-length -1
+ ;; ido file type ordering preferences
+ ido-file-extensions-order '(".org" ".clj"))
 
 ;;; highlight-symbol
 (use-package highlight-symbol
@@ -244,13 +243,15 @@
 
 ;;; browse kill ring
 (require 'browse-kill-ring)
-(setq browse-kill-ring-highlight-current-entry t)
-(setq browse-kill-ring-no-duplicates t)
-(setq browse-kill-ring-display-duplicates nil)
-(setq browse-kill-ring-highlight-inserted-item nil)
+(use-package browse-kill-ring
+  :config (setq browse-kill-ring-highlight-current-entry t
+                browse-kill-ring-no-duplicates t
+                browse-kill-ring-display-duplicates nil
+                browse-kill-ring-highlight-inserted-item nil))
 
 ;;; ace-window
-(global-set-key (kbd "C-x o") #'ace-window)
+(use-package ace-window
+  :bind ("C-x o" . ace-window))
 
 ;;; projectile-mode
 (require 'projectile)
