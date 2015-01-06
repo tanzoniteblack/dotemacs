@@ -1,14 +1,15 @@
 (require 'use-package)
 
 ;;; global-company-mode for completions
-(require 'company)
-(global-company-mode)
-(setq company-idle-delay .2
-      company-tooltip-flip-when-above t)
-(global-set-key (kbd "C-<tab>") #'company-manual-begin)
-(define-key company-active-map (kbd "C-n") #'company-select-next)
-(define-key company-active-map (kbd "C-p") #'company-select-previous)
-(setq company-backends (remove 'company-eclim company-backends))
+(use-package company
+  :commands global-company-mode
+  :idle (global-company-mode)
+  :config (progn (setq company-idle-delay .2
+                       company-tooltip-flip-when-above t)
+                 (bind-key "C-<tab>" 'company-manual-begin)
+                 (bind-key "C-n" 'company-select-next company-active-map)
+                 (bind-key "C-p" 'company-select-previous company-active-map)))
+;; (setq company-backends (remove 'company-eclim company-backends))
 
 ;; more intelligent paren highlighting
 (paren-activate)
@@ -198,17 +199,19 @@
 
 ;;; highlight-symbol
 (use-package highlight-symbol
+  :diminish ""
+  :idle (highlight-symbol-mode)
   :bind (("C-<f3>" . highlight-symbol-at-point)
          ("<f3>" . highlight-symbol-next)
          ("S-<f3>" . highlight-symbol-prev)
          ("M-<f3>" . highlight-symbol-prev))
-  :config (progn (setq highlight-symbol-idle-delay 0.5)))
+  :config (progn (setq highlight-symbol-idle-delay 0.5)
+                 (add-hook 'prog-mode-hook #'highlight-symbol-mode)))
 
 ;;; c style
 (setq-default c-basic-offset 4 c-default-style "linux")
 (setq-default tab-width 4 indent-tabs-mode t)
 
-;;; json
 (use-package json-mode
   :defer t
   :init (progn (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
@@ -216,11 +219,11 @@
   :config (progn (add-hook 'json-mode-hook #'flycheck-mode)
                  (bind-key "C-S-f" 'json-mode-beautify json-mode-map)))
 
-;;; xml
-(require 'nxml-mode)
-(define-key nxml-mode-map (kbd "C-S-f") #'beautify-xml)
-(add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode))
+(use-package nxml-mode
+  :defer t
+  :init (progn (add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
+               (add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode)))
+  :config (progn (bind-key "C-S-f" 'beautify-xml nxml-mode-map)))
 
 ;;; quit settings
 (global-set-key (kbd "C-x C-c") #'ask-before-closing)
@@ -230,9 +233,6 @@
 
 ;; turn on rainbow delimiters for all programming modes (in theory, in practice we need to specify a few more)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-;;; turn on highligh-symbol-mode for programming modes
-(add-hook 'prog-mode-hook #'highlight-symbol-mode)
 
 ;; overwrite selection rather than insert before selection
 (delete-selection-mode 1)
@@ -325,4 +325,104 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (add-hook 'find-file-hook #'enable-minor-mode-based-on-extension)
 
 (add-hook 'prog-mode-hook #'rainbow-identifiers-mode)
-(add-hook 'org-mode-hook #'rainbow-identifiers-mode)
+
+(use-package org
+  :commands org-mode
+  :init (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  :config (progn (setq org-completion-use-ido t
+                       org-outline-path-complete-in-steps nil
+                       org-startup-indented nil
+                       org-hide-leading-stars t
+                       org-agenda-files (list "~/Dropbox/.org/yummly.org"
+                                              "~/Dropbox/.org/home.org")
+                       org-directory "~/Dropbox/.org/"
+                       org-src-fontify-natively t
+                       org-display-inline-images t)
+                 ;; if all children of a TODO are done, then change status of TODO to DONE
+                 (defun org-summary-todo (n-done n-not-done)
+                   "Switch entry to DONE when all subentries are done, to TODO otherwise."
+                   (let (org-log-done org-log-states)   ; turn off logging
+                     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+                 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+                 ;; remap ace-jump-word-mode (org-mode automatically disables)
+                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
+                 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
+                 (define-key org-mode-map (kbd "M-h") #'help-command)
+                 ;; enable flyspell-mode on load of org buffer
+                 (add-hook 'org-mode-hook #'flyspell-mode)
+                 (use-package htmlize)
+                 ;; windmove compatibility
+                 (add-hook 'org-shiftup-final-hook #'windmove-up)
+                 (add-hook 'org-shiftleft-final-hook #'windmove-left)
+                 (add-hook 'org-shiftdown-final-hook #'windmove-down)
+                 (add-hook 'org-shiftright-final-hook #'windmove-right)
+                 (add-hook 'org-mode-hook #'turn-on-auto-fill)
+                 (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
+
+(use-package clojure-mode
+  :commands clojure-mode
+  :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
+  :config (progn (use-package cider
+                   :init (progn (add-hook 'clojure-mode-hook #'cider-turn-on-eldoc-mode)
+                                (add-hook 'cider-repl-mode-hook #'subword-mode))
+                   :config (progn (setq cider-annotate-completion-candidates t)
+                                  (define-key cider-repl-mode-map (kbd "M-RET") #'cider-doc)
+                                  (define-key cider-mode-map (kbd "M-RET") #'cider-doc)))
+                 (use-package clj-refactor
+                   :init (progn (add-hook 'clojure-mode-hook (lambda ()
+                                                               (clj-refactor-mode 1)
+                                                               (cljr-add-keybindings-with-prefix "C-c C-m")))
+                                (define-key clojure-mode-map (kbd "C-:") #'clojure-toggle-keyword-string)
+                                (define-key clojure-mode-map (kbd "C->") #'cljr-cycle-coll)))
+                 (add-hook 'clojure-mode-hook (lambda () (setq buffer-save-without-query t)))
+                 (add-hook 'clojure-mode-hook #'subword-mode)
+                 ;; Fancy docstrings for schema/defn when in the form:
+                 ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
+                 (put 'schema/defn 'clojure-doc-string-elt 4)))
+
+(use-package js2-mode
+  :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  :config (use-package tern
+            :commands tern-mode
+            :init (add-hook 'js2-mode-hook 'tern-mode)
+            :config (progn (use-package company-tern
+                             :init (add-to-list 'company-backends #'company-tern))
+                           (define-key tern-mode-keymap (kbd "M-.") #'tern-find-definition)
+                           (define-key tern-mode-keymap (kbd "C-M-.") #'tern-find-definition-by-name)
+                           (define-key tern-mode-keymap (kbd "M-,") #'tern-pop-find-definition)
+                           (define-key tern-mode-keymap (kbd "C-c C-r") #'tern-rename-variable)
+                           (define-key tern-mode-keymap (kbd "C-c C-c") #'tern-get-type)
+                           (define-key tern-mode-keymap (kbd "C-c C-d") #'tern-get-docs)
+                           (define-key tern-mode-keymap (kbd "M-<return>") #'tern-get-docs))))
+
+;; Autocomplete end tag when finished writing opening tag
+(setq web-mode-auto-close-style 2)
+
+(defun format-buffer ()
+  "format buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
+
+(global-set-key (kbd "C-S-f") #'format-buffer)
+
+;; Java stuff
+(add-hook #'java-mode-hook #'subword-mode)
+(use-package dtrt-indent
+  :init (add-hook #'java-mode-hook #'dtrt-indent-mode-hook))
+(use-package eclim
+  :init (add-hook #'java-mode-hook #'eclim-mode)
+  :config (progn (use-package company-emacs-eclim
+                   :init (company-emacs-eclim-setup))
+                 (when (eq system-type 'darwin)
+                   (custom-set-variables
+                    '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
+                    '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
+                 (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
+                 (bind-key "M-," #'pop-global-mark eclim-mode-map)
+                 (bind-key "M-<return>" #'eclim-java-show-documentation-for-current-element eclim-mode-map)))
+
+(setq help-at-pt-display-when-idle t)
+(setq help-at-pt-timer-delay 0.1)
+(help-at-pt-set-timer)

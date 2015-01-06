@@ -3,8 +3,7 @@
                        (elisp-slime-nav-mode . "")
                        (undo-tree-mode . "")
                        (git-gutter-mode . "")
-                       (highlight-symbol-mode . "")
-                       (eldoc-mode . "")
+					   (eldoc-mode . "")
                        (magit-auto-revert-mode . "")))
 
 (--each diminish-modes
