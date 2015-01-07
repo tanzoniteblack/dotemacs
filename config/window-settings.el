@@ -57,12 +57,13 @@
                (global-git-gutter-mode)
                (diminish 'git-gutter-mode "")))
 
+(use-package powerline
+  :ensure t)
+
 (use-package moe-theme
   :ensure t
   :init (moe-dark)
-  :config (progn (use-package powerline
-				   :ensure t
-                   :init (powerline-moe-theme))
+  :config (progn (powerline-moe-theme)
                  (moe-theme-set-color 'purple)))
 
 ;;; expression highlight

@@ -362,38 +362,38 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :commands org-mode
   :init (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  :config (progn ;; (use-package org-plus-contrib
-            ;;   :ensure t)
-            (setq org-completion-use-ido t
-                  org-outline-path-complete-in-steps nil
-                  org-startup-indented nil
-                  org-hide-leading-stars t
-                  org-agenda-files (list "~/Dropbox/.org/yummly.org"
-                                         "~/Dropbox/.org/home.org")
-                  org-directory "~/Dropbox/.org/"
-                  org-src-fontify-natively t
-                  org-display-inline-images t)
-            ;; if all children of a TODO are done, then change status of TODO to DONE
-            (defun org-summary-todo (n-done n-not-done)
-              "Switch entry to DONE when all subentries are done, to TODO otherwise."
-              (let (org-log-done org-log-states)   ; turn off logging
-                (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-            (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-            ;; remap ace-jump-word-mode (org-mode automatically disables)
-            (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
-            (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
-            (define-key org-mode-map (kbd "M-h") #'help-command)
-            ;; enable flyspell-mode on load of org buffer
-            (add-hook 'org-mode-hook #'flyspell-mode)
-            (use-package htmlize
-              :ensure t)
-            ;; windmove compatibility
-            (add-hook 'org-shiftup-final-hook #'windmove-up)
-            (add-hook 'org-shiftleft-final-hook #'windmove-left)
-            (add-hook 'org-shiftdown-final-hook #'windmove-down)
-            (add-hook 'org-shiftright-final-hook #'windmove-right)
-            (add-hook 'org-mode-hook #'turn-on-auto-fill)
-            (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
+  :config (progn (use-package org-src
+                   :ensure org-plus-contrib)
+                 (setq org-completion-use-ido t
+                       org-outline-path-complete-in-steps nil
+                       org-startup-indented nil
+                       org-hide-leading-stars t
+                       org-agenda-files (list "~/Dropbox/.org/yummly.org"
+                                              "~/Dropbox/.org/home.org")
+                       org-directory "~/Dropbox/.org/"
+                       org-src-fontify-natively t
+                       org-display-inline-images t)
+                 ;; if all children of a TODO are done, then change status of TODO to DONE
+                 (defun org-summary-todo (n-done n-not-done)
+                   "Switch entry to DONE when all subentries are done, to TODO otherwise."
+                   (let (org-log-done org-log-states)   ; turn off logging
+                     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+                 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+                 ;; remap ace-jump-word-mode (org-mode automatically disables)
+                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
+                 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
+                 (define-key org-mode-map (kbd "M-h") #'help-command)
+                 ;; enable flyspell-mode on load of org buffer
+                 (add-hook 'org-mode-hook #'flyspell-mode)
+                 (use-package htmlize
+                   :ensure t)
+                 ;; windmove compatibility
+                 (add-hook 'org-shiftup-final-hook #'windmove-up)
+                 (add-hook 'org-shiftleft-final-hook #'windmove-left)
+                 (add-hook 'org-shiftdown-final-hook #'windmove-down)
+                 (add-hook 'org-shiftright-final-hook #'windmove-right)
+                 (add-hook 'org-mode-hook #'turn-on-auto-fill)
+                 (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
 
 (use-package clojure-mode
   :ensure t
