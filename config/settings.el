@@ -39,12 +39,6 @@
                        ido-file-extensions-order '(".org" ".clj"))
                  (icomplete-mode 1)))
 
-;;; autocompile emacs-lisp files
-(use-package auto-compile
-  :ensure t
-  :init (progn (auto-compile-on-load-mode 1)
-               (auto-compile-on-save-mode 1)))
-
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
   :init (setq uniquify-buffer-name-style 'forward
@@ -54,7 +48,7 @@
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
-(use-package save-place
+(use-package saveplace
   :init (progn (setq-default save-place t)
                (make-directory live-tmp-dir t)
                (setq save-place-file (concat live-tmp-dir "places"))))
@@ -237,10 +231,6 @@
   :config (progn (setq highlight-symbol-idle-delay 0.5)
                  (add-hook 'prog-mode-hook #'highlight-symbol-mode)))
 
-;;; c style
-(setq-default c-basic-offset 4 c-default-style "linux")
-(setq-default tab-width 4 indent-tabs-mode t)
-
 (use-package json-mode
   :ensure t
   :defer t
@@ -372,38 +362,38 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :commands org-mode
   :init (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  :config (progn (use-package org-plus-contrib
-                   :ensure t)
-                 (setq org-completion-use-ido t
-                       org-outline-path-complete-in-steps nil
-                       org-startup-indented nil
-                       org-hide-leading-stars t
-                       org-agenda-files (list "~/Dropbox/.org/yummly.org"
-                                              "~/Dropbox/.org/home.org")
-                       org-directory "~/Dropbox/.org/"
-                       org-src-fontify-natively t
-                       org-display-inline-images t)
-                 ;; if all children of a TODO are done, then change status of TODO to DONE
-                 (defun org-summary-todo (n-done n-not-done)
-                   "Switch entry to DONE when all subentries are done, to TODO otherwise."
-                   (let (org-log-done org-log-states)   ; turn off logging
-                     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-                 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
-                 ;; remap ace-jump-word-mode (org-mode automatically disables)
-                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
-                 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
-                 (define-key org-mode-map (kbd "M-h") #'help-command)
-                 ;; enable flyspell-mode on load of org buffer
-                 (add-hook 'org-mode-hook #'flyspell-mode)
-                 (use-package htmlize
-                   :ensure t)
-                 ;; windmove compatibility
-                 (add-hook 'org-shiftup-final-hook #'windmove-up)
-                 (add-hook 'org-shiftleft-final-hook #'windmove-left)
-                 (add-hook 'org-shiftdown-final-hook #'windmove-down)
-                 (add-hook 'org-shiftright-final-hook #'windmove-right)
-                 (add-hook 'org-mode-hook #'turn-on-auto-fill)
-                 (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
+  :config (progn ;; (use-package org-plus-contrib
+            ;;   :ensure t)
+            (setq org-completion-use-ido t
+                  org-outline-path-complete-in-steps nil
+                  org-startup-indented nil
+                  org-hide-leading-stars t
+                  org-agenda-files (list "~/Dropbox/.org/yummly.org"
+                                         "~/Dropbox/.org/home.org")
+                  org-directory "~/Dropbox/.org/"
+                  org-src-fontify-natively t
+                  org-display-inline-images t)
+            ;; if all children of a TODO are done, then change status of TODO to DONE
+            (defun org-summary-todo (n-done n-not-done)
+              "Switch entry to DONE when all subentries are done, to TODO otherwise."
+              (let (org-log-done org-log-states)   ; turn off logging
+                (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+            (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+            ;; remap ace-jump-word-mode (org-mode automatically disables)
+            (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
+            (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
+            (define-key org-mode-map (kbd "M-h") #'help-command)
+            ;; enable flyspell-mode on load of org buffer
+            (add-hook 'org-mode-hook #'flyspell-mode)
+            (use-package htmlize
+              :ensure t)
+            ;; windmove compatibility
+            (add-hook 'org-shiftup-final-hook #'windmove-up)
+            (add-hook 'org-shiftleft-final-hook #'windmove-left)
+            (add-hook 'org-shiftdown-final-hook #'windmove-down)
+            (add-hook 'org-shiftright-final-hook #'windmove-right)
+            (add-hook 'org-mode-hook #'turn-on-auto-fill)
+            (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
 
 (use-package clojure-mode
   :ensure t
@@ -446,8 +436,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
                            (define-key tern-mode-keymap (kbd "C-c C-d") #'tern-get-docs)
                            (define-key tern-mode-keymap (kbd "M-<return>") #'tern-get-docs))))
 
-;; Autocomplete end tag when finished writing opening tag
-(setq web-mode-auto-close-style 2)
 
 (defun format-buffer ()
   "format buffer"
@@ -458,24 +446,27 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (global-set-key (kbd "C-S-f") #'format-buffer)
 
-;; Java stuff
-(add-hook #'java-mode-hook #'subword-mode)
-(use-package dtrt-indent
-  :ensure t
-  :init (add-hook #'java-mode-hook #'dtrt-indent-mode-hook))
-(use-package eclim
-  :ensure emacs-eclim
-  :init (add-hook #'java-mode-hook #'eclim-mode)
-  :config (progn (use-package company-emacs-eclim
-                   :init (progn (require 'cl)
-                                (company-emacs-eclim-setup)))
-                 (when (eq system-type 'darwin)
-                   (custom-set-variables
-                    '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
-                    '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
-                 (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
-                 (bind-key "M-," #'pop-global-mark eclim-mode-map)
-                 (bind-key "M-<return>" #'eclim-java-show-documentation-for-current-element eclim-mode-map)))
+(use-package cc-mode
+  :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
+                 (setq-default tab-width 4 indent-tabs-mode t)
+                 (add-hook 'java-mode-hook 'subword-mode)
+                 (use-package dtrt-indent
+                   :ensure t
+                   :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
+
+                 (use-package eclim
+                   :ensure emacs-eclim
+                   :init (add-hook 'java-mode-hook 'eclim-mode)
+                   :config (progn (use-package company-emacs-eclim
+                                    :init (progn (require 'cl)
+                                                 (company-emacs-eclim-setup)))
+                                  (when (eq system-type 'darwin)
+                                    (custom-set-variables
+                                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
+                                     '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
+                                  (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
+                                  (bind-key "M-," #'pop-global-mark eclim-mode-map)
+                                  (bind-key "M-<return>" #'eclim-java-show-documentation-for-current-element eclim-mode-map)))))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -614,7 +605,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
                (add-to-list 'auto-mode-alist '("\\.erb$'" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.mustache$'" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.djhtml$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.html$'" . web-mode))))
+               (add-to-list 'auto-mode-alist '("\\.html$'" . web-mode)))
+  :config ;; Autocomplete end tag when finished writing opening tag
+  (setq web-mode-auto-close-style 2))
 
 (use-package ruby-mode
   :ensure t
