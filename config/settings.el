@@ -109,8 +109,7 @@
 
 (use-package flyspell-mode
   :commands flyspell-mode
-  :init (add-hook 'text-mode-hook 'flyspell-mode)
-  :idle (flyspell-mode))
+  :init (add-hook 'text-mode-hook 'flyspell-mode))
 
 ;;; magit
 (use-package magit
@@ -129,7 +128,6 @@
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
                   magit-save-some-buffers nil)))
-
 
 (use-package erc
   :commands erc
