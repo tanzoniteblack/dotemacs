@@ -184,6 +184,8 @@
 ;;; flycheck mode
 (use-package flycheck
   :ensure t
+  :commands global-flycheck-mode
+  :idle (global-flycheck-mode)
   :config (progn (use-package popup
                    :ensure t)
                  (use-package flycheck-pos-tip
