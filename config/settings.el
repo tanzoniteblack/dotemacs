@@ -1,5 +1,9 @@
+(use-package rainbow-delimiters
+  :ensure t)
+
 ;;; global-company-mode for completions
 (use-package company
+  :ensure t
   :commands global-company-mode
   :idle (global-company-mode)
   :config (progn (setq company-idle-delay .2
@@ -8,18 +12,36 @@
                  (bind-key "C-n" 'company-select-next company-active-map)
                  (bind-key "C-p" 'company-select-previous company-active-map)))
 
-;; more intelligent paren highlighting
-(use-package mic-paren
-  :init (paren-activate))
-
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist '(("." . "~/.saves")))
 
 (use-package undo-tree
-  :init (global-undo-tree-mode))
+  :ensure t
+  :init (global-undo-tree-mode)
+  :diminish "")
+
+(use-package ido
+  :ensure t
+  :init (ido-mode t)
+  :config (progn (use-package flx-ido
+                   :ensure t
+                   :init (flx-ido-mode 1))
+                 (setq ido-enable-prefix nil
+                       ido-create-new-buffer 'always
+                       ido-max-prospects 10
+                       ido-default-file-method 'selected-window
+                       ido-everywhere 1
+                       ;; if exact match not found, look for other files containing these characters
+                       ido-enable-flex-matching t
+                       ;; don't leave the current directory if we don't find the file we typed
+                       ido-auto-merge-work-directories-length -1
+                       ;; ido file type ordering preferences
+                       ido-file-extensions-order '(".org" ".clj"))
+                 (icomplete-mode 1)))
 
 ;;; autocompile emacs-lisp files
 (use-package auto-compile
+  :ensure t
   :init (progn (auto-compile-on-load-mode 1)
                (auto-compile-on-save-mode 1)))
 
@@ -95,6 +117,7 @@
 
 ;;; smex
 (use-package smex
+  :ensure t
   :init (smex-initialize)
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)))
@@ -113,6 +136,7 @@
 
 ;;; magit
 (use-package magit
+  :ensure t
   :bind (("C-x g" . magit-status))
   :config (progn (add-hook 'magit-log-edit-mode-hook
                            (lambda ()
@@ -127,7 +151,12 @@
                   ;; highlight word/letter changes in hunk diffs
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
-                  magit-save-some-buffers nil)))
+                  magit-save-some-buffers nil)
+                 (diminish 'magit-auto-revert-mode "")
+                 (use-package gitconfig-mode
+                   :ensure t)
+                 (use-package gitignore-mode
+                   :ensure t)))
 
 (use-package erc
   :commands erc
@@ -140,13 +169,16 @@
                             (setq indent-tabs-mode nil)))
 
 (use-package go-mode
+  :ensure t
   :commands go-mode
   :init (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
   :config (progn (use-package company-go
+                   :ensure t
                    :if (executable-find "gocode")
                    :commands company-go
                    :init (add-to-list #'company-backends #'company-go))
                  (use-package go-eldoc
+                   :ensure t
                    :if (executable-find "gocode")
                    :commands go-eldoc-setup
                    :init (add-to-list #'go-mode-hook #'go-eldoc-setup))
@@ -157,7 +189,12 @@
 
 ;;; flycheck mode
 (use-package flycheck
-  :config (progn (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+  :ensure t
+  :config (progn (use-package popup
+                   :ensure t)
+                 (use-package flycheck-pos-tip
+                   :ensure t)
+                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
                  (flycheck-define-checker postgresql
                    "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
@@ -172,9 +209,11 @@
                  (global-flycheck-mode)))
 
 (use-package ace-jump-mode
+  :ensure t
   :bind ("C-c SPC" . ace-jump-mode))
 
 (use-package expand-region
+  :ensure t
   :bind ("C-=" . er/expand-region))
 
 ;;; enable (up/down)case-region
@@ -184,16 +223,11 @@
 ;;; set-up M-` as alternative to C-x 5 0 for switching frames
 (global-set-key "\M-`" #'other-frame)
 
-;;; ido settings
-(setq ;; if exact match not found, look for other files containing these characters
- ido-enable-flex-matching t
- ;; don't leave the current directory if we don't find the file we typed
- ido-auto-merge-work-directories-length -1
- ;; ido file type ordering preferences
- ido-file-extensions-order '(".org" ".clj"))
+
 
 ;;; highlight-symbol
 (use-package highlight-symbol
+  :ensure t
   :diminish ""
   :idle (highlight-symbol-mode)
   :bind (("C-<f3>" . highlight-symbol-at-point)
@@ -208,9 +242,12 @@
 (setq-default tab-width 4 indent-tabs-mode t)
 
 (use-package json-mode
+  :ensure t
   :defer t
   :init (progn (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-               (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode)))
+               (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode))
+               (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
+               (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode)))
   :config (progn (add-hook 'json-mode-hook #'flycheck-mode)
                  (bind-key "C-S-f" 'json-mode-beautify json-mode-map)))
 
@@ -233,14 +270,16 @@
 (delete-selection-mode 1)
 
 ;; start the emacs server
-(load "server")
-(unless (server-running-p)
-  (server-start))
+(use-package server
+  :commands (server-running-p server-start)
+  :idle (unless (server-running-p)
+          (server-start)))
 
 (cua-mode 0)
 
 ;;; browse kill ring
 (use-package browse-kill-ring
+  :ensure t
   :config (setq browse-kill-ring-highlight-current-entry t
                 browse-kill-ring-no-duplicates t
                 browse-kill-ring-display-duplicates nil
@@ -248,15 +287,16 @@
 
 ;;; ace-window
 (use-package ace-window
+  :ensure t
   :bind ("C-x o" . ace-window))
 
-;;; projectile-mode
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
-;;; add to the globally ignored files
-(dolist (file-name '("*~" "*.elc"))
-  (add-to-list 'projectile-globally-ignored-files file-name))
+(use-package projectile
+  :ensure t
+  :init (projectile-global-mode)
+  :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+                 ;; add to the globally ignored files
+                 (dolist (file-name '("*~" "*.elc"))
+                   (add-to-list 'projectile-globally-ignored-files file-name))))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
@@ -287,11 +327,15 @@
       (show-paren-mode -1))))
 
 (add-hook 'find-file-hook #'large-file-protector)
-(require 'vlf-setup)
+
+(use-package vlf
+  :ensure t
+  :init (require 'vlf-setup))
 
 ;; window-number-mode
-(require 'window-number)
-(window-number-meta-mode 1)
+(use-package window-number
+  :ensure t
+  :init (window-number-meta-mode 1))
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
@@ -320,12 +364,17 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (add-hook 'find-file-hook #'enable-minor-mode-based-on-extension)
 
-(add-hook 'prog-mode-hook #'rainbow-identifiers-mode)
+(use-package rainbow-identifiers
+  :ensure t
+  :init (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 (use-package org
+  :ensure t
   :commands org-mode
   :init (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  :config (progn (setq org-completion-use-ido t
+  :config (progn (use-package org-plus-contrib
+                   :ensure t)
+                 (setq org-completion-use-ido t
                        org-outline-path-complete-in-steps nil
                        org-startup-indented nil
                        org-hide-leading-stars t
@@ -346,7 +395,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (define-key org-mode-map (kbd "M-h") #'help-command)
                  ;; enable flyspell-mode on load of org buffer
                  (add-hook 'org-mode-hook #'flyspell-mode)
-                 (use-package htmlize)
+                 (use-package htmlize
+                   :ensure t)
                  ;; windmove compatibility
                  (add-hook 'org-shiftup-final-hook #'windmove-up)
                  (add-hook 'org-shiftleft-final-hook #'windmove-left)
@@ -356,15 +406,18 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
 
 (use-package clojure-mode
+  :ensure t
   :commands clojure-mode
   :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
   :config (progn (use-package cider
+                   :ensure t
                    :init (progn (add-hook 'clojure-mode-hook #'cider-turn-on-eldoc-mode)
                                 (add-hook 'cider-repl-mode-hook #'subword-mode))
                    :config (progn (setq cider-annotate-completion-candidates t)
                                   (define-key cider-repl-mode-map (kbd "M-RET") #'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") #'cider-doc)))
                  (use-package clj-refactor
+                   :ensure t
                    :init (progn (add-hook 'clojure-mode-hook (lambda ()
                                                                (clj-refactor-mode 1)
                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
@@ -377,11 +430,13 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
 
 (use-package js2-mode
+  :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :config (use-package tern
             :commands tern-mode
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
+                             :ensure t
                              :init (add-to-list 'company-backends #'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") #'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") #'tern-find-definition-by-name)
@@ -406,11 +461,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
 ;; Java stuff
 (add-hook #'java-mode-hook #'subword-mode)
 (use-package dtrt-indent
+  :ensure t
   :init (add-hook #'java-mode-hook #'dtrt-indent-mode-hook))
 (use-package eclim
+  :ensure emacs-eclim
   :init (add-hook #'java-mode-hook #'eclim-mode)
   :config (progn (use-package company-emacs-eclim
-                   :init (company-emacs-eclim-setup))
+                   :init (progn (require 'cl)
+                                (company-emacs-eclim-setup)))
                  (when (eq system-type 'darwin)
                    (custom-set-variables
                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
@@ -424,6 +482,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (help-at-pt-set-timer)
 
 (use-package elpy
+  :ensure t
   :init (elpy-enable)
   :config (progn (setq elpy-rpc-backend "jedi")
                  (define-key elpy-mode-map (kbd "M-.") #'elpy-goto-definition)
@@ -431,3 +490,134 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (define-key elpy-mode-map (kbd "M-<RET>") #'elpy-doc)
                  (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
                  (add-hook 'python-mode-hook #'highlight-symbol-mode)))
+
+(defun enable-lisp-hooks (mode-name)
+  "Enable lisp-y goodness for MODE-NAME."
+  (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
+    (add-hook mode-hook #'rainbow-delimiters-mode)
+    (add-hook mode-hook #'smartparens-strict-mode)))
+
+(use-package smartparens
+  :ensure t
+  :init (use-package smartparens-config)
+  :config (progn (smartparens-global-mode t)
+                 ;; highlights matching pairs
+                 (show-smartparens-global-mode t)
+                 ;; custom keybindings for smartparens mode
+                 (define-key smartparens-mode-map (kbd "C-<left>") #'sp-forward-barf-sexp)
+                 (define-key smartparens-mode-map (kbd "M-(") #'sp-forward-barf-sexp)
+                 (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)
+                 (define-key smartparens-mode-map (kbd "M-)") #'sp-forward-slurp-sexp)
+
+                 (define-key smartparens-strict-mode-map (kbd "M-d") #'kill-sexp)
+                 (define-key smartparens-strict-mode-map (kbd "M-D") #'sp-kill-sexp)
+                 (define-key smartparens-mode-map (kbd "s-S") #'sp-split-sexp)
+
+
+                 (sp-with-modes '(clojure-mode cider-repl-mode)
+                   (sp-local-pair "#{" "}")
+                   (sp-local-pair "`" nil :actions nil)
+                   (sp-local-pair "@(" ")")
+                   (sp-local-pair "#(" ")"))
+
+                 (sp-local-pair 'markdown-mode "`" nil :actions nil)
+                 (sp-local-pair 'gfm-mode "`" nil :actions nil)
+
+                 (sp-local-pair 'web-mode "{" "}" :actions nil)
+                 (-each sp--lisp-modes #'enable-lisp-hooks)))
+
+;;; elisp tag navigation
+;;; many functions borrowed from emacs-live
+(use-package elisp-slime-nav
+  :ensure t
+  :init (progn (add-to-list 'auto-mode-alist '("\\.el$" . emacs-lisp-mode))
+               (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
+  :diminish "")
+
+(use-package eldoc
+  :init (progn (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
+               (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
+               (add-hook 'ielm-mode-hook #'eldoc-mode))
+  :diminish "")
+
+(define-key lisp-mode-shared-map (kbd "RET") #'reindent-then-newline-and-indent)
+(define-key emacs-lisp-mode-map (kbd "C-c C-k") #'eval-buffer)
+
+(defun live-lisp-describe-thing-at-point ()
+  "Show the documentation of the Elisp function and variable near point.
+   This checks in turn:
+     -- for a function name where point is
+     -- for a variable name where point is
+     -- for a surrounding function call"
+  (interactive)
+  (let (sym)
+    ;; sigh, function-at-point is too clever.  we want only the first half.
+    (cond ((setq sym (ignore-errors
+                       (with-syntax-table emacs-lisp-mode-syntax-table
+                         (save-excursion
+                           (or (not (zerop (skip-syntax-backward "_w")))
+                               (eq (char-syntax (char-after (point))) ?w)
+                               (eq (char-syntax (char-after (point))) ?_)
+                               (forward-sexp -1))
+                           (skip-chars-forward "`'")
+                           (let ((obj (read (current-buffer))))
+                             (and (symbolp obj) (fboundp obj) obj))))))
+           (describe-function sym))
+          ((setq sym (variable-at-point)) (describe-variable sym)))))
+
+(use-package buffer-move
+  :ensure t
+  :bind (("C-c w p" . buf-move-up)
+         ("C-c w n" . buf-move-down)
+         ("C-c w b" . buf-move-left)
+         ("C-c w f" . buf-move-right)))
+
+;; Random other modes
+
+(use-package dockerfile-mode
+  :ensure t
+  :mode "Dockerfile\\'")
+
+(use-package scala-mode2
+  :ensure t
+  :mode ("\\.\\(scala\\|sbt\\)\\'" . scala-mode))
+
+(use-package d-mode
+  :ensure t
+  :mode "\\.d[i]?\\'")
+
+(use-package groovy-mode
+  :ensure t
+  :mode "\\.groovy$"
+  :init (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode)))
+
+(use-package vala-mode
+  :ensure t
+  :mode "\\.vala$")
+
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs$")
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :init (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode)))
+
+(use-package web-mode
+  :ensure t
+  :commands web-mode
+  :init (progn (add-to-list 'auto-mode-alist '("\\.phtml$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.tpl\\.php$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.[gj]sp$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.as[cp]x$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.erb$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.mustache$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.djhtml$'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.html$'" . web-mode))))
+
+(use-package ruby-mode
+  :ensure t
+  :commands ruby-mode
+  :init (progn (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
+               (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))))

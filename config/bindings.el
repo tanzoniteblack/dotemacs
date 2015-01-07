@@ -1,11 +1,5 @@
 ;; Default Emacs Live bindings
 
-;;window and buffer movement
-(global-set-key (kbd "C-c w p") #'buf-move-up)
-(global-set-key (kbd "C-c w n") #'buf-move-down)
-(global-set-key (kbd "C-c w b") #'buf-move-left)
-(global-set-key (kbd "C-c w f") #'buf-move-right)
-
 ;;browse kill ring (visual paste)
 (global-set-key (kbd "M-y") #'browse-kill-ring)
 

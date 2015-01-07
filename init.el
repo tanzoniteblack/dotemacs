@@ -1,13 +1,24 @@
-(let ((cask-file (or (locate-file "cask.el" load-path)
-                     "~/.cask/cask.el")))
-  (require 'cask cask-file))
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
-(cask-initialize)
+(package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (require 'use-package)
 
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
+
+(use-package diminish
+  :ensure t)
 
 (load-library "environment.el")
 
@@ -20,14 +31,10 @@
 (load-library "window-settings.el")
 (load-library "settings.el")
 (load-library "file-settings.el")
-(load-library "elisp-config.el")
 (when (eq system-type 'darwin)
   (load-library "osx-config.el"))
-(load-library "ido-conf.el")
-(load-library "smartparens-personal-config.el")
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
-(load-library "diminish-config.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

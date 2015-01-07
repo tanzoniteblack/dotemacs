@@ -1,4 +1,5 @@
 -savehist
 -/.cask-old
 -/tmp
--*archive-contents
+-/.cask
+-/elpa
