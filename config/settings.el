@@ -617,3 +617,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
                (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))))
 
 (setq line-move-visual t)
+
+(use-package git-link
+  :ensure t)
