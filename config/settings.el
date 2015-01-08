@@ -315,8 +315,7 @@
       (company-mode -1)
       (git-gutter-mode -1)
       (smartparens-mode -1)
-      (paren-deactivate)
-      (show-paren-mode -1))))
+	  (show-paren-mode -1))))
 
 (add-hook 'find-file-hook #'large-file-protector)
 
@@ -403,11 +402,11 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
   :config (progn (use-package cider
                    :ensure t
-                   :init (progn (add-hook 'clojure-mode-hook #'cider-turn-on-eldoc-mode)
+                   :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                 (add-hook 'cider-repl-mode-hook #'subword-mode))
                    :config (progn (setq cider-annotate-completion-candidates t)
-                                  (define-key cider-repl-mode-map (kbd "M-RET") #'cider-doc)
-                                  (define-key cider-mode-map (kbd "M-RET") #'cider-doc)))
+                                  (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+                                  (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
                    :ensure t
                    :init (progn (add-hook 'clojure-mode-hook (lambda ()
@@ -429,14 +428,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
                              :ensure t
-                             :init (add-to-list 'company-backends #'company-tern))
-                           (define-key tern-mode-keymap (kbd "M-.") #'tern-find-definition)
-                           (define-key tern-mode-keymap (kbd "C-M-.") #'tern-find-definition-by-name)
-                           (define-key tern-mode-keymap (kbd "M-,") #'tern-pop-find-definition)
-                           (define-key tern-mode-keymap (kbd "C-c C-r") #'tern-rename-variable)
-                           (define-key tern-mode-keymap (kbd "C-c C-c") #'tern-get-type)
-                           (define-key tern-mode-keymap (kbd "C-c C-d") #'tern-get-docs)
-                           (define-key tern-mode-keymap (kbd "M-<return>") #'tern-get-docs))))
+                             :init (add-to-list 'company-backends 'company-tern))
+                           (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
+                           (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
+                           (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
+                           (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
+                           (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
+                           (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
+                           (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs))))
 
 
 (defun format-buffer ()
@@ -616,3 +615,5 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :commands ruby-mode
   :init (progn (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
                (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))))
+
+(setq line-move-visual t)
