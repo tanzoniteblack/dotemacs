@@ -183,25 +183,26 @@
 ;;; flycheck mode
 (use-package flycheck
   :ensure t
-  :commands global-flycheck-mode
-  :idle (global-flycheck-mode)
-  :config (progn (use-package popup
-                   :ensure t)
-                 (use-package flycheck-pos-tip
-                   :ensure t)
-                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 (flycheck-define-checker postgresql
-                   "A SQL syntax checker using pgsanity. Linter is designed to work
+  :init (progn (use-package popup
+                 :ensure t)
+               (use-package flycheck-pos-tip
+                 :ensure t)
+               (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+               (use-package flycheck-clojure
+                 :ensure
+                 :init (flycheck-clojure-setup))
+               (flycheck-define-checker postgresql
+                 "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
   SQL as well.
 
   See URL `https://github.com/markdrago/pgsanity'."
-                   :command ("pgsanity" source)
-                   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-                   :modes sql-mode)
-                 (add-to-list 'flycheck-checkers 'postgresql)
-                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
-                 (global-flycheck-mode)))
+                 :command ("pgsanity" source)
+                 :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
+                 :modes sql-mode)
+               (add-to-list 'flycheck-checkers 'postgresql)
+               (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
+               (global-flycheck-mode)))
 
 (use-package ace-jump-mode
   :ensure t
@@ -314,7 +315,7 @@
       (company-mode -1)
       (git-gutter-mode -1)
       (smartparens-mode -1)
-	  (show-paren-mode -1))))
+      (show-paren-mode -1))))
 
 (add-hook 'find-file-hook 'large-file-protector)
 
