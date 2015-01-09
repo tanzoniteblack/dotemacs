@@ -48,21 +48,23 @@
 ;;; always reuse frames when calling display-buffer
 (setq-default display-buffer-reuse-frames t)
 
-(when window-system
-;;; git-gutter-fringe-mode
-  (require 'git-gutter-fringe)
-  (setq git-gutter-fr:side 'right-fringe)
-  (setq-default left-fringe-width 2)
-  (setq-default right-fringe-width 12)
-  (global-git-gutter-mode))
+(use-package git-gutter-fringe
+  :ensure t
+  :if window-system
+  :init (progn (setq git-gutter-fr:side 'right-fringe)
+               (setq-default left-fringe-width 2)
+               (setq-default right-fringe-width 12)
+               (global-git-gutter-mode)
+               (diminish 'git-gutter-mode "")))
 
-;;; color theme
-(require 'moe-theme)
-(moe-dark)
+(use-package powerline
+  :ensure t)
 
-;;; set moe-theme powerline color
-(powerline-moe-theme)
-(moe-theme-set-color 'purple)
+(use-package moe-theme
+  :ensure t
+  :init (moe-dark)
+  :config (progn (powerline-moe-theme)
+                 (moe-theme-set-color 'purple)))
 
 ;;; expression highlight
 (setq show-paren-style 'expression)

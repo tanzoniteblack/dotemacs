@@ -4,6 +4,9 @@
 (source "elpy" "http://jorgenschaefer.github.io/packages/")
 (source org)
 
+;;; efficient loading of config
+(depends-on "use-package")
+
 ;;; emacs appearance
 (depends-on "powerline")
 (depends-on "moe-theme")

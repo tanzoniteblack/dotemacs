@@ -1,11 +1,5 @@
 ;; Default Emacs Live bindings
 
-;;window and buffer movement
-(global-set-key (kbd "C-c w p") #'buf-move-up)
-(global-set-key (kbd "C-c w n") #'buf-move-down)
-(global-set-key (kbd "C-c w b") #'buf-move-left)
-(global-set-key (kbd "C-c w f") #'buf-move-right)
-
 ;;browse kill ring (visual paste)
 (global-set-key (kbd "M-y") #'browse-kill-ring)
 
@@ -17,7 +11,6 @@
 
 ;;redefine help shortcut
 (global-set-key (kbd "M-h") #'help-command)
-(define-key org-mode-map (kbd "M-h") #'help-command)
 
 ;;kill regions
 (global-set-key (kbd "C-x C-k") #'kill-region)
@@ -42,8 +35,6 @@
 
 ;; Show documentation/information with M-RET
 (define-key lisp-mode-shared-map (kbd "M-RET") #'live-lisp-describe-thing-at-point)
-(define-key cider-repl-mode-map (kbd "M-RET") #'cider-doc)
-(define-key cider-mode-map (kbd "M-RET") #'cider-doc)
 
 (global-set-key (kbd "C-x !") #'insert-date)
 

@@ -23,8 +23,8 @@
 (setq system-name (car (split-string system-name "\\.")))
 
 ;; Ensure the exec-path honours the shell PATH
-(require 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+(use-package exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
 
 ;; Ignore .DS_Store files with ido mode
 (add-to-list 'ido-ignore-files "\\.DS_Store")

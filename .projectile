@@ -1,3 +1,5 @@
 -savehist
 -/.cask-old
 -/tmp
+-/.cask
+-/elpa
