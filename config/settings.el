@@ -97,7 +97,7 @@
   (when (not (member major-mode live-ignore-whitespace-modes))
     (let ((whitespace-style '(trailing empty)))
       (whitespace-cleanup))))
-(add-hook 'before-save-hook #'live-cleanup-whitespace)
+(add-hook 'before-save-hook 'live-cleanup-whitespace)
 
 ;; savehist keeps track of some history
 (setq savehist-additional-variables
@@ -117,7 +117,7 @@
          ("M-X" . smex-major-mode-commands)))
 
 ;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") #'execute-extended-command)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;; spell checking
 (use-package ispell
@@ -153,7 +153,6 @@
                    :ensure t)))
 
 (use-package erc
-  :commands erc
   :config (progn (setq erc-nick "tanzoniteblack")
                  (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
@@ -170,12 +169,12 @@
                    :ensure t
                    :if (executable-find "gocode")
                    :commands company-go
-                   :init (add-to-list #'company-backends #'company-go))
+                   :init (add-to-list 'company-backends 'company-go))
                  (use-package go-eldoc
                    :ensure t
                    :if (executable-find "gocode")
                    :commands go-eldoc-setup
-                   :init (add-to-list #'go-mode-hook #'go-eldoc-setup))
+                   :init (add-to-list 'go-mode-hook 'go-eldoc-setup))
                  (bind-key "M-." 'godef-jump go-mode-map)
                  (bind-key "M-," 'pop-tag-mark go-mode-map)
                  (bind-key "C-S-F" 'gofmt go-mode-map)
@@ -201,7 +200,7 @@
                    :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
                    :modes sql-mode)
                  (add-to-list 'flycheck-checkers 'postgresql)
-                 (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
 
 (use-package ace-jump-mode
@@ -217,7 +216,7 @@
 (put 'downcase-region 'disabled nil)
 
 ;;; set-up M-` as alternative to C-x 5 0 for switching frames
-(global-set-key "\M-`" #'other-frame)
+(global-set-key "\M-`" 'other-frame)
 
 
 
@@ -231,7 +230,7 @@
          ("S-<f3>" . highlight-symbol-prev)
          ("M-<f3>" . highlight-symbol-prev))
   :config (progn (setq highlight-symbol-idle-delay 0.5)
-                 (add-hook 'prog-mode-hook #'highlight-symbol-mode)))
+                 (add-hook 'prog-mode-hook 'highlight-symbol-mode)))
 
 (use-package json-mode
   :ensure t
@@ -240,7 +239,7 @@
                (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode))
                (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
                (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode)))
-  :config (progn (add-hook 'json-mode-hook #'flycheck-mode)
+  :config (progn (add-hook 'json-mode-hook 'flycheck-mode)
                  (bind-key "C-S-f" 'json-mode-beautify json-mode-map)))
 
 (use-package nxml-mode
@@ -250,13 +249,13 @@
   :config (progn (bind-key "C-S-f" 'beautify-xml nxml-mode-map)))
 
 ;;; quit settings
-(global-set-key (kbd "C-x C-c") #'ask-before-closing)
+(global-set-key (kbd "C-x C-c") 'ask-before-closing)
 
 ;;; show human readable file sizes in dired
 (setq dired-listing-switches "-alh")
 
 ;; turn on rainbow delimiters for all programming modes (in theory, in practice we need to specify a few more)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; overwrite selection rather than insert before selection
 (delete-selection-mode 1)
@@ -298,7 +297,7 @@
   (defun my-colorize-compilation-buffer ()
     (when (eq major-mode 'compilation-mode)
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
-  (add-hook 'compilation-filter-hook #'my-colorize-compilation-buffer))
+  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
@@ -317,7 +316,7 @@
       (smartparens-mode -1)
 	  (show-paren-mode -1))))
 
-(add-hook 'find-file-hook #'large-file-protector)
+(add-hook 'find-file-hook 'large-file-protector)
 
 (use-package vlf
   :ensure t
@@ -353,11 +352,11 @@ the checking happens for all pairs in auto-minor-mode-alist"
             (funcall (cdar alist) 1))
         (setq alist (cdr alist))))))
 
-(add-hook 'find-file-hook #'enable-minor-mode-based-on-extension)
+(add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
 (use-package rainbow-identifiers
   :ensure t
-  :init (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+  :init (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
 
 (use-package org
   :ensure t
@@ -379,22 +378,22 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
                    (let (org-log-done org-log-states)   ; turn off logging
                      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-                 (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+                 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
                  ;; remap ace-jump-word-mode (org-mode automatically disables)
-                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") #'ace-jump-word-mode)))
+                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'ace-jump-word-mode)))
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
-                 (define-key org-mode-map (kbd "M-h") #'help-command)
+                 (define-key org-mode-map (kbd "M-h") 'help-command)
                  ;; enable flyspell-mode on load of org buffer
-                 (add-hook 'org-mode-hook #'flyspell-mode)
+                 (add-hook 'org-mode-hook 'flyspell-mode)
                  (use-package htmlize
                    :ensure t)
                  ;; windmove compatibility
-                 (add-hook 'org-shiftup-final-hook #'windmove-up)
-                 (add-hook 'org-shiftleft-final-hook #'windmove-left)
-                 (add-hook 'org-shiftdown-final-hook #'windmove-down)
-                 (add-hook 'org-shiftright-final-hook #'windmove-right)
-                 (add-hook 'org-mode-hook #'turn-on-auto-fill)
-                 (add-hook 'org-mode-hook #'rainbow-identifiers-mode)))
+                 (add-hook 'org-shiftup-final-hook 'windmove-up)
+                 (add-hook 'org-shiftleft-final-hook 'windmove-left)
+                 (add-hook 'org-shiftdown-final-hook 'windmove-down)
+                 (add-hook 'org-shiftright-final-hook 'windmove-right)
+                 (add-hook 'org-mode-hook 'turn-on-auto-fill)
+                 (add-hook 'org-mode-hook 'rainbow-identifiers-mode)))
 
 (use-package clojure-mode
   :ensure t
@@ -403,7 +402,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :config (progn (use-package cider
                    :ensure t
                    :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
-                                (add-hook 'cider-repl-mode-hook #'subword-mode))
+                                (add-hook 'cider-repl-mode-hook 'subword-mode))
                    :config (progn (setq cider-annotate-completion-candidates t)
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
@@ -412,10 +411,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :init (progn (add-hook 'clojure-mode-hook (lambda ()
                                                                (clj-refactor-mode 1)
                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
-                                (define-key clojure-mode-map (kbd "C-:") #'clojure-toggle-keyword-string)
-                                (define-key clojure-mode-map (kbd "C->") #'cljr-cycle-coll)))
+                                (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+                                (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
                  (add-hook 'clojure-mode-hook (lambda () (setq buffer-save-without-query t)))
-                 (add-hook 'clojure-mode-hook #'subword-mode)
+                 (add-hook 'clojure-mode-hook 'subword-mode)
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
@@ -445,7 +444,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   (indent-region (point-min) (point-max) nil)
   (untabify (point-min) (point-max)))
 
-(global-set-key (kbd "C-S-f") #'format-buffer)
+(global-set-key (kbd "C-S-f") 'format-buffer)
 
 (use-package cc-mode
   :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
@@ -466,8 +465,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                      '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
                                      '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
                                   (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
-                                  (bind-key "M-," #'pop-global-mark eclim-mode-map)
-                                  (bind-key "M-<return>" #'eclim-java-show-documentation-for-current-element eclim-mode-map)))))
+                                  (bind-key "M-," 'pop-global-mark eclim-mode-map)
+                                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)))))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -477,17 +476,17 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (elpy-enable)
   :config (progn (setq elpy-rpc-backend "jedi")
-                 (define-key elpy-mode-map (kbd "M-.") #'elpy-goto-definition)
-                 (define-key elpy-mode-map (kbd "M-,") #'pop-tag-mark)
-                 (define-key elpy-mode-map (kbd "M-<RET>") #'elpy-doc)
-                 (add-hook 'python-mode-hook #'rainbow-delimiters-mode)
-                 (add-hook 'python-mode-hook #'highlight-symbol-mode)))
+                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
   (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
-    (add-hook mode-hook #'rainbow-delimiters-mode)
-    (add-hook mode-hook #'smartparens-strict-mode)))
+    (add-hook mode-hook 'rainbow-delimiters-mode)
+    (add-hook mode-hook 'smartparens-strict-mode)))
 
 (use-package smartparens
   :ensure t
@@ -496,14 +495,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  ;; highlights matching pairs
                  (show-smartparens-global-mode t)
                  ;; custom keybindings for smartparens mode
-                 (define-key smartparens-mode-map (kbd "C-<left>") #'sp-forward-barf-sexp)
-                 (define-key smartparens-mode-map (kbd "M-(") #'sp-forward-barf-sexp)
-                 (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)
-                 (define-key smartparens-mode-map (kbd "M-)") #'sp-forward-slurp-sexp)
+                 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+                 (define-key smartparens-mode-map (kbd "M-(") 'sp-forward-barf-sexp)
+                 (define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+                 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
 
-                 (define-key smartparens-strict-mode-map (kbd "M-d") #'kill-sexp)
-                 (define-key smartparens-strict-mode-map (kbd "M-D") #'sp-kill-sexp)
-                 (define-key smartparens-mode-map (kbd "s-S") #'sp-split-sexp)
+                 (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
+                 (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
+                 (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
 
 
                  (sp-with-modes '(clojure-mode cider-repl-mode)
@@ -516,24 +515,24 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (sp-local-pair 'gfm-mode "`" nil :actions nil)
 
                  (sp-local-pair 'web-mode "{" "}" :actions nil)
-                 (-each sp--lisp-modes #'enable-lisp-hooks)))
+                 (-each sp--lisp-modes 'enable-lisp-hooks)))
 
 ;;; elisp tag navigation
 ;;; many functions borrowed from emacs-live
 (use-package elisp-slime-nav
   :ensure t
   :init (progn (add-to-list 'auto-mode-alist '("\\.el$" . emacs-lisp-mode))
-               (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
+               (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
   :diminish "")
 
 (use-package eldoc
-  :init (progn (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
-               (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
-               (add-hook 'ielm-mode-hook #'eldoc-mode))
+  :init (progn (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+               (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
+               (add-hook 'ielm-mode-hook 'eldoc-mode))
   :diminish "")
 
-(define-key lisp-mode-shared-map (kbd "RET") #'reindent-then-newline-and-indent)
-(define-key emacs-lisp-mode-map (kbd "C-c C-k") #'eval-buffer)
+(define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key emacs-lisp-mode-map (kbd "C-c C-k") 'eval-buffer)
 
 (defun live-lisp-describe-thing-at-point ()
   "Show the documentation of the Elisp function and variable near point.
