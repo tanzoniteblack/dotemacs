@@ -619,3 +619,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package git-link
   :ensure t)
+
+(use-package jape-mode
+  :ensure t
+  :mode "\\.jape$")
