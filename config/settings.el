@@ -6,6 +6,7 @@
   :ensure t
   :commands global-company-mode
   :idle (global-company-mode)
+  :diminish "comp"
   :config (progn (setq company-idle-delay .2
                        company-tooltip-flip-when-above t)
                  (bind-key "C-<tab>" 'company-manual-begin)
@@ -183,26 +184,28 @@
 ;;; flycheck mode
 (use-package flycheck
   :ensure t
-  :init (progn (use-package popup
-                 :ensure t)
-               (use-package flycheck-pos-tip
-                 :ensure t)
-               (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-               (use-package flycheck-clojure
-                 :ensure
-                 :init (flycheck-clojure-setup))
-               (flycheck-define-checker postgresql
-                 "A SQL syntax checker using pgsanity. Linter is designed to work
+  :commands global-flycheck-mode
+  :idle (global-flycheck-mode)
+  :config (progn (use-package popup
+                   :ensure t)
+                 (use-package flycheck-pos-tip
+                   :ensure t)
+                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+                 (use-package flycheck-clojure
+                   :ensure
+                   :init (flycheck-clojure-setup))
+                 (flycheck-define-checker postgresql
+                   "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
   SQL as well.
 
   See URL `https://github.com/markdrago/pgsanity'."
-                 :command ("pgsanity" source)
-                 :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-                 :modes sql-mode)
-               (add-to-list 'flycheck-checkers 'postgresql)
-               (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
-               (global-flycheck-mode)))
+                   :command ("pgsanity" source)
+                   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
+                   :modes sql-mode)
+                 (add-to-list 'flycheck-checkers 'postgresql)
+                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
+                 (global-flycheck-mode)))
 
 (use-package ace-jump-mode
   :ensure t
@@ -404,7 +407,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t
                    :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                 (add-hook 'cider-repl-mode-hook 'subword-mode))
-                   :config (progn (setq cider-annotate-completion-candidates t)
+                   :config (progn (setq cider-annotate-completion-candidates t
+                                        cider-mode-line " cider")
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
@@ -427,8 +431,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :commands tern-mode
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
-                             :ensure t
-                             :init (add-to-list 'company-backends 'company-tern))
+							 :ensure t
+							 :init (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
                            (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
@@ -459,8 +463,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure emacs-eclim
                    :init (add-hook 'java-mode-hook 'eclim-mode)
                    :config (progn (use-package company-emacs-eclim
-                                    :init (progn (require 'cl)
-                                                 (company-emacs-eclim-setup)))
+									:init (progn (require 'cl)
+												 (company-emacs-eclim-setup)))
                                   (when (eq system-type 'darwin)
                                     (custom-set-variables
                                      '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
@@ -473,15 +477,15 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
-(use-package elpy
-  :ensure t
-  :init (elpy-enable)
-  :config (progn (setq elpy-rpc-backend "jedi")
-                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+(with-demoted-errors (use-package elpy
+                       :ensure t
+                       :init (elpy-enable)
+                       :config (progn (setq elpy-rpc-backend "jedi")
+                                      (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+                                      (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+                                      (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+                                      (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+                                      (add-hook 'python-mode-hook 'highlight-symbol-mode))))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
