@@ -431,8 +431,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :commands tern-mode
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
-							 :ensure t
-							 :init (add-to-list 'company-backends 'company-tern))
+                             :ensure t
+                             :init (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
                            (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
@@ -463,8 +463,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure emacs-eclim
                    :init (add-hook 'java-mode-hook 'eclim-mode)
                    :config (progn (use-package company-emacs-eclim
-									:init (progn (require 'cl)
-												 (company-emacs-eclim-setup)))
+                                    :init (progn (require 'cl)
+                                                 (company-emacs-eclim-setup)))
                                   (when (eq system-type 'darwin)
                                     (custom-set-variables
                                      '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
