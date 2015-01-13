@@ -314,7 +314,7 @@
       (company-mode -1)
       (git-gutter-mode -1)
       (smartparens-mode -1)
-	  (show-paren-mode -1))))
+      (show-paren-mode -1))))
 
 (add-hook 'find-file-hook 'large-file-protector)
 
@@ -472,15 +472,19 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
-(use-package elpy
-  :ensure t
-  :init (elpy-enable)
-  :config (progn (setq elpy-rpc-backend "jedi")
-                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+(with-demoted-errors
+  (use-package elpy
+	:ensure t
+	:init (elpy-enable)
+	:config (progn (setq elpy-rpc-backend "jedi")
+				   (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+				   (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+				   (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+				   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+				   (add-hook 'python-mode-hook 'highlight-symbol-mode))))
+
+(use-package visual-regexp
+  :ensure t)
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
