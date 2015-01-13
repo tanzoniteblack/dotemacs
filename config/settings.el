@@ -192,7 +192,7 @@
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
                  (use-package flycheck-clojure
-                   :ensure
+                   :ensure t
                    :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
                    "A SQL syntax checker using pgsanity. Linter is designed to work
