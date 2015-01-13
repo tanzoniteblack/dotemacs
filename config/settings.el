@@ -6,6 +6,7 @@
   :ensure t
   :commands global-company-mode
   :idle (global-company-mode)
+  :diminish "comp"
   :config (progn (setq company-idle-delay .2
                        company-tooltip-flip-when-above t)
                  (bind-key "C-<tab>" 'company-manual-begin)
@@ -190,6 +191,9 @@
                  (use-package flycheck-pos-tip
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+                 (use-package flycheck-clojure
+                   :ensure
+                   :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
                    "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
@@ -403,7 +407,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t
                    :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                 (add-hook 'cider-repl-mode-hook 'subword-mode))
-                   :config (progn (setq cider-annotate-completion-candidates t)
+                   :config (progn (setq cider-annotate-completion-candidates t
+                                        cider-mode-line " cider")
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
