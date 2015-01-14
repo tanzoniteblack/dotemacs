@@ -79,12 +79,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [ -f "~/.environment" ]
+if [ -f ~/.environment ]
 then
 	source ~/.environment
 fi
 
-if [ -f "~/.zshrc-osx" ]
+if [ -f ~/.zshrc-osx ]
 then
 	source ~/.zshrc-osx
 fi
