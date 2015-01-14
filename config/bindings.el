@@ -5,6 +5,7 @@
 
 ;;use delete-horizontal-space to completely nuke all whitespace
 (global-set-key (kbd "M-SPC ") #'live-delete-whitespace-except-one)
+(global-set-key (kbd "M-\\") #'delete-adjacent-whitespace)
 
 ;;make ^h delete rather than help
 (global-set-key (kbd "C-h") #'delete-backward-char)
@@ -48,7 +49,5 @@
 
 (global-set-key (kbd "C-j") #'reindent-then-newline-and-indent)
 (global-set-key (kbd "<RET>") #'electric-indent-just-newline)
-
-(global-set-key (kbd "M-\\") #'delete-adjacent-whitespace)
 
 (global-set-key (kbd "M-,") #'pop-tag-mark)
