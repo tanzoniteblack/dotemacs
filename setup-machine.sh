@@ -12,5 +12,5 @@ mv ~/.oh-my-zsh ~/.oh-my-zsh.bak
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh/
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins
 cp ~/.emacs.d/.zshrc ~/.zshrc
-sudo apt-get install -y zsh
+sudo apt-get install -y zsh aspell htop nethogs
 sudo chsh $USER -s /bin/zsh
