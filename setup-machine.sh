@@ -6,7 +6,7 @@ mv -f ~/.emacs.d ~/.emacs.d.bak
 git clone https://github.com/tanzoniteblack/dotemacs.git ~/.emacs.d
 mkdir -p ~/.lein/
 sudo chown -R $USER ~/.lein/
-cp ~/.emacs.d/profiles.clj > ~/.lein/profiles.clj
+cp ~/.emacs.d/profiles.clj ~/.lein/profiles.clj
 rm -rf ~/.oh-my-zsh.bak
 mv ~/.oh-my-zsh ~/.oh-my-zsh.bak
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh/
