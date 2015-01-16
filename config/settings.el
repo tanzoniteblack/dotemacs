@@ -364,8 +364,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package org
   :ensure t
-  :commands org-mode
-  :init (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   :config (progn (use-package org-src
                    :ensure org-plus-contrib)
                  (setq org-completion-use-ido t
@@ -376,7 +374,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                               "~/Dropbox/.org/home.org")
                        org-directory "~/Dropbox/.org/"
                        org-src-fontify-natively t
-                       org-display-inline-images t)
+                       org-display-inline-images t
+					   org-deadline-warning-days 3)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -396,8 +395,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-shiftleft-final-hook 'windmove-left)
                  (add-hook 'org-shiftdown-final-hook 'windmove-down)
                  (add-hook 'org-shiftright-final-hook 'windmove-right)
-                 (add-hook 'org-mode-hook 'turn-on-auto-fill)
-                 (add-hook 'org-mode-hook 'rainbow-identifiers-mode)))
+                 (add-hook 'org-mode-hook 'turn-on-auto-fill)))
 
 (use-package clojure-mode
   :ensure t
