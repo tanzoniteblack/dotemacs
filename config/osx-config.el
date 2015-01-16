@@ -22,6 +22,7 @@
 
 ;; Ensure the exec-path honours the shell PATH
 (use-package exec-path-from-shell
+  :ensure t
   :init (exec-path-from-shell-initialize))
 
 ;; Ignore .DS_Store files with ido mode
