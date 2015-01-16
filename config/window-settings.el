@@ -7,6 +7,10 @@
 ;; replace title with buffername
 (setq frame-title-format "%b")
 
+;; Force splitting vertically to only happen if new frames will be atleast 80
+;; lines tall
+(setq split-height-threshold 160)
+
 (defvar default-font "Ubuntu Mono")
 (defvar default-font-height 120)
 ;;; fraktur font for when we're feeling odd:
