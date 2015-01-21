@@ -375,7 +375,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-directory "~/Dropbox/.org/"
                        org-src-fontify-natively t
                        org-display-inline-images t
-                       org-deadline-warning-days 3)
+                       org-deadline-warning-days 3
+                       org-log-done 'time)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -386,6 +387,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'ace-jump-word-mode)))
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
+                 (bind-key "C-c a" 'org-agenda-list)
                  ;; enable flyspell-mode on load of org buffer
                  (add-hook 'org-mode-hook 'flyspell-mode)
                  (use-package htmlize
