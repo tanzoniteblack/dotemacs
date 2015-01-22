@@ -1,3 +1,6 @@
+(use-package dash
+  :ensure t)
+
 (use-package rainbow-delimiters
   :ensure t)
 
@@ -191,9 +194,9 @@
                  (use-package flycheck-pos-tip
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 (use-package flycheck-clojure
-                   :ensure t
-                   :init (flycheck-clojure-setup))
+                 ;; (use-package flycheck-clojure
+                 ;;   :ensure t
+                 ;;   :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
                    "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
@@ -390,8 +393,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (bind-key "C-c a" 'org-agenda-list)
                  ;; enable flyspell-mode on load of org buffer
                  (add-hook 'org-mode-hook 'flyspell-mode)
-                 (use-package htmlize
-                   :ensure t)
+                 ;; (use-package htmlize
+                 ;;   :ensure t)
                  ;; windmove compatibility
                  (add-hook 'org-shiftup-final-hook 'windmove-up)
                  (add-hook 'org-shiftleft-final-hook 'windmove-left)
@@ -576,29 +579,23 @@ the checking happens for all pairs in auto-minor-mode-alist"
 ;; Random other modes
 
 (use-package dockerfile-mode
-  :ensure t
-  :mode "Dockerfile\\'")
+  :ensure t)
 
 (use-package scala-mode2
-  :ensure t
-  :mode ("\\.\\(scala\\|sbt\\)\\'" . scala-mode))
+  :ensure t)
 
 (use-package d-mode
-  :ensure t
-  :mode "\\.d[i]?\\'")
+  :ensure t)
 
 (use-package groovy-mode
   :ensure t
-  :mode "\\.groovy$"
   :init (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode)))
 
 (use-package vala-mode
-  :ensure t
-  :mode "\\.vala$")
+  :ensure t)
 
 (use-package rust-mode
-  :ensure t
-  :mode "\\.rs$")
+  :ensure t)
 
 (use-package markdown-mode
   :ensure t
@@ -631,5 +628,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t)
 
 (use-package jape-mode
+  :ensure t)
+
+(use-package auto-package-update
   :ensure t
-  :mode "\\.jape$")
+  :commands auto-package-update-maybe
+  :idle (progn (setq auto-package-update-interval 3)
+               (auto-package-update-maybe)))
