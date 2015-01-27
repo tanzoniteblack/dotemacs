@@ -633,4 +633,4 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (use-package auto-package-update
   :ensure t
   :init (progn (setq auto-package-update-interval 3)
-               (auto-package-update-maybe)))
+               (with-demoted-errors (auto-package-update-maybe))))
