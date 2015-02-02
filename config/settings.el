@@ -591,8 +591,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode)))
 
-(use-package vala-mode
-  :ensure t)
+;; (use-package vala-mode
+;;   :ensure t)
 
 (use-package rust-mode
   :ensure t)
