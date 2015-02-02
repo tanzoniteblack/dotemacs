@@ -194,9 +194,9 @@
                  (use-package flycheck-pos-tip
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 ;; (use-package flycheck-clojure
-                 ;;   :ensure t
-                 ;;   :init (flycheck-clojure-setup))
+                 (use-package flycheck-clojure
+                   :ensure t
+                   :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
                    "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
@@ -632,6 +632,5 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package auto-package-update
   :ensure t
-  :commands auto-package-update-maybe
-  :idle (progn (setq auto-package-update-interval 3)
-               (auto-package-update-maybe)))
+  :init (progn (setq auto-package-update-interval 3)
+               (with-demoted-errors (auto-package-update-maybe))))
