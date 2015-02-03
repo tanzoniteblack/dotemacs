@@ -361,10 +361,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
-(use-package rainbow-identifiers
-  :ensure t
-  :init (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
-
 (use-package org
   :ensure t
   :config (progn (use-package org-src
