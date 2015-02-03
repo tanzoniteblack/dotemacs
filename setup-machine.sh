@@ -10,7 +10,7 @@ cp ~/.emacs.d/profiles.clj ~/.lein/profiles.clj
 rm -rf ~/.oh-my-zsh.bak
 mv ~/.oh-my-zsh ~/.oh-my-zsh.bak
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh/
-git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins
+git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/
 cp ~/.emacs.d/.zshrc ~/.zshrc
 sudo apt-get install -y zsh aspell htop nethogs
 sudo chsh $USER -s /bin/zsh
