@@ -8,7 +8,14 @@
   :ensure t)
 
 (use-package hydra
-  :ensure t)
+  :ensure t
+  :config (global-set-key (kbd "<f2>")
+                          (defhydra hydra-zoom (:color blue)
+                            "zoom"
+							("t" font-size-thunderbolt "thunderbolt")
+							("l" font-size-mac-laptop "laptop")
+                            ("+" text-scale-increase "in")
+                            ("-" text-scale-decrease "out"))))
 
 ;;; global-company-mode for completions
 (use-package company
@@ -577,7 +584,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (global-set-key (kbd "C-c w")
                         (defhydra hydra-buffer-move (:color blue)
-                            "buffer-move"
+                          "buffer-move"
                           ("p" buf-move-up "up")
                           ("n" buf-move-down "down")
                           ("b" buf-move-left "left")
