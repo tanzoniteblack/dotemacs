@@ -403,9 +403,11 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package clojure-mode
   :ensure t
-  :commands clojure-mode
-  :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
-  :config (progn (use-package cider
+  ;; :commands clojure-mode
+  ;; :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
+  :config (progn (use-package clojure-mode-extra-font-locking
+                   :ensure t)
+                 (use-package cider
                    :ensure t
                    :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                 (add-hook 'cider-repl-mode-hook 'subword-mode))
