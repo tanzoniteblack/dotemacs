@@ -7,6 +7,9 @@
 (use-package rainbow-delimiters
   :ensure t)
 
+(use-package hydra
+  :ensure t)
+
 ;;; global-company-mode for completions
 (use-package company
   :ensure t
@@ -572,10 +575,13 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package buffer-move
   :ensure t
-  :bind (("C-c w p" . buf-move-up)
-         ("C-c w n" . buf-move-down)
-         ("C-c w b" . buf-move-left)
-         ("C-c w f" . buf-move-right)))
+  :init (global-set-key (kbd "C-c w")
+                        (defhydra hydra-buffer-move (:color blue)
+                            "buffer-move"
+                          ("p" buf-move-up "up")
+                          ("n" buf-move-down "down")
+                          ("b" buf-move-left "left")
+                          ("f" buf-move-right "right"))))
 
 ;; Random other modes
 
