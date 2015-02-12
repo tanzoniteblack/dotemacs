@@ -12,8 +12,8 @@
   :config (global-set-key (kbd "<f2>")
                           (defhydra hydra-zoom (:color blue)
                             "zoom"
-							("t" font-size-thunderbolt "thunderbolt")
-							("l" font-size-mac-laptop "laptop")
+                            ("t" font-size-thunderbolt "thunderbolt")
+                            ("l" font-size-mac-laptop "laptop")
                             ("+" text-scale-increase "in")
                             ("-" text-scale-decrease "out"))))
 
@@ -648,3 +648,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (progn (setq auto-package-update-interval 3)
                (with-demoted-errors (auto-package-update-maybe))))
+
+(use-package langtool
+  :ensure t
+  :init (when (eq system-type 'darwin)
+          (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/2.7/libexec/languagetool.jar")))
