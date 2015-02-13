@@ -456,14 +456,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
                            (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs))))
 
 
-;; (defun format-buffer ()
-;;   "format buffer"
-;;   (interactive)
-;;   (delete-trailing-whitespace)
-;;   (indent-region (point-min) (point-max) nil)
-;;   (untabify (point-min) (point-max)))
+(defun format-buffer ()
+  "format buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
 
-;; (global-set-key (kbd "C-S-f") 'format-buffer)
+(global-set-key (kbd "C-S-f") 'format-buffer)
 
 (use-package cc-mode
   :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
