@@ -30,7 +30,10 @@
                  (bind-key "C-p" 'company-select-previous company-active-map)))
 
 ;;; Save backup files in dedicated directory
-(setq backup-directory-alist '(("." . "~/.saves")))
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (use-package undo-tree
   :ensure t
