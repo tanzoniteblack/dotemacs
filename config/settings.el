@@ -302,7 +302,11 @@
 ;;; ace-window
 (use-package ace-window
   :ensure t
-  :bind ("C-x o" . ace-window))
+  :bind ("C-x o" . ace-window)
+  :config (progn (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+                 (custom-set-faces
+                  '(aw-leading-char-face
+                    ((t (:inherit ace-jump-face-foreground :height 1.8)))))))
 
 (use-package projectile
   :ensure t
