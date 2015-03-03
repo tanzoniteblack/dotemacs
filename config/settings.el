@@ -380,8 +380,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package org
   :ensure t
-  :config (progn (use-package org-src
-                   :ensure org-plus-contrib)
+  :config (progn ;; (use-package org-src
+                 ;;   :ensure org-plus-contrib)
                  (setq org-completion-use-ido t
                        org-outline-path-complete-in-steps nil
                        org-startup-indented nil
