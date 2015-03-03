@@ -48,6 +48,5 @@
 (define-key emacs-lisp-mode-map (kbd "C-c m b") #'eval-buffer)
 
 (global-set-key (kbd "C-j") #'reindent-then-newline-and-indent)
-(global-set-key (kbd "<RET>") #'electric-indent-just-newline)
 
 (global-set-key (kbd "M-,") #'pop-tag-mark)
