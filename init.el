@@ -13,6 +13,9 @@
 
 (require 'use-package)
 
+(use-package dash
+  :ensure t)
+
 ;;; autocompile emacs-lisp files
 (use-package auto-compile
   :ensure t

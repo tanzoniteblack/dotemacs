@@ -1,9 +1,6 @@
 ;; tmp-directory
 (setq live-tmp-dir "~/.emacs.d/tmp/")
 
-(use-package dash
-  :ensure t)
-
 (use-package rainbow-delimiters
   :ensure t)
 
