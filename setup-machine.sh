@@ -1,3 +1,4 @@
+set -x
 # Setup git
 git config --global user.email "ryan@yummly.com"
 git config --global user.name "Ryan Smith"
