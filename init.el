@@ -41,6 +41,8 @@
 (load-library "file-settings.el")
 (when (eq system-type 'darwin)
   (load-library "osx-config.el"))
+(when (eq system-type 'windows-nt)
+  (load-library "windows-config.el"))
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
 

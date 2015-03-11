@@ -311,7 +311,9 @@
   :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
-                   (add-to-list 'projectile-globally-ignored-files file-name))))
+                   (add-to-list 'projectile-globally-ignored-files file-name))
+				 (when (eq system-type 'windows-nt)
+				   (setq projectile-indexing-method 'alien))))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
