@@ -70,7 +70,7 @@
 (use-package git-gutter-fringe
   :ensure t
   :if window-system
-  :init (progn (setq git-gutter-fr:side 'right-fringe)
+  :config (progn (setq git-gutter-fr:side 'right-fringe)
                (setq-default left-fringe-width 2)
                (setq-default right-fringe-width 12)
                (global-git-gutter-mode)
@@ -81,9 +81,9 @@
 
 (use-package moe-theme
   :ensure t
-  :init (moe-dark)
   :config (progn (powerline-moe-theme)
-                 (moe-theme-set-color 'purple)))
+                 (moe-theme-set-color 'purple)
+				 (moe-dark)))
 
 ;;; expression highlight
 (setq show-paren-style 'expression)
