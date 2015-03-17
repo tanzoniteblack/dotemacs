@@ -167,7 +167,21 @@
                  (use-package gitconfig-mode
                    :ensure t)
                  (use-package gitignore-mode
-                   :ensure t)))
+                   :ensure t)
+                 (defun endless/visit-pull-request-url ()
+                   "Visit the current branch's PR on Github."
+                   (interactive)
+                   (browse-url
+                    (format "https://github.com/%s/compare/%s"
+                            (replace-regexp-in-string
+                             "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                             (magit-get "remote"
+                                        (magit-get-current-remote)
+                                        "url"))
+                            (magit-get-current-branch))))
+
+                 (define-key magit-mode-map "V"
+                   #'endless/visit-pull-request-url)))
 
 (use-package erc
   :config (progn (setq erc-nick "tanzoniteblack")
