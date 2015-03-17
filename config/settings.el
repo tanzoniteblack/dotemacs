@@ -209,14 +209,14 @@
                  ;;   :ensure t
                  ;;   :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
-                                          "A SQL syntax checker using pgsanity. Linter is designed to work
+                   "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
   SQL as well.
 
   See URL `https://github.com/markdrago/pgsanity'."
-                                          :command ("pgsanity" source)
-                                          :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-                                          :modes sql-mode)
+                   :command ("pgsanity" source)
+                   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
+                   :modes sql-mode)
                  (add-to-list 'flycheck-checkers 'postgresql)
                  (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
@@ -442,9 +442,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :config (use-package tern
             :commands tern-mode
-            :config (progn (add-hook 'js2-mode-hook 'tern-mode)
-                           (use-package company-tern
+            :init (add-hook 'js2-mode-hook 'tern-mode)
+            :config (progn (use-package company-tern
                              :ensure t
+							 :commands company-tern
                              :init (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
