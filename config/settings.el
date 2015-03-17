@@ -280,8 +280,6 @@
 
 ;; start the emacs server
 (use-package server
-  :commands (server-running-p server-start)
-  :defer 2
   :config (unless (server-running-p)
             (server-start)))
 
