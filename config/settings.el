@@ -308,6 +308,8 @@
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
+                 (when (eq system-type 'windows-nt)
+				   (setq projectile-indexing-method 'alien))
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
