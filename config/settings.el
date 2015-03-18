@@ -18,13 +18,13 @@
 (use-package company
   :ensure t
   :commands global-company-mode
-  :idle (global-company-mode)
   :diminish "comp"
   :config (progn (setq company-idle-delay .2
                        company-tooltip-flip-when-above t)
                  (bind-key "C-<tab>" 'company-manual-begin)
                  (bind-key "C-n" 'company-select-next company-active-map)
-                 (bind-key "C-p" 'company-select-previous company-active-map)))
+                 (bind-key "C-p" 'company-select-previous company-active-map)
+                 (global-company-mode)))
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist
@@ -34,15 +34,14 @@
 
 (use-package undo-tree
   :ensure t
-  :init (global-undo-tree-mode)
+  :config (global-undo-tree-mode)
   :diminish "")
 
 (use-package ido
   :ensure t
-  :init (ido-mode t)
   :config (progn (use-package flx-ido
                    :ensure t
-                   :init (flx-ido-mode 1))
+                   :config (flx-ido-mode 1))
                  (setq ido-enable-prefix nil
                        ido-create-new-buffer 'always
                        ido-max-prospects 10
@@ -54,21 +53,22 @@
                        ido-auto-merge-work-directories-length -1
                        ;; ido file type ordering preferences
                        ido-file-extensions-order '(".org" ".clj"))
-                 (icomplete-mode 1)))
+                 (icomplete-mode 1)
+                 (ido-mode t)))
 
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
-  :init (setq uniquify-buffer-name-style 'forward
-              uniquify-separator "/"
-              uniquify-after-kill-buffer-p t
-              uniquify-ignore-buffers-re "^\\*"))
+  :config (setq uniquify-buffer-name-style 'forward
+                uniquify-separator "/"
+                uniquify-after-kill-buffer-p t
+                uniquify-ignore-buffers-re "^\\*"))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
 (use-package saveplace
-  :init (progn (setq-default save-place t)
-               (make-directory live-tmp-dir t)
-               (setq save-place-file (concat live-tmp-dir "places"))))
+  :config (progn (setq-default save-place t)
+                 (make-directory live-tmp-dir t)
+                 (setq save-place-file (concat live-tmp-dir "places"))))
 
 (setq initial-major-mode 'lisp-interaction-mode
       redisplay-dont-pause t
@@ -104,8 +104,8 @@
 
 ;;default to unified diffs
 (use-package ediff
-  :init (setq diff-switches "-u"
-              ediff-window-setup-function 'ediff-setup-windows-plain))
+  :config (setq diff-switches "-u"
+                ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;;remove all trailing whitespace and trailing blank lines before
 ;;saving the file
@@ -129,7 +129,7 @@
 ;;; smex
 (use-package smex
   :ensure t
-  :init (smex-initialize)
+  :config (smex-initialize)
   :bind (("M-x" . smex)
          ("M-X" . smex-major-mode-commands)))
 
@@ -143,7 +143,7 @@
 
 (use-package flyspell-mode
   :commands flyspell-mode
-  :init (add-hook 'text-mode-hook 'flyspell-mode))
+  :config (add-hook 'text-mode-hook 'flyspell-mode))
 
 ;;; magit
 (use-package magit
@@ -181,17 +181,16 @@
 (use-package go-mode
   :ensure t
   :commands go-mode
-  :init (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
   :config (progn (use-package company-go
                    :ensure t
                    :if (executable-find "gocode")
                    :commands company-go
-                   :init (add-to-list 'company-backends 'company-go))
+                   :config (add-to-list 'company-backends 'company-go))
                  (use-package go-eldoc
                    :ensure t
                    :if (executable-find "gocode")
                    :commands go-eldoc-setup
-                   :init (add-to-list 'go-mode-hook 'go-eldoc-setup))
+                   :config (add-to-list 'go-mode-hook 'go-eldoc-setup))
                  (bind-key "M-." 'godef-jump go-mode-map)
                  (bind-key "M-," 'pop-tag-mark go-mode-map)
                  (bind-key "C-S-F" 'gofmt go-mode-map)
@@ -201,7 +200,6 @@
 (use-package flycheck
   :ensure t
   :commands global-flycheck-mode
-  :idle (global-flycheck-mode)
   :config (progn (use-package popup
                    :ensure t)
                  (use-package flycheck-pos-tip
@@ -244,13 +242,13 @@
 (use-package highlight-symbol
   :ensure t
   :diminish ""
-  :idle (highlight-symbol-mode)
   :bind (("C-<f3>" . highlight-symbol-at-point)
          ("<f3>" . highlight-symbol-next)
          ("S-<f3>" . highlight-symbol-prev)
          ("M-<f3>" . highlight-symbol-prev))
   :config (progn (setq highlight-symbol-idle-delay 0.5)
-                 (add-hook 'prog-mode-hook 'highlight-symbol-mode)))
+                 (add-hook 'prog-mode-hook 'highlight-symbol-mode)
+                 (highlight-symbol-mode)))
 
 (use-package json-mode
   :ensure t
@@ -282,9 +280,8 @@
 
 ;; start the emacs server
 (use-package server
-  :commands (server-running-p server-start)
-  :idle (unless (server-running-p)
-          (server-start)))
+  :config (unless (server-running-p)
+            (server-start)))
 
 (cua-mode 0)
 
@@ -307,13 +304,13 @@
 
 (use-package projectile
   :ensure t
-  :init (projectile-global-mode)
   :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
-				 (when (eq system-type 'windows-nt)
-				   (setq projectile-indexing-method 'alien))))
+                 (when (eq system-type 'windows-nt)
+				   (setq projectile-indexing-method 'alien))
+                 (projectile-global-mode)))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
@@ -346,12 +343,12 @@
 
 (use-package vlf
   :ensure t
-  :init (require 'vlf-setup))
+  :config (require 'vlf-setup))
 
 ;; window-number-mode
 (use-package window-number
   :ensure t
-  :init (window-number-meta-mode 1))
+  :config (window-number-meta-mode 1))
 
 (when (fboundp 'winner-mode)
   (winner-mode 1))
@@ -423,19 +420,19 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t)
                  (use-package cider
                    :ensure t
-                   :init (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
-                                (add-hook 'cider-repl-mode-hook 'subword-mode))
-                   :config (progn (setq cider-annotate-completion-candidates t
+                   :config (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
+                                  (add-hook 'cider-repl-mode-hook 'subword-mode)
+                                  (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider")
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
                    :ensure t
-                   :init (progn (add-hook 'clojure-mode-hook (lambda ()
-                                                               (clj-refactor-mode 1)
-                                                               (cljr-add-keybindings-with-prefix "C-c C-m")))
-                                (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                                (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
+                   :config (progn (add-hook 'clojure-mode-hook (lambda ()
+                                                                 (clj-refactor-mode 1)
+                                                                 (cljr-add-keybindings-with-prefix "C-c C-m")))
+                                  (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+                                  (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
                  (add-hook 'clojure-mode-hook (lambda () (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  ;; Fancy docstrings for schema/defn when in the form:
@@ -450,6 +447,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
                              :ensure t
+							 :commands company-tern
                              :init (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
@@ -481,8 +479,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure emacs-eclim
                    :init (add-hook 'java-mode-hook 'eclim-mode)
                    :config (progn (use-package company-emacs-eclim
-                                    :init (progn (require 'cl)
-                                                 (company-emacs-eclim-setup)))
+                                    :config (progn (require 'cl)
+                                                   (company-emacs-eclim-setup)))
                                   (when (eq system-type 'darwin)
                                     (custom-set-variables
                                      '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
@@ -497,10 +495,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package elpy
   :ensure t
-  :init (progn ;; highlight-indentation currently broken due to version mismatches
-          (delete 'elpy-module-highlight-indentation elpy-modules)
-          (elpy-enable))
-  :config (progn (setq elpy-rpc-backend "jedi")
+  :config (progn (delete 'elpy-module-highlight-indentation elpy-modules)
+                 (elpy-enable)
+                 (setq elpy-rpc-backend "jedi")
                  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
                  (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
                  (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
@@ -518,8 +515,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package smartparens
   :ensure t
-  :init (use-package smartparens-config)
-  :config (progn (smartparens-global-mode t)
+  :config (progn (use-package smartparens-config)
+                 (smartparens-global-mode t)
                  ;; highlights matching pairs
                  (show-smartparens-global-mode t)
                  ;; custom keybindings for smartparens mode
@@ -586,13 +583,13 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package buffer-move
   :ensure t
-  :init (global-set-key (kbd "C-c w")
-                        (defhydra hydra-buffer-move (:color blue)
-                          "buffer-move"
-                          ("p" buf-move-up "up")
-                          ("n" buf-move-down "down")
-                          ("b" buf-move-left "left")
-                          ("f" buf-move-right "right"))))
+  :config (global-set-key (kbd "C-c w")
+                          (defhydra hydra-buffer-move (:color blue)
+                            "buffer-move"
+                            ("p" buf-move-up "up")
+                            ("n" buf-move-down "down")
+                            ("b" buf-move-left "left")
+                            ("f" buf-move-right "right"))))
 
 ;; Random other modes
 
@@ -650,10 +647,12 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package auto-package-update
   :ensure t
-  :init (progn (setq auto-package-update-interval 3)
-               (with-demoted-errors (auto-package-update-maybe))))
+  :config (progn (setq auto-package-update-interval 3)
+                 (with-demoted-errors (auto-package-update-maybe))))
 
 (use-package langtool
   :ensure t
-  :init (when (eq system-type 'darwin)
-          (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/2.7/libexec/languagetool.jar")))
+  :config (when (eq system-type 'darwin)
+            (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/2.7/libexec/languagetool.jar")))
+
+(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")

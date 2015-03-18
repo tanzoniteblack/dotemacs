@@ -19,8 +19,8 @@
 ;;; autocompile emacs-lisp files
 (use-package auto-compile
   :ensure t
-  :init (progn (auto-compile-on-load-mode 1)
-               (auto-compile-on-save-mode 1)))
+  :config (progn (auto-compile-on-load-mode 1)
+                 (auto-compile-on-save-mode 1)))
 
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
