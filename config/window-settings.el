@@ -86,7 +86,7 @@
 				 (moe-dark)))
 
 ;;; expression highlight
-(setq show-paren-style 'expression)
+(setq show-paren-style 'parenthesis)
 
 ;;; global linum-mode
 (global-linum-mode)
