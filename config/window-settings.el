@@ -10,8 +10,6 @@
 ;; Force splitting vertically to only happen if new frames will be atleast 90
 ;; lines tall
 (setq split-height-threshold 180)
-;; Force splitting horizontally to only happen if new frames will be atleast 80
-(setq split-width-threshold 160)
 
 (defvar default-font "Ubuntu Mono")
 (defvar default-font-height 120)
