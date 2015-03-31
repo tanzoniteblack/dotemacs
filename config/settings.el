@@ -656,3 +656,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
             (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/2.7/libexec/languagetool.jar")))
 
 (setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+
+(use-package rainbow-identifiers
+  :ensure t
+  :config (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
