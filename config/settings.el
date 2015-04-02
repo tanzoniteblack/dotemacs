@@ -423,7 +423,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :config (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
-                                        cider-mode-line " cider")
+                                        cider-mode-line " cider"
+										cider-prompt-for-symbol nil)
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
