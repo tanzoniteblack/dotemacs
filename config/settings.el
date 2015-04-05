@@ -1,6 +1,9 @@
 ;; tmp-directory
 (setq live-tmp-dir "~/.emacs.d/tmp/")
 
+;; Use unix line endings by default, even in Windows
+(setq-default buffer-file-coding-system 'utf-8-unix)
+
 (use-package rainbow-delimiters
   :ensure t)
 
@@ -209,14 +212,14 @@
                  ;;   :ensure t
                  ;;   :init (flycheck-clojure-setup))
                  (flycheck-define-checker postgresql
-                   "A SQL syntax checker using pgsanity. Linter is designed to work
+                                          "A SQL syntax checker using pgsanity. Linter is designed to work
   specifically with postgresql, but works with all non-product specific
   SQL as well.
 
   See URL `https://github.com/markdrago/pgsanity'."
-                   :command ("pgsanity" source)
-                   :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-                   :modes sql-mode)
+                                          :command ("pgsanity" source)
+                                          :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
+                                          :modes sql-mode)
                  (add-to-list 'flycheck-checkers 'postgresql)
                  (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
@@ -309,7 +312,7 @@
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
                  (when (eq system-type 'windows-nt)
-				   (setq projectile-indexing-method 'alien))
+                   (setq projectile-indexing-method 'alien))
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
@@ -384,7 +387,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-startup-indented nil
                        org-hide-leading-stars t
                        org-agenda-files (list "~/Dropbox/.org/yummly.org"
-                                              "~/Dropbox/.org/home.org")
+                                              "~/Dropbox/.org/home.org"
+                                              "~/Dropbox/.org/beer.org")
                        org-directory "~/Dropbox/.org/"
                        org-src-fontify-natively t
                        org-display-inline-images t
@@ -424,7 +428,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
-										cider-prompt-for-symbol nil)
+                                        cider-prompt-for-symbol nil)
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
@@ -448,7 +452,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :init (add-hook 'js2-mode-hook 'tern-mode)
             :config (progn (use-package company-tern
                              :ensure t
-							 :commands company-tern
+                             :commands company-tern
                              :init (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
