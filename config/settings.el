@@ -165,7 +165,9 @@
                   ;; highlight word/letter changes in hunk diffs
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
-                  magit-save-some-buffers nil)
+                  magit-save-some-buffers nil
+				  ;; Don't show setup instructions
+				  magit-last-seen-setup-instructions "1.4.0")
                  (diminish 'magit-auto-revert-mode "")
                  (use-package gitconfig-mode
                    :ensure t)
