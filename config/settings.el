@@ -152,6 +152,7 @@
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status))
+  :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn (add-hook 'magit-log-edit-mode-hook
                            (lambda ()
                              (set-fill-column 72)
