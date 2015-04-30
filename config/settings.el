@@ -152,6 +152,8 @@
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status))
+  ;; Don't show setup instructions
+  :init (setq magit-last-seen-setup-instructions "1.4.0")
   :config (progn (add-hook 'magit-log-edit-mode-hook
                            (lambda ()
                              (set-fill-column 72)
@@ -165,9 +167,7 @@
                   ;; highlight word/letter changes in hunk diffs
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
-                  magit-save-some-buffers nil
-				  ;; Don't show setup instructions
-				  magit-last-seen-setup-instructions "1.4.0")
+                  magit-save-some-buffers nil)
                  (diminish 'magit-auto-revert-mode "")
                  (use-package gitconfig-mode
                    :ensure t)
