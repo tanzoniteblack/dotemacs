@@ -14,8 +14,8 @@
                             "zoom"
                             ("t" font-size-thunderbolt "thunderbolt")
                             ("l" font-size-mac-laptop "laptop")
-                            ("+" text-scale-increase "in")
-                            ("-" text-scale-decrease "out"))))
+                            ("+" text-scale-increase "zoom in")
+                            ("-" text-scale-decrease "zoom out"))))
 
 ;;; global-company-mode for completions
 (use-package company
