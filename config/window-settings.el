@@ -30,15 +30,15 @@
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 155))
-	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
-	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
+    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun font-size-thunderbolt ()
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 165))
-	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
-	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
+    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun toggle-maximized ()
   "Toggle whether window is maximized or not (currently only supports X11 with wmctrl installed)"
@@ -69,10 +69,10 @@
   :ensure t
   :if window-system
   :config (progn (setq git-gutter-fr:side 'right-fringe)
-               (setq-default left-fringe-width 2)
-               (setq-default right-fringe-width 12)
-               (global-git-gutter-mode)
-               (diminish 'git-gutter-mode "")))
+                 (setq-default left-fringe-width 2)
+                 (setq-default right-fringe-width 12)
+                 (global-git-gutter-mode)
+                 (diminish 'git-gutter-mode "")))
 
 (use-package powerline
   :ensure t)
@@ -81,11 +81,11 @@
 ;;   :ensure t
 ;;   :config (progn (powerline-moe-theme)
 ;;                  (moe-theme-set-color 'purple)
-;; 				 (moe-dark)))
+;;               (moe-dark)))
 
-(use-package farmhouse-theme
-  :ensure t
-  :config (progn (load-theme 'farmhouse-dark t)))
+(use-package farmhouse-dark-theme
+  :ensure farmhouse-theme
+  :config (load-theme 'farmhouse-dark t))
 
 ;;; expression highlight
 (setq show-paren-style 'parenthesis)
