@@ -77,11 +77,15 @@
 (use-package powerline
   :ensure t)
 
-(use-package moe-theme
+;; (use-package moe-theme
+;;   :ensure t
+;;   :config (progn (powerline-moe-theme)
+;;                  (moe-theme-set-color 'purple)
+;; 				 (moe-dark)))
+
+(use-package farmhouse-theme
   :ensure t
-  :config (progn (powerline-moe-theme)
-                 (moe-theme-set-color 'purple)
-				 (moe-dark)))
+  :config (progn (load-theme 'farmhouse-dark t)))
 
 ;;; expression highlight
 (setq show-paren-style 'parenthesis)
