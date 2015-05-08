@@ -640,7 +640,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t)
 
 (use-package auto-package-update
-  :ensure t)
+  :ensure t
+  :commands auto-package-update-maybe)
 
 (use-package langtool
   :ensure t
