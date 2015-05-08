@@ -11,8 +11,8 @@
 ;; lines tall
 (setq split-height-threshold 180)
 
-(defvar default-font "Ubuntu Mono")
-(defvar default-font-height 120)
+(setq default-font "Ubuntu Mono")
+(setq default-font-height 125)
 ;;; fraktur font for when we're feeling odd:
 ;; (setq default-font "UnifrakturMaguntia")
 ;; (setq default-font-height 130)
@@ -69,8 +69,8 @@
   :ensure t
   :if window-system
   :config (progn (setq git-gutter-fr:side 'right-fringe)
-                 (setq-default left-fringe-width 2)
-                 (setq-default right-fringe-width 12)
+                 (setq-default left-fringe-width (floor (* 0.4 (frame-char-width))))
+                 (setq-default right-fringe-width (floor (* 1.2 (frame-char-width))))
                  (global-git-gutter-mode)
                  (diminish 'git-gutter-mode "")))
 

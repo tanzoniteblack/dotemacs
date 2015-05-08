@@ -210,20 +210,7 @@
                  (use-package flycheck-pos-tip
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 ;; (use-package flycheck-clojure
-                 ;;   :ensure t
-                 ;;   :init (flycheck-clojure-setup))
-                 (flycheck-define-checker postgresql
-                                          "A SQL syntax checker using pgsanity. Linter is designed to work
-  specifically with postgresql, but works with all non-product specific
-  SQL as well.
-
-  See URL `https://github.com/markdrago/pgsanity'."
-                                          :command ("pgsanity" source)
-                                          :error-patterns ((error line-start "line " line ": ERROR: " (message) line-end))
-                                          :modes sql-mode)
-                 (add-to-list 'flycheck-checkers 'postgresql)
-                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
+				 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
 
 (use-package ace-jump-mode
@@ -653,7 +640,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t)
 
 (use-package auto-package-update
-  :ensure t)
+  :ensure t
+  :commands auto-package-update-maybe)
 
 (use-package langtool
   :ensure t
@@ -662,6 +650,5 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 
-(use-package rainbow-identifiers
-  :ensure t
-  :config (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
+(use-package sql-indent
+  :ensure t)
