@@ -498,9 +498,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
                  (add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
-(use-package visual-regexp
-  :ensure t)
-
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
   (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
@@ -656,3 +653,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package sql-indent
   :ensure t)
+
+(use-package anzu
+  :ensure t
+  :config (global-anzu-mode 1)
+  :bind (("M-%" . anzu-query-replace)
+		 ("C-M-%" . anzu-query-replace-regexp)))
