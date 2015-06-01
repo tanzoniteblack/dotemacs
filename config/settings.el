@@ -213,9 +213,10 @@
 				 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
 
-(use-package ace-jump-mode
+(use-package avy
   :ensure t
-  :bind ("C-c SPC" . ace-jump-mode))
+  :bind (("C-c SPC" . avy-goto-word-or-subword-1)
+		 ("M-g G" . avy-goto-line)))
 
 (use-package expand-region
   :ensure t
