@@ -9,13 +9,14 @@
 
 (use-package hydra
   :ensure t
-  :config (global-set-key (kbd "<f2>")
-                          (defhydra hydra-zoom (:color blue)
-                            "zoom"
-                            ("t" font-size-thunderbolt "thunderbolt")
-                            ("l" font-size-mac-laptop "laptop")
-                            ("+" text-scale-increase "zoom in")
-                            ("-" text-scale-decrease "zoom out"))))
+  :config (when (eq system-type 'darwin)
+            (global-set-key (kbd "<f2>")
+                            (defhydra hydra-zoom (:color blue)
+                              "zoom"
+                              ("t" font-size-thunderbolt "thunderbolt")
+                              ("l" font-size-mac-laptop "laptop")
+                              ("+" text-scale-increase "zoom in")
+                              ("-" text-scale-decrease "zoom out")))))
 
 ;;; global-company-mode for completions
 (use-package company
@@ -210,13 +211,13 @@
                  (use-package flycheck-pos-tip
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-				 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
+                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
 
 (use-package avy
   :ensure t
-  :bind (("C-c SPC" . avy-goto-word-or-subword-1)
-		 ("M-g G" . avy-goto-line)))
+  :bind (("C-c SPC" . avy-goto-word-1)
+         ("M-g G" . avy-goto-line)))
 
 (use-package expand-region
   :ensure t
@@ -344,7 +345,8 @@
   :config (window-number-meta-mode 1))
 
 (when (fboundp 'winner-mode)
-  (winner-mode 1))
+  (winner-mode 1)
+  (add-hook 'ediff-after-quit-hook-internal 'winner-undo))
 
 (defvar auto-minor-mode-alist ()
   "Alist of filename patterns vs correpsonding minor mode functions, see `auto-mode-alist'
@@ -391,7 +393,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
                  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
                  ;; remap ace-jump-word-mode (org-mode automatically disables)
-                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'ace-jump-word-mode)))
+                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-or-subword-1)))
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
                  (bind-key "C-c a" 'org-agenda-list)
@@ -659,4 +661,4 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :config (global-anzu-mode 1)
   :bind (("M-%" . anzu-query-replace)
-		 ("C-M-%" . anzu-query-replace-regexp)))
+         ("C-M-%" . anzu-query-replace-regexp)))
