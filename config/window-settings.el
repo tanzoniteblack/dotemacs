@@ -12,7 +12,7 @@
 (setq split-height-threshold 180)
 
 (setq default-font "Ubuntu Mono")
-(setq default-font-height 125)
+(setq default-font-height 120)
 ;;; fraktur font for when we're feeling odd:
 ;; (setq default-font "UnifrakturMaguntia")
 ;; (setq default-font-height 130)
