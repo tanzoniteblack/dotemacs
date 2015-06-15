@@ -29,14 +29,14 @@
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
   (interactive)
-  (let ((default-font-height 155))
+  (let ((default-font-height 150))
 	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
 	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun font-size-thunderbolt ()
   "Set font values to something good for a mac laptop"
   (interactive)
-  (let ((default-font-height 165))
+  (let ((default-font-height 160))
 	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
 	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
