@@ -19,7 +19,7 @@
 
 ;; OS X tends to display things small
 (when (eq system-type 'darwin)
-  (setq default-font-height 165))
+  (setq default-font-height 170))
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (when (member default-font (font-family-list))
@@ -29,14 +29,14 @@
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
   (interactive)
-  (let ((default-font-height 150))
+  (let ((default-font-height 160))
 	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
 	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun font-size-thunderbolt ()
   "Set font values to something good for a mac laptop"
   (interactive)
-  (let ((default-font-height 160))
+  (let ((default-font-height 170))
 	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
 	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
