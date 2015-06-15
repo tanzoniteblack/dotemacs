@@ -428,7 +428,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
-                 (add-hook 'clojure-mode-hook (lambda () (setq buffer-save-without-query t)))
+                 (add-hook 'clojure-mode-hook (lambda ()
+												(flyspell-prog-mode)
+												(setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
