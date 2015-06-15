@@ -9,14 +9,13 @@
 
 (use-package hydra
   :ensure t
-  :config (when (eq system-type 'darwin)
-            (global-set-key (kbd "<f2>")
-                            (defhydra hydra-zoom (:color blue)
-                              "zoom"
-                              ("t" font-size-thunderbolt "thunderbolt")
-                              ("l" font-size-mac-laptop "laptop")
-                              ("+" text-scale-increase "zoom in")
-                              ("-" text-scale-decrease "zoom out")))))
+  :config (global-set-key (kbd "<f2>")
+                          (defhydra hydra-zoom (:color blue)
+                            "zoom"
+                            ("t" font-size-thunderbolt "thunderbolt")
+                            ("l" font-size-mac-laptop "laptop")
+                            ("+" text-scale-increase "zoom in")
+                            ("-" text-scale-decrease "zoom out"))))
 
 ;;; global-company-mode for completions
 (use-package company
@@ -217,7 +216,7 @@
 (use-package avy
   :ensure t
   :bind (("C-c SPC" . avy-goto-word-1)
-		 ("M-g G" . avy-goto-line)))
+         ("M-g G" . avy-goto-line)))
 
 
 (use-package expand-region
@@ -394,8 +393,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
                  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
                  ;; remap ace-jump-word-mode (org-mode automatically disables)
-				 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-				 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
+                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
                  (bind-key "C-c a" 'org-agenda-list)
                  ;; enable flyspell-mode on load of org buffer
@@ -432,8 +431,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
                  (add-hook 'clojure-mode-hook (lambda ()
-												(flyspell-prog-mode)
-												(setq buffer-save-without-query t)))
+                                                (flyspell-prog-mode)
+                                                (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
