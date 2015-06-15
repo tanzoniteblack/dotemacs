@@ -141,12 +141,12 @@
 
 ;;; spell checking
 (use-package ispell
-  :config (setq ispell-program-name "aspell" ; use aspell instead of ispell
-                ispell-extra-args '("--sug-mode=ultra")))
-
-(use-package flyspell-mode
-  :commands flyspell-mode
-  :config (add-hook 'text-mode-hook 'flyspell-mode))
+  :config (progn (setq ispell-program-name "aspell" ; use aspell instead of ispell
+                       ispell-extra-args '("--sug-mode=ultra"))
+                 (add-hook 'prog-mode-hook
+                           (lambda ()
+                             (flyspell-prog-mode)
+                             (add-hook 'text-mode-hook 'flyspell-mode)))))
 
 ;;; magit
 (use-package magit
@@ -425,13 +425,13 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
                  (use-package clj-refactor
                    :ensure t
-                   :config (progn (add-hook 'clojure-mode-hook (lambda ()
+                   :config (progn (setq cljr-suppress-middleware-warnings t)
+                                  (add-hook 'clojure-mode-hook (lambda ()
                                                                  (clj-refactor-mode 1)
                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
                  (add-hook 'clojure-mode-hook (lambda ()
-                                                (flyspell-prog-mode)
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  ;; Fancy docstrings for schema/defn when in the form:
