@@ -143,10 +143,13 @@
 (use-package ispell
   :config (progn (setq ispell-program-name "aspell" ; use aspell instead of ispell
                        ispell-extra-args '("--sug-mode=ultra"))
+				 (add-hook 'text-mode-hook 'flyspell-mode)
                  (add-hook 'prog-mode-hook
                            (lambda ()
-                             (flyspell-prog-mode)
-                             (add-hook 'text-mode-hook 'flyspell-mode)))))
+							 (flyspell-prog-mode)))
+				 (add-hook 'sh-mode
+						   (lambda ()
+							 (turn-off-flyspell)))))
 
 ;;; magit
 (use-package magit
@@ -655,9 +658,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (use-package rainbow-identifiers
   :ensure t
   :config (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
-
-(use-package sql-indent
-  :ensure t)
 
 (use-package anzu
   :ensure t
