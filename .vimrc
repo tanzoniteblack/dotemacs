@@ -4,7 +4,16 @@ set backspace=indent,eol,start
 syntax on
 set number
 set hidden
-set guifont=Ubuntu\ Mono:h15
+"Set fonts for guis"
+if has("gui_running")
+	:set guioptions-=T  "remove toolbar	
+	if has("gui_gtk2")
+		set guifont=Ubuntu\ Mono\ 13
+	elseif has("gui_macvim")
+		set guifont=Ubuntu\ Mono:h15
+	endif
+endif 
+
 set history=100
 set wildmode=longest,list,full
 set wildmenu
@@ -14,7 +23,7 @@ set ai "autoindent"
 set ls=2 "show status line with only 1 window"
 
 "Configure Vundle and plugins you want it to install"
-"To use this run `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim` && vim +PluginInstall +qall`"
+"To use this run `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim && vim +PluginInstall +qall`"
 set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
@@ -22,7 +31,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'reedes/vim-colors-pencil'
 Plugin 'bling/vim-airline'
-Plugin 'tope/vim-fireplace'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'scrooloose/syntastic'
 
