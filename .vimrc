@@ -10,7 +10,7 @@ if has("gui_running")
 	if has("gui_gtk2")
 		set guifont=Ubuntu\ Mono\ 13
 	elseif has("gui_macvim")
-		set guifont=Ubuntu\ Mono:h15
+		set guifont=Ubuntu\ Mono:h16
 	endif
 endif 
 
@@ -33,6 +33,8 @@ Plugin 'reedes/vim-colors-pencil'
 Plugin 'bling/vim-airline'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'scrooloose/syntastic'
+Plugin 'nikolavp/vim-jape'
+Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
 
@@ -56,3 +58,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0 
+
+" Keyboard shortcuts for ctrlp "
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
