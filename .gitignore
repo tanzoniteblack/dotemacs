@@ -24,3 +24,4 @@
 /server/
 /places
 /.mc-lists.el
+*.swp
