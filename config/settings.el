@@ -57,7 +57,10 @@
                        ;; ido file type ordering preferences
                        ido-file-extensions-order '(".org" ".clj"))
                  (icomplete-mode 1)
-                 (ido-mode t)))
+                 (ido-mode t)
+				 (use-package ido-ubiquitous
+				   :ensure t
+				   :config (ido-ubiquitous-mode 1))))
 
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
@@ -235,6 +238,7 @@
 (use-package avy
   :ensure t
   :bind (("C-c SPC" . avy-goto-word-1)
+		 ("C-c S-SPC" . avy-goto-char)
          ("M-g G" . avy-goto-line)))
 
 
