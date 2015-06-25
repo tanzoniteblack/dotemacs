@@ -62,3 +62,5 @@ let g:syntastic_check_on_wq = 0
 " Keyboard shortcuts for ctrlp "
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+command! JsonPPrint :%! python -m json.tool
