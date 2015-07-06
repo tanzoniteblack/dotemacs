@@ -174,7 +174,6 @@
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
                   magit-save-some-buffers nil)
-                 (diminish 'magit-auto-revert-mode "")
 				 ;; Re-enable after magit 2.1.0 comes out
 				 ;; (defun endless/visit-pull-request-url ()
 				 ;;   "Visit the current branch's PR on Github."
