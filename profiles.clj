@@ -1,4 +1,4 @@
-{:user {:plugins [[cider/cider-nrepl "0.9.1-SNAPSHOT"]
+{:user {:plugins [[cider/cider-nrepl "0.10.0-SNAPSHOT"]
                   [lein-ancient "0.6.7"]]
         :dependencies [[pjstadig/humane-test-output "0.6.0"]
                        [org.clojure/tools.nrepl "0.2.7"]
