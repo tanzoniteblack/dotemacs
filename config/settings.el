@@ -546,7 +546,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
                  (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
                  (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
-
+				 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
 
                  (sp-with-modes '(clojure-mode cider-repl-mode)
                    (sp-local-pair "#{" "}")
