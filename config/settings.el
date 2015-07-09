@@ -404,8 +404,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                               "~/Dropbox/.org/home.org"
                                               "~/Dropbox/.org/beer.org")
                        org-directory "~/Dropbox/.org/"
-                       org-src-fontify-natively t
-                       org-display-inline-images t
+					   org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
