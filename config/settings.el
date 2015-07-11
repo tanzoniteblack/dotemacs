@@ -58,9 +58,9 @@
                        ido-file-extensions-order '(".org" ".clj"))
                  (icomplete-mode 1)
                  (ido-mode t)
-				 (use-package ido-ubiquitous
-				   :ensure t
-				   :config (ido-ubiquitous-mode 1))))
+                 (use-package ido-ubiquitous
+                   :ensure t
+                   :config (ido-ubiquitous-mode 1))))
 
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
@@ -146,13 +146,13 @@
 (use-package ispell
   :config (progn (setq ispell-program-name "aspell" ; use aspell instead of ispell
                        ispell-extra-args '("--sug-mode=ultra"))
-				 (add-hook 'text-mode-hook 'flyspell-mode)
+                 (add-hook 'text-mode-hook 'flyspell-mode)
                  (add-hook 'prog-mode-hook
                            (lambda ()
-							 (flyspell-prog-mode)))
-				 (add-hook 'sh-mode
-						   (lambda ()
-							 (turn-off-flyspell)))))
+                             (flyspell-prog-mode)))
+                 (add-hook 'sh-mode
+                           (lambda ()
+                             (turn-off-flyspell)))))
 
 ;;; magit
 (use-package magit
@@ -174,22 +174,22 @@
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
                   magit-save-some-buffers nil)
-				 ;; Re-enable after magit 2.1.0 comes out
-				 (defun endless/visit-pull-request-url ()
-				   "Visit the current branch's PR on Github."
-				   (interactive)
-				   (browse-url
-				 	(format "https://github.com/%s/pull/new/%s"
-				 			(replace-regexp-in-string
-				 			 "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
-				 			 (magit-get "remote"
-				 						(magit-get-remote)
-				 						"url"))
-				 			(cdr (magit-get-remote-branch)))))
+                 ;; Re-enable after magit 2.1.0 comes out
+                 (defun endless/visit-pull-request-url ()
+                   "Visit the current branch's PR on Github."
+                   (interactive)
+                   (browse-url
+                    (format "https://github.com/%s/pull/new/%s"
+                            (replace-regexp-in-string
+                             "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+                             (magit-get "remote"
+                                        (magit-get-remote)
+                                        "url"))
+                            (cdr (magit-get-remote-branch)))))
 
-				 (eval-after-load 'magit
-				   '(define-key magit-mode-map "v"
-				 	  #'endless/visit-pull-request-url))
+                 (eval-after-load 'magit
+                   '(define-key magit-mode-map "v"
+                      #'endless/visit-pull-request-url))
                  (use-package gitconfig-mode
                    :ensure t)
                  (use-package gitignore-mode
@@ -237,7 +237,7 @@
 (use-package avy
   :ensure t
   :bind (("C-c SPC" . avy-goto-word-1)
-		 ("C-c S-SPC" . avy-goto-char)
+         ("C-c S-SPC" . avy-goto-char)
          ("M-g G" . avy-goto-line)))
 
 
@@ -404,7 +404,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                               "~/Dropbox/.org/home.org"
                                               "~/Dropbox/.org/beer.org")
                        org-directory "~/Dropbox/.org/"
-					   org-display-inline-images t
+                       org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
@@ -437,7 +437,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t)
                  (use-package cider
                    :ensure t
-                   :config (progn (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
+                   :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
+                                  (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
@@ -545,7 +546,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
                  (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
                  (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
-				 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
+                 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
 
                  (sp-with-modes '(clojure-mode cider-repl-mode)
                    (sp-local-pair "#{" "}")
