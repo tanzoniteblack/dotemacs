@@ -168,7 +168,7 @@
                   ;; highlight word/letter changes in hunk diffs
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
-                  magit-save-some-buffers nil)
+                  magit-save-repository-buffers nil)
                  ;; Re-enable after magit 2.1.0 comes out
                  (defun endless/visit-pull-request-url ()
                    "Visit the current branch's PR on Github."
