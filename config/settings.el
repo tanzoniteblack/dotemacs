@@ -35,11 +35,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(use-package undo-tree
-  :ensure t
-  :config (global-undo-tree-mode)
-  :diminish "")
-
 (use-package ido
   :ensure t
   :config (progn (use-package flx-ido
@@ -431,8 +426,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (use-package clojure-mode
   :ensure t
-  ;; :commands clojure-mode
-  ;; :init (add-to-list 'auto-mode-alist '("\\.\\(clj[sx]?\\|dtm\\|edn\\)\\'" . clojure-mode))
   :config (progn (use-package clojure-mode-extra-font-locking
                    :ensure t)
                  (use-package cider
