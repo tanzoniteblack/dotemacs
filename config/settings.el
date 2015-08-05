@@ -631,14 +631,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (use-package web-mode
   :ensure t
   :commands web-mode
-  :init (progn (add-to-list 'auto-mode-alist '("\\.phtml$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.tpl\\.php$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.[gj]sp$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.as[cp]x$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.erb$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.mustache$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.djhtml$'" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.html$'" . web-mode)))
+  :init (progn (add-to-list 'auto-mode-alist '("\\.phtml$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.tpl\\.php$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.[gj]sp$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.as[cp]x$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode)))
   :config ;; Autocomplete end tag when finished writing opening tag
   (setq web-mode-auto-close-style 2))
 
