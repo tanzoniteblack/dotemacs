@@ -223,8 +223,9 @@
   :commands global-flycheck-mode
   :config (progn (use-package popup
                    :ensure t)
-                 (use-package flycheck-pos-tip
-                   :ensure t)
+                 (use-package flycheck-clojure
+				   :ensure t
+				   :config (flycheck-clojure-setup))
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
                  (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
