@@ -223,10 +223,7 @@
   :commands global-flycheck-mode
   :config (progn (use-package popup
                    :ensure t)
-                 (use-package flycheck-clojure
-				   :ensure t
-				   :config (flycheck-clojure-setup))
-                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+				 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
                  (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
                  (global-flycheck-mode)))
 
@@ -445,8 +442,85 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (add-hook 'clojure-mode-hook (lambda ()
                                                                  (clj-refactor-mode 1)
                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
+								  (add-hook 'clojure-mode-hook 'yas-minor-mode)
                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                                  (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)))
+                                  (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
+
+								  ;; https://github.com/zane/dotemacs/blob/master/init.el
+                                  (after 'hydra
+                                         (defhydra hydra-clj-add (:exit t)
+                                           "add"
+                                           ("d" cljr-add-declaration "declaration")
+                                           ("i" cljr-add-import-to-ns "import")
+                                           ("l" cljr-add-missing-libspec "missing libspec")
+                                           ("p" cljr-add-project-dependency "project dependency")
+                                           ("r" cljr-add-require-to-ns "require")
+                                           ("s" cljr-add-stubs "stubs")
+                                           ("u" cljr-add-use-to-ns "use"))
+
+                                         (defhydra hydra-clj-remove (:exit t)
+                                           "remove"
+                                           ("l" cljr-remove-let "let")
+                                           ("d" cljr-remove-debug-fns "debug functions")
+                                           ("u" cljr-remove-unused-requires "unused requires")
+                                           ("r" cljr-stop-referring "refer"))
+
+										 (defhydra hydra-clj-destructure (:exit t)
+                                           "destructure"
+                                           ("k" cljr-destructure-keys "keys"))
+
+                                         (defhydra hydra-clj-extract (:exit t)
+                                           ("f" cljr-extract-function "function"))
+
+                                         (defhydra hydra-clj-let (:exit t)
+                                           "let"
+                                           ("i" cljr-introduce-let "introduce")
+                                           ("e" cljr-expand-let "expand")
+                                           ("m" cljr-move-to-let "move"))
+
+                                         (defhydra hydra-clj-namespace-add (:exit t)
+                                           "namespace add"
+                                           ("i" cljr-add-import-to-ns "import")
+                                           ("r" cljr-add-require-to-ns "require")
+                                           ("u" cljr-add-use-to-ns "use"))
+
+                                         (defhydra hydra-clj-namespace (:exit t)
+                                           "namespace"
+                                           ("a" hydra-clj-namespace-add/body "add")
+                                           ("c" cljr-clean-ns "clean")
+                                           ("s" cljr-sort-ns "sort")
+										   ("r" cljr-stop-referring "stop referring"))
+
+                                         (defhydra hydra-clj-thread (:exit t)
+										   "thread"
+                                           ("t" cljr-thread "thread")
+                                           ("f" cljr-thread-first-all "first all")
+                                           ("l" cljr-thread-last-all "last all"))
+
+										 (defhydra hydra-clj-info (:exit t)
+										   "info"
+										   ("f" cljr-find-usages "find usages")
+										   ("c" cljr-show-changelog "show changelog")
+										   ("?" cljr-describe-refactoring "describe refactoring command"))
+
+										 (defhydra hydra-clj-clean (:exit t)
+										   "clean"
+										   ("n" cljr-clean-ns "NS def")
+										   ("p" cljr-project-clean "project"))
+
+                                         (defhydra hydra-clj-refactor (:exit t)
+                                           "refactor"
+                                           ("a" hydra-clj-add/body "add")
+                                           ("r" hydra-clj-remove/body "remove")
+										   ("d" hydra-clj-destructure/body "destructure")
+                                           ("e" hydra-clj-extract/body "extract")
+                                           ("l" hydra-clj-let/body "let")
+                                           ("n" hydra-clj-namespace/body "namespace")
+                                           ("t" hydra-clj-thread/body "thread")
+										   ("i" hydra-clj-info/body "info")
+										   ("c" hydra-clj-clean/body "clean"))
+
+                                         (bind-key (kbd "C-M-r") 'hydra-clj-refactor/body clojure-mode-map))))
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
@@ -459,7 +533,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :config (use-package tern
             :commands tern-mode
-            :init (add-hook 'js2-mode-hook 'tern-mode)
+            :init (progn (add-hook 'js2-mode-hook 'tern-mode)
+						 (setq js2-include-node-externs t
+							   js2-include-browser-externs t))
+
             :config (progn (use-package company-tern
                              :ensure t
                              :commands company-tern
