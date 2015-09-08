@@ -420,7 +420,16 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-shiftleft-final-hook 'windmove-left)
                  (add-hook 'org-shiftdown-final-hook 'windmove-down)
                  (add-hook 'org-shiftright-final-hook 'windmove-right)
-                 (add-hook 'org-mode-hook 'turn-on-auto-fill)))
+                 (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+				 (defun endless/org-ispell ()
+				   "Configure `ispell-skip-region-alist' for `org-mode'."
+				   (make-local-variable 'ispell-skip-region-alist)
+				   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+				   (add-to-list 'ispell-skip-region-alist '("~" "~"))
+				   (add-to-list 'ispell-skip-region-alist '("=" "="))
+				   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
+				 (add-hook 'org-mode-hook #'endless/org-ispell)))
 
 (use-package clojure-mode
   :ensure t
