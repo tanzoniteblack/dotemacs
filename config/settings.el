@@ -71,7 +71,7 @@
                  (make-directory live-tmp-dir t)
                  (setq save-place-file (concat live-tmp-dir "places"))))
 
-(setq initial-major-mode 'lisp-interaction-mode
+(setq initial-major-mode 'text-mode
       redisplay-dont-pause t
       column-number-mode t
       echo-keystrokes 0.02
