@@ -223,8 +223,10 @@
   :commands global-flycheck-mode
   :config (progn (use-package popup
                    :ensure t)
-				 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages)
+                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
+                 (use-package flycheck-pos-tip
+				   :ensure t
+                   :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
                  (global-flycheck-mode)))
 
 (use-package avy
@@ -422,14 +424,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-shiftright-final-hook 'windmove-right)
                  (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
-				 (defun endless/org-ispell ()
-				   "Configure `ispell-skip-region-alist' for `org-mode'."
-				   (make-local-variable 'ispell-skip-region-alist)
-				   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
-				   (add-to-list 'ispell-skip-region-alist '("~" "~"))
-				   (add-to-list 'ispell-skip-region-alist '("=" "="))
-				   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
-				 (add-hook 'org-mode-hook #'endless/org-ispell)))
+                 (defun endless/org-ispell ()
+                   "Configure `ispell-skip-region-alist' for `org-mode'."
+                   (make-local-variable 'ispell-skip-region-alist)
+                   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+                   (add-to-list 'ispell-skip-region-alist '("~" "~"))
+                   (add-to-list 'ispell-skip-region-alist '("=" "="))
+                   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
+                 (add-hook 'org-mode-hook #'endless/org-ispell)))
 
 (use-package clojure-mode
   :ensure t
@@ -451,11 +453,11 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (add-hook 'clojure-mode-hook (lambda ()
                                                                  (clj-refactor-mode 1)
                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
-								  (add-hook 'clojure-mode-hook 'yas-minor-mode)
+                                  (add-hook 'clojure-mode-hook 'yas-minor-mode)
                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-								  (define-key clojure-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
+                                  (define-key clojure-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
@@ -469,8 +471,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :config (use-package tern
             :commands tern-mode
             :init (progn (add-hook 'js2-mode-hook 'tern-mode)
-						 (setq js2-include-node-externs t
-							   js2-include-browser-externs t))
+                         (setq js2-include-node-externs t
+                               js2-include-browser-externs t))
 
             :config (progn (use-package company-tern
                              :ensure t
@@ -699,5 +701,5 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (use-package which-key
   :ensure t
   :config (progn (which-key-mode)
-				 (setq which-key-use-C-h-for-paging nil
-					   which-key-idle-delay 0.5)))
+                 (setq which-key-use-C-h-for-paging nil
+                       which-key-idle-delay 0.5)))
