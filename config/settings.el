@@ -684,11 +684,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :commands auto-package-update-maybe)
 
-(use-package langtool
-  :ensure t
-  :config (when (eq system-type 'darwin)
-            (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/2.7/libexec/languagetool.jar")))
-
 (setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 
 (use-package rainbow-identifiers
