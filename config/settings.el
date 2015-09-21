@@ -701,5 +701,4 @@ the checking happens for all pairs in auto-minor-mode-alist"
 (use-package which-key
   :ensure t
   :config (progn (which-key-mode)
-                 (setq which-key-use-C-h-for-paging nil
-                       which-key-idle-delay 0.5)))
+                 (setq which-key-use-C-h-for-paging nil)))
