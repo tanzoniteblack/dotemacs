@@ -225,7 +225,7 @@
                    :ensure t)
                  (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
                  (use-package flycheck-pos-tip
-				   :ensure t
+                   :ensure t
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
                  (global-flycheck-mode)))
 
@@ -623,7 +623,20 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t)
 
 (use-package scala-mode2
-  :ensure t)
+  :ensure t
+  :config (use-package ensime
+            :ensure t
+            :config (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+                           (defun scala/enable-eldoc ()
+                             "Show error message or type name at point by Eldoc."
+                             (setq-local eldoc-documentation-function
+                                         #'(lambda ()
+                                             (when (ensime-connected-p)
+                                               (let ((err (ensime-print-errors-at-point)))
+                                                 (or (and err (not (string= err "")) err)
+                                                     (ensime-print-type-at-point))))))
+                             (eldoc-mode +1))
+						   (add-hook 'scala-mode-hook 'scala/enable-eldoc))))
 
 (use-package d-mode
   :ensure t)
