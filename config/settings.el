@@ -30,10 +30,9 @@
                  (global-company-mode)))
 
 ;;; Save backup files in dedicated directory
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist `((".*" . ,temporary-file-directory))
+	  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+	  create-lockfiles nil)
 
 (use-package ido
   :ensure t
