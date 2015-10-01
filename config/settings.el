@@ -227,7 +227,9 @@
                  (use-package flycheck-pos-tip
                    :ensure t
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
-                 (global-flycheck-mode)))
+                 (global-flycheck-mode)
+                 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
+                       flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml"))))
 
 (use-package avy
   :ensure t
@@ -307,11 +309,7 @@
 ;;; ace-window
 (use-package ace-window
   :ensure t
-  :bind ("C-x o" . ace-window)
-  :config (progn (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-                 (custom-set-faces
-                  '(aw-leading-char-face
-                    ((t (:inherit ace-jump-face-foreground :height 1.8)))))))
+  :bind ("C-x o" . ace-window))
 
 (use-package projectile
   :ensure t
@@ -626,6 +624,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :config (use-package ensime
             :ensure t
+			:bind ("M-<RET>" . ensime-show-doc-for-symbol-at-point)
             :config (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
                            (defun scala/enable-eldoc ()
                              "Show error message or type name at point by Eldoc."
@@ -633,10 +632,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                          #'(lambda ()
                                              (when (ensime-connected-p)
                                                (let ((err (ensime-print-errors-at-point)))
-                                                 (or (and err (not (string= err "")) err)
-                                                     (ensime-print-type-at-point))))))
+												 (and err (not (string= err "")) err)))))
                              (eldoc-mode +1))
-						   (add-hook 'scala-mode-hook 'scala/enable-eldoc))))
+                           (add-hook 'scala-mode-hook 'scala/enable-eldoc)
+						   (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
 
 (use-package d-mode
   :ensure t)
