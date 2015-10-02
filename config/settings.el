@@ -623,8 +623,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :config (use-package ensime
             :ensure t
-			:bind ("M-<RET>" . ensime-show-doc-for-symbol-at-point)
-            :config (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+			:config (progn ;; (require 'ensime-mode)
+						   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
                            (defun scala/enable-eldoc ()
                              "Show error message or type name at point by Eldoc."
                              (setq-local eldoc-documentation-function
@@ -633,7 +633,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                (let ((err (ensime-print-errors-at-point)))
 												 (and err (not (string= err "")) err)))))
                              (eldoc-mode +1))
-                           (add-hook 'scala-mode-hook 'scala/enable-eldoc)
+						   (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
+						   (add-hook 'scala-mode-hook 'scala/enable-eldoc)
 						   (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
 
 (use-package d-mode
