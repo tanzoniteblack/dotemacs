@@ -31,8 +31,8 @@
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist `((".*" . ,temporary-file-directory))
-	  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-	  create-lockfiles nil)
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+      create-lockfiles nil)
 
 (use-package ido
   :ensure t
@@ -443,18 +443,19 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                         cider-mode-line " cider"
                                         cider-prompt-for-symbol nil)
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
-                                  (define-key cider-mode-map (kbd "M-RET") 'cider-doc)))
-                 (use-package clj-refactor
-                   :ensure t
-                   :config (progn (setq cljr-suppress-middleware-warnings t)
-                                  (add-hook 'clojure-mode-hook (lambda ()
-                                                                 (clj-refactor-mode 1)
-                                                                 (cljr-add-keybindings-with-prefix "C-c C-m")))
-                                  (add-hook 'clojure-mode-hook 'yas-minor-mode)
-                                  (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                                  (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
+                                  (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
+                                  (use-package clj-refactor
+                                    :ensure t
+                                    :config (progn (setq cljr-suppress-middleware-warnings t)
+                                                   (add-hook 'cider-mode-hook (lambda ()
+                                                                                  (clj-refactor-mode 1)
+                                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
+                                                   (add-hook 'cider-mode-hook 'yas-minor-mode)
+                                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+                                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-                                  (define-key clojure-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
+                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
+
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
@@ -623,19 +624,19 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :config (use-package ensime
             :ensure t
-			:config (progn ;; (require 'ensime-mode)
-						   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-                           (defun scala/enable-eldoc ()
-                             "Show error message or type name at point by Eldoc."
-                             (setq-local eldoc-documentation-function
-                                         #'(lambda ()
-                                             (when (ensime-connected-p)
-                                               (let ((err (ensime-print-errors-at-point)))
-												 (and err (not (string= err "")) err)))))
-                             (eldoc-mode +1))
-						   (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
-						   (add-hook 'scala-mode-hook 'scala/enable-eldoc)
-						   (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
+            :config (progn ;; (require 'ensime-mode)
+                      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+                      (defun scala/enable-eldoc ()
+                        "Show error message or type name at point by Eldoc."
+                        (setq-local eldoc-documentation-function
+                                    #'(lambda ()
+                                        (when (ensime-connected-p)
+                                          (let ((err (ensime-print-errors-at-point)))
+                                            (and err (not (string= err "")) err)))))
+                        (eldoc-mode +1))
+                      (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
+                      (add-hook 'scala-mode-hook 'scala/enable-eldoc)
+                      (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
 
 (use-package d-mode
   :ensure t)
