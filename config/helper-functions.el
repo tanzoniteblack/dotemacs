@@ -181,3 +181,9 @@ Before and after saving the buffer, this function runs
       (message "(No changes need to be saved)"))))
 (defalias 'live-mp-orig-basic-save-buffer #'basic-save-buffer)
 (defalias 'basic-save-buffer #'live-mp-new-basic-save-buffer)
+
+(defun get-ip-addr ()
+  (interactive)
+  (let ((ipconfig (shell-command-to-string "wget http://ipinfo.io/ip -qO -")))
+    (string-match "\\(\\([0-9]+.\\)+[0-9]+\\)" ipconfig)
+    (insert (match-string 0 ipconfig))))
