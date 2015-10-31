@@ -228,7 +228,8 @@
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
                  (global-flycheck-mode)
                  (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
-                       flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml"))))
+                       flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
+					   flycheck-flake8-maximum-line-length 160)))
 
 (use-package avy
   :ensure t
