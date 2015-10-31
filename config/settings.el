@@ -399,7 +399,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-directory "~/Dropbox/.org/"
                        org-display-inline-images t
                        org-deadline-warning-days 3
-                       org-log-done 'time)
+                       org-log-done 'time
+					   org-src-fontify-natively nil)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
