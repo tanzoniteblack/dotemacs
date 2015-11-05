@@ -512,8 +512,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                    (company-emacs-eclim-setup)))
                                   (when (eq system-type 'darwin)
                                     (custom-set-variables
-                                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse"))
-                                     '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.4.0/eclipse/plugins/org.eclim_2.4.0/bin/eclim")))
+                                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/"))
+                                     '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.5.0/bin/eclim")))
                                   (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
                                   (bind-key "M-," 'pop-global-mark eclim-mode-map)
                                   (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)))))
