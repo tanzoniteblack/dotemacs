@@ -516,7 +516,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                      '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.5.0/bin/eclim")))
                                   (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
                                   (bind-key "M-," 'pop-global-mark eclim-mode-map)
-                                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)))))
+                                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)
+								  (bind-key "M-C-<return>" 'eclim-problems-correct eclim-mode-map)))))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
