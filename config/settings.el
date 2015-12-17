@@ -230,7 +230,7 @@
                  (global-flycheck-mode)
                  (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
                        flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
-					   flycheck-flake8-maximum-line-length 160)))
+                       flycheck-flake8-maximum-line-length 160)))
 
 (use-package avy
   :ensure t
@@ -401,7 +401,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time
-					   org-src-fontify-natively nil)
+                       org-src-fontify-natively nil)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -451,8 +451,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
                                                    (add-hook 'cider-mode-hook (lambda ()
-                                                                                  (clj-refactor-mode 1)
-                                                                                  (cljr-add-keybindings-with-prefix "C-c C-m")))
+                                                                                (clj-refactor-mode 1)
+                                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
                                                    (add-hook 'cider-mode-hook 'yas-minor-mode)
                                                    (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                                    (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
