@@ -167,7 +167,8 @@
                   ;; highlight word/letter changes in hunk diffs
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
-                  magit-save-repository-buffers nil)
+                  magit-save-repository-buffers nil
+				  magit-popup-use-prefix-argument 'default)
                  ;; Re-enable after magit 2.1.0 comes out
                  (defun endless/visit-pull-request-url ()
                    "Visit the current branch's PR on Github."
@@ -504,20 +505,22 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t
                    :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
-                 (use-package eclim
-                   :ensure emacs-eclim
-                   :init (add-hook 'java-mode-hook 'eclim-mode)
-                   :config (progn (use-package company-emacs-eclim
-                                    :config (progn (require 'cl)
-                                                   (company-emacs-eclim-setup)))
-                                  (when (eq system-type 'darwin)
-                                    (custom-set-variables
-                                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/"))
-                                     '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.5.0/bin/eclim")))
-                                  (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
-                                  (bind-key "M-," 'pop-global-mark eclim-mode-map)
-                                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)
-								  (bind-key "M-C-<return>" 'eclim-problems-correct eclim-mode-map)))))
+                 ;; (use-package eclim
+                 ;;   :ensure emacs-eclim
+                 ;;   :init (add-hook 'java-mode-hook 'eclim-mode)
+                 ;;   :config (progn (use-package company-emacs-eclim
+                 ;;                    :config (progn (require 'cl)
+                 ;;                                   (company-emacs-eclim-setup)))
+                 ;;                  (when (eq system-type 'darwin)
+                 ;;                    (custom-set-variables
+                 ;;                     '(eclim-eclipse-dirs '("/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/"))
+                 ;;                     '(eclim-executable "/opt/homebrew-cask/Caskroom/eclipse-java/4.5/Eclipse.app/Contents/Eclipse/plugins/org.eclim_2.5.0/bin/eclim")))
+                 ;;                  (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
+                 ;;                  (bind-key "M-," 'pop-global-mark eclim-mode-map)
+                 ;;                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)
+				 ;; 				  (bind-key "M-C-<return>" 'eclim-problems-correct eclim-mode-map)))
+
+				 ))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -629,6 +632,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :ensure t
             :config (progn ;; (require 'ensime-mode)
                       (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+					  ;; Despite the name, this really just enables ensime-mode
+					  (add-hook 'java-mode-hook 'ensime-scala-mode-hook)
 					  (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
                       (add-hook 'scala-mode-hook 'scala/enable-eldoc)
                       (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
