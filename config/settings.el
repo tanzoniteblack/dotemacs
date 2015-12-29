@@ -630,8 +630,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
             :config (progn ;; (require 'ensime-mode)
                       (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
                       (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
-                      (add-hook 'scala-mode-hook 'scala/enable-eldoc)
-                      (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
+					  (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
 
 (use-package d-mode
   :ensure t)
