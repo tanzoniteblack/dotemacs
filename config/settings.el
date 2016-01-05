@@ -447,7 +447,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                         cider-prompt-for-symbol nil)
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-                                  (use-package clj-refactor
+								  (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
+								  (use-package clj-refactor
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
                                                    (add-hook 'cider-mode-hook (lambda ()
