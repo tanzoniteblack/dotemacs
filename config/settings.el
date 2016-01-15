@@ -471,15 +471,15 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :config (use-package tern
-            :commands tern-mode
-            :init (progn (add-hook 'js2-mode-hook 'tern-mode)
+			:ensure t
+			:init (progn (add-hook 'js2-mode-hook 'tern-mode)
                          (setq js2-include-node-externs t
                                js2-include-browser-externs t))
 
             :config (progn (use-package company-tern
                              :ensure t
                              :commands company-tern
-                             :init (add-to-list 'company-backends 'company-tern))
+                             :config (add-to-list 'company-backends 'company-tern))
                            (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
                            (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
