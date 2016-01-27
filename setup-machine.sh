@@ -15,7 +15,7 @@ sudo chown -R $USER ~/.lein/
 ln ~/.emacs.d/profiles.clj ~/.lein/profiles.clj
 
 # Install helper programs (Ubuntu only)
-sudo apt-get install -y zsh aspell htop nethogs
+sudo apt-get install -y zsh aspell htop nethogs emacs-nox openjdk-8-jdk
 
 # Setup zsh
 rm -rf ~/.oh-my-zsh.bak
