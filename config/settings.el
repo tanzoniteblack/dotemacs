@@ -444,10 +444,12 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
-                                        cider-prompt-for-symbol nil)
+                                        cider-prompt-for-symbol nil
+										cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
                                   (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
 								  (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
+
 								  (use-package clj-refactor
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
