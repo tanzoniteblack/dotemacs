@@ -453,14 +453,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
 								  (use-package clj-refactor
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
-                                                   (add-hook 'cider-mode-hook (lambda ()
-                                                                                (clj-refactor-mode 1)
-                                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
-                                                   (add-hook 'cider-mode-hook 'yas-minor-mode)
-                                                   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                                                   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
+								  				   (add-hook 'cider-mode-hook (lambda ()
+								  												(clj-refactor-mode 1)
+								  												(cljr-add-keybindings-with-prefix "C-c C-m")))
+								  				   (add-hook 'cider-mode-hook 'yas-minor-mode)
+								  				   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+								  				   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
+								  				   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
