@@ -460,6 +460,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
 								  (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
 
+								  (add-to-list 'cider-jack-in-dependencies ("criterium" "0.4.3"))
+
 								  (use-package clj-refactor
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
