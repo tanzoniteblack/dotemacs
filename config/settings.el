@@ -245,7 +245,8 @@
   :ensure t
   :bind (("C-c SPC" . avy-goto-word-1)
          ("C-c S-SPC" . avy-goto-char)
-         ("M-g G" . avy-goto-line)))
+         ("M-g G" . avy-goto-line))
+  :config (progn (bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map)))
 
 
 (use-package expand-region
