@@ -1,3 +1,12 @@
+(defun adjust-gc-cons-threshold-max ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun reset-gc-cons-threshold ()
+  (setq gc-cons-threshold 800000))
+
+(add-hook 'minibuffer-setup-hook #'adjust-gc-cons-threshold-max)
+(add-hook 'minibuffer-exit-hook #'reset-gc-cons-threshold)
+
 ;; tmp-directory
 (setq live-tmp-dir "~/.emacs.d/tmp/")
 
