@@ -725,10 +725,3 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :config (global-anzu-mode 1)
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp)))
-
-(use-package aggressive-indent
-  :ensure t
-  :config (progn (global-aggressive-indent-mode 1)
-				 (add-to-list 'aggressive-indent-excluded-modes 'python-mode)
-				 (add-to-list 'aggressive-indent-excluded-modes 'sql-mode)
-				 (add-to-list 'aggressive-indent-excluded-modes 'jape-mode)))
