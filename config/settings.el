@@ -177,7 +177,7 @@
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
                   magit-save-repository-buffers nil
-				  magit-popup-use-prefix-argument 'default)
+                  magit-popup-use-prefix-argument 'default)
                  ;; Re-enable after magit 2.1.0 comes out
                  (defun endless/visit-pull-request-url ()
                    "Visit the current branch's PR on Github."
@@ -246,7 +246,8 @@
   :bind (("C-c SPC" . avy-goto-word-1)
          ("C-c S-SPC" . avy-goto-char)
          ("M-g G" . avy-goto-line))
-  :config (progn (bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map)))
+  :config (progn (eval-after-load 'conf-mode
+                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
 
 (use-package expand-region
@@ -455,24 +456,26 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
                                         cider-prompt-for-symbol nil
-										cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
-                                  (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
-                                  (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-								  (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
+                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+                                  (add-hook 'cider-mode-hook
+                                            (lambda ()
+                                              (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+                                              (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
+                                              (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
 
-								  (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))
+                                  (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))
 
-								  (use-package clj-refactor
+                                  (use-package clj-refactor
                                     :ensure t
                                     :config (progn (setq cljr-suppress-middleware-warnings t)
-								  				   (add-hook 'cider-mode-hook (lambda ()
-								  												(clj-refactor-mode 1)
-								  												(cljr-add-keybindings-with-prefix "C-c C-m")))
-								  				   (add-hook 'cider-mode-hook 'yas-minor-mode)
-								  				   (define-key clojure-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-								  				   (define-key clojure-mode-map (kbd "C->") 'cljr-cycle-coll)
+                                                   (add-hook 'cider-mode-hook (lambda ()
+                                                                                (clj-refactor-mode 1)
+                                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
+                                                   (add-hook 'cider-mode-hook 'yas-minor-mode)
+                                                   (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+                                                   (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-								  				   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
+                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
@@ -485,8 +488,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :config (use-package tern
-			:ensure t
-			:init (progn (add-hook 'js2-mode-hook 'tern-mode)
+            :ensure t
+            :init (progn (add-hook 'js2-mode-hook 'tern-mode)
                          (setq js2-include-node-externs t
                                js2-include-browser-externs t))
 
@@ -533,9 +536,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  ;;                  (bind-key "M-." 'eclim-java-find-declaration eclim-mode-map)
                  ;;                  (bind-key "M-," 'pop-global-mark eclim-mode-map)
                  ;;                  (bind-key "M-<return>" 'eclim-java-show-documentation-for-current-element eclim-mode-map)
-				 ;; 				  (bind-key "M-C-<return>" 'eclim-problems-correct eclim-mode-map)))
+                 ;;                   (bind-key "M-C-<return>" 'eclim-problems-correct eclim-mode-map)))
 
-				 ))
+                 ))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
