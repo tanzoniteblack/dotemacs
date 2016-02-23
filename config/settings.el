@@ -505,6 +505,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                            (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
                            (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs))))
 
+(use-package stylus-mode
+  :ensure t)
 
 (defun format-buffer ()
   "format buffer"
