@@ -331,6 +331,22 @@
                    (add-to-list 'projectile-globally-ignored-files file-name))
                  (when (eq system-type 'windows-nt)
                    (setq projectile-indexing-method 'alien))
+
+                 (defun run-junit-test-unit (universal-arg)
+                   (interactive "P")
+                   (let* ((file-name (buffer-file-name))
+                          (class-name (car (split-string
+                                            (car (last (split-string file-name "/")))
+                                            "\\.")))
+                          (root (projectile-project-root))
+                          (test-name (when universal-arg
+                                       (read-string (projectile-prepend-project-name "Run test method: ")
+                                                    (projectile-symbol-or-selection-at-point))))
+                          (mvn-cmd (concat "cd " root " && "
+                                           "mvn -Dtest=" class-name (when test-name (concat "#" test-name))
+                                           " test ")))
+                     (projectile-run-compilation mvn-cmd)))
+				 (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
@@ -475,7 +491,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                    (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                                    (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
+                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
+                                  (use-package flycheck-clojure
+                                    :ensure t
+                                    :init (flycheck-clojure-setup))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
