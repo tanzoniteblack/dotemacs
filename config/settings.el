@@ -247,8 +247,7 @@
          ("C-c S-SPC" . avy-goto-char)
          ("M-g G" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
-                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
-
+				   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
 (use-package expand-region
   :ensure t
@@ -468,6 +467,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t
                    :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
                                   (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
+								  (add-hook 'cider-repl-mode-hook 'cider-turn-on-eldoc-mode)
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
