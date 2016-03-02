@@ -237,9 +237,13 @@
                    :ensure t
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
                  (global-flycheck-mode)
+				 (require 'flycheck-checkstyle)
+				 (add-to-list 'flycheck-checkers 'checkstyle)
                  (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
                        flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
-                       flycheck-flake8-maximum-line-length 160)))
+                       flycheck-flake8-maximum-line-length 160
+					   flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
+					   flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
 
 (use-package avy
   :ensure t
@@ -474,7 +478,10 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                    (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                                    (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
+                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
+								  (use-package flycheck-clojure
+									 :ensure t
+									 :init (flycheck-clojure-setup))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
