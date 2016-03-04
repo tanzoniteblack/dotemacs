@@ -491,10 +491,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                    (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                                                    (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
-                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
-                                  (use-package flycheck-clojure
-                                    :ensure t
-                                    :init (flycheck-clojure-setup))))
+                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
