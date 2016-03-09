@@ -427,7 +427,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time
-                       org-src-fontify-natively nil)
+                       org-src-fontify-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -472,7 +472,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
                                         cider-prompt-for-symbol nil
-                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)"
+										cider-repl-use-pretty-printing t)
                                   (add-hook 'cider-mode-hook
                                             (lambda ()
                                               (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
@@ -746,3 +747,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :config (global-anzu-mode 1)
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp)))
+
+(use-package spray
+  :ensure t
+  :commands spray-mode)
