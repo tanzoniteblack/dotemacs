@@ -247,7 +247,7 @@
          ("C-c S-SPC" . avy-goto-char)
          ("M-g G" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
-				   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
+                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
 (use-package expand-region
   :ensure t
@@ -345,7 +345,7 @@
                                            "mvn -Dtest=" class-name (when test-name (concat "#" test-name))
                                            " test ")))
                      (projectile-run-compilation mvn-cmd)))
-				 (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
+                 (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
@@ -427,7 +427,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time
-                       org-src-fontify-natively t)
+                       org-src-fontify-natively nil)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -467,13 +467,12 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    :ensure t
                    :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
                                   (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
-								  (add-hook 'cider-repl-mode-hook 'cider-turn-on-eldoc-mode)
+                                  (add-hook 'cider-repl-mode-hook 'cider-turn-on-eldoc-mode)
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
                                         cider-prompt-for-symbol nil
-                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)"
-										cider-repl-use-pretty-printing t)
+                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
                                   (add-hook 'cider-mode-hook
                                             (lambda ()
                                               (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
@@ -497,6 +496,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
+                 (add-hook 'clojure-mode-hook
+                           (lambda ()
+							 (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
@@ -530,6 +532,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
   (interactive)
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
+  (when (eq major-mode 'clojure-mode)
+	(clojure-align (point-min) (point-max)))
   (untabify (point-min) (point-max)))
 
 (global-set-key (kbd "C-S-f") 'format-buffer)
