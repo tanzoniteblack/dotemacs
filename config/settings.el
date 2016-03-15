@@ -237,13 +237,13 @@
                    :ensure t
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
                  (global-flycheck-mode)
-				 (require 'flycheck-checkstyle)
-				 (add-to-list 'flycheck-checkers 'checkstyle)
+                 (require 'flycheck-checkstyle)
+                 (add-to-list 'flycheck-checkers 'checkstyle)
                  (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
                        flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
                        flycheck-flake8-maximum-line-length 160
-					   flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
-					   flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
+                       flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
+                       flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
 
 (use-package avy
   :ensure t
@@ -498,11 +498,11 @@ the checking happens for all pairs in auto-minor-mode-alist"
                                                    (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
 
                  (add-hook 'clojure-mode-hook (lambda ()
-												(setq buffer-save-without-query t)))
+                                                (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  (add-hook 'clojure-mode-hook
                            (lambda ()
-							 (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                             (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
@@ -537,7 +537,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
   (when (eq major-mode 'clojure-mode)
-	(clojure-align (point-min) (point-max)))
+    (clojure-align (point-min) (point-max)))
   (untabify (point-min) (point-max)))
 
 (global-set-key (kbd "C-S-f") 'format-buffer)
@@ -755,3 +755,21 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :config (global-anzu-mode 1)
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp)))
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :init (add-to-list 'auto-mode-alist '("\\.dot$" . graphviz-dot-mode))
+  :config (progn (defun graphviz-compile-and-preview ()
+                   (interactive)
+                   (if (buffer-file-name)
+                       (progn (shell-command (concat graphviz-dot-dot-program
+                                                     " -T" graphviz-dot-preview-extension " "
+                                                     (shell-quote-argument buffer-file-name)
+                                                     " -o "
+                                                     (shell-quote-argument
+                                                      (concat (file-name-sans-extension buffer-file-name)
+                                                              "." graphviz-dot-preview-extension))))
+                              (call-interactively 'graphviz-dot-preview))))
+                 (add-hook 'graphviz-dot-mode-hook
+                           (lambda ()
+                             (add-hook 'after-save-hook 'graphviz-compile-and-preview nil 'make-it-local)))))
