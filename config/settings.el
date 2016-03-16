@@ -282,7 +282,8 @@
                (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
                (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode)))
   :config (progn (add-hook 'json-mode-hook 'flycheck-mode)
-                 (bind-key "C-S-f" 'json-mode-beautify json-mode-map)))
+                 (bind-key "C-S-f" 'json-mode-beautify json-mode-map)
+				 (setq json-reformat:pretty-string? t)))
 
 (use-package nxml-mode
   :defer t
