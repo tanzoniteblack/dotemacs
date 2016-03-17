@@ -249,7 +249,7 @@
   :ensure t
   :bind (("C-c SPC" . avy-goto-word-1)
          ("C-c S-SPC" . avy-goto-char)
-         ("M-g G" . avy-goto-line))
+         ("M-g g" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
                    '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
