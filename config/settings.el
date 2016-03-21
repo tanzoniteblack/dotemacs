@@ -29,10 +29,13 @@
 ;;; global-company-mode for completions
 (use-package company
   :ensure t
-  :commands global-company-mode
-  :diminish "comp"
+  :commands (company-mode global-company-mode)
+  :diminish company-mode
   :config (progn (setq company-idle-delay .2
-                       company-tooltip-flip-when-above t)
+					   company-dabbrev-ignore-case t
+					   company-dabbrev-code-ignore-case t
+					   company-dabbrev-downcase nil
+					   company-tooltip-flip-when-above t)
                  (bind-key "C-<tab>" 'company-manual-begin)
                  (bind-key "C-n" 'company-select-next company-active-map)
                  (bind-key "C-p" 'company-select-previous company-active-map)
@@ -774,3 +777,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'graphviz-dot-mode-hook
                            (lambda ()
                              (add-hook 'after-save-hook 'graphviz-compile-and-preview nil 'make-it-local)))))
+
+(use-package popup-imenu
+  :ensure t
+  :commands popup-imenu
+  :bind ("M-i" . popup-imenu))
