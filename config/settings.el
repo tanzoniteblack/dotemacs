@@ -32,10 +32,10 @@
   :commands (company-mode global-company-mode)
   :diminish company-mode
   :config (progn (setq company-idle-delay .2
-					   company-dabbrev-ignore-case t
-					   company-dabbrev-code-ignore-case t
-					   company-dabbrev-downcase nil
-					   company-tooltip-flip-when-above t)
+                       company-dabbrev-ignore-case t
+                       company-dabbrev-code-ignore-case t
+                       company-dabbrev-downcase nil
+                       company-tooltip-flip-when-above t)
                  (bind-key "C-<tab>" 'company-manual-begin)
                  (bind-key "C-n" 'company-select-next company-active-map)
                  (bind-key "C-p" 'company-select-previous company-active-map)
@@ -290,7 +290,7 @@
                (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode)))
   :config (progn (add-hook 'json-mode-hook 'flycheck-mode)
                  (bind-key "C-S-f" 'json-mode-beautify json-mode-map)
-				 (setq json-reformat:pretty-string? t)))
+                 (setq json-reformat:pretty-string? t)))
 
 (use-package nxml-mode
   :defer t
@@ -324,11 +324,6 @@
                 browse-kill-ring-no-duplicates t
                 browse-kill-ring-display-duplicates nil
                 browse-kill-ring-highlight-inserted-item nil))
-
-;;; ace-window
-(use-package ace-window
-  :ensure t
-  :bind ("C-x o" . ace-window))
 
 (use-package projectile
   :ensure t
@@ -435,7 +430,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time
-                       org-src-fontify-natively nil)
+                       org-src-fontify-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -465,7 +460,14 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    (add-to-list 'ispell-skip-region-alist '("~" "~"))
                    (add-to-list 'ispell-skip-region-alist '("=" "="))
                    (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
-                 (add-hook 'org-mode-hook #'endless/org-ispell)))
+                 (add-hook 'org-mode-hook #'endless/org-ispell)
+                 (defun org-align-to-edge ()
+                   (interactive)
+                   (let ((org-tags-column (* -1 (- (window-body-width) 4))))
+                     (org-align-all-tags)))
+				 (use-package ox-gfm
+				   ;; org-mode export in github flavored markdown
+				   :ensure t)))
 
 (use-package clojure-mode
   :ensure t
