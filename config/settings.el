@@ -465,9 +465,21 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    (interactive)
                    (let ((org-tags-column (* -1 (- (window-body-width) 4))))
                      (org-align-all-tags)))
-				 (use-package ox-gfm
-				   ;; org-mode export in github flavored markdown
-				   :ensure t)))
+                 (use-package ox-gfm
+                   ;; org-mode export in github flavored markdown
+                   :ensure t)
+
+                 (defun kill-org-src-buffers (&rest args)
+                   "Kill temporary buffers created by
+org-src-font-lock-fontify-block so they don't interfere with
+magit-mode."
+                   (dolist (b (buffer-list))
+                     (let ((bufname (buffer-name b)))
+                       (if (string-prefix-p " org-src-fontification:" bufname)
+                           (kill-buffer b)))))
+
+                 (advice-add 'org-src-font-lock-fontify-block
+                             :after #'kill-org-src-buffers)))
 
 (use-package clojure-mode
   :ensure t
