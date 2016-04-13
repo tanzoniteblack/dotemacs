@@ -488,8 +488,8 @@ magit-mode."
                  (use-package cider
                    :ensure t
                    :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
-                                  (add-hook 'clojure-mode-hook 'cider-turn-on-eldoc-mode)
-                                  (add-hook 'cider-repl-mode-hook 'cider-turn-on-eldoc-mode)
+                                  (add-hook 'clojure-mode-hook 'eldoc-mode)
+                                  (add-hook 'cider-repl-mode-hook 'eldoc-mode)
                                   (add-hook 'cider-repl-mode-hook 'subword-mode)
                                   (setq cider-annotate-completion-candidates t
                                         cider-mode-line " cider"
