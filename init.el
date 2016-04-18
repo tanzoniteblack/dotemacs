@@ -512,6 +512,9 @@
                                            " test ")))
                      (projectile-run-compilation mvn-cmd)))
                  (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
+                 (defun projectile-lein-ancient ()
+                   (interactive)
+                   (projectile-run-compilation "lein with-profile ancient ancient :all"))
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
