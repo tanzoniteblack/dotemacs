@@ -490,7 +490,8 @@
 
 (use-package projectile
   :ensure t
-  :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+  :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name)))
+                       projectile-create-missing-test-files t)
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
@@ -682,8 +683,8 @@ magit-mode."
                                                    (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
                                                    (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
-
-                 (add-hook 'clojure-mode-hook (lambda ()
+				 (setq clojure-align-forms-automatically t)
+				 (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  (add-hook 'clojure-mode-hook
