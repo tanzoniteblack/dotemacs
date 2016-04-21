@@ -1,13 +1,13 @@
 (require 'package)
 (setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (package-initialize)
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-    (add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
     (package-refresh-contents)
     (package-install 'use-package)))
 
