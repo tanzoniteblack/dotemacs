@@ -1,13 +1,13 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (package-initialize)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-    (add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
     (package-refresh-contents)
     (package-install 'use-package)))
 
@@ -30,7 +30,8 @@
 ;;; autocompile emacs-lisp files
 (use-package auto-compile
   :ensure t
-  :config (auto-compile-on-load-mode 1))
+  :config (progn (auto-compile-on-load-mode 1)
+                 (auto-compile-on-save-mode 1)))
 
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
@@ -38,14 +39,98 @@
 (use-package diminish
   :ensure t)
 
-(load-library "environment.el")
+(setenv "LANG" "en_US.UTF-8")
 
 ;;; if local-environment.el file is found in load-path, load it, else skip
 (let ((local-environment-file (locate-file "local-environment.el" load-path)))
   (when local-environment-file
     (load-file local-environment-file)))
 
-(load-library "helper-functions.el")
+;; handy util fns, many borrowed from emacs-live
+
+(defun insert-date ()
+  "Insert a time-stamp according to locale's date and time format."
+  (interactive)
+  (insert (format-time-string "%D" (current-time))))
+
+(defun delete-this-buffer-and-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+
+(defun live-delete-whitespace-except-one ()
+  "Delete all whitespace around point except for 1 space,
+includes the deletion of new lines."
+  (interactive)
+  (just-one-space -1))
+
+(defun delete-adjacent-whitespace (&optional backward-only)
+  "Delete all whitespace around point.
+If BACKWARD-ONLY is non-nil, only delete them before point."
+  (interactive "*P")
+  (let ((orig-pos (point)))
+    (delete-region
+     (if backward-only
+         orig-pos
+       (progn
+         (skip-chars-forward "[:space:]\n")
+         (constrain-to-field nil orig-pos t)))
+     (progn
+       (skip-chars-backward "[:space:]\n")
+       (constrain-to-field nil orig-pos)))))
+
+(defun live-delete-and-extract-sexp ()
+  "Delete the sexp and return it."
+  (interactive)
+  (let* ((begin (point)))
+    (forward-sexp)
+    (let* ((result (buffer-substring-no-properties begin (point))))
+      (delete-region begin (point))
+      result)))
+
+(defun copy-file-path ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      (file-name-directory default-directory)
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename nil))))
+
+(defun ask-before-closing ()
+  "Ask whether or not to close, and then close if y was pressed"
+  (interactive)
+  (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
+      (if (< emacs-major-version 22)
+          (save-buffers-kill-terminal)
+        (save-buffers-kill-emacs))
+    (message "Canceled exit")))
+
+(defun beautify-xml ()
+  (interactive)
+  (let ((b (if mark-active (min (point) (mark)) (point-min)))
+        (e (if mark-active (max (point) (mark)) (point-max))))
+    (shell-command-on-region b e "xmllint --format -" (current-buffer) t)))
+
+(defun sudo-edit (&optional arg)
+  (interactive "P")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun get-ip-addr ()
+  (interactive)
+  (let ((ipconfig (shell-command-to-string "wget http://ipinfo.io/ip -qO -")))
+    (string-match "\\(\\([0-9]+.\\)+[0-9]+\\)" ipconfig)
+    (insert (match-string 0 ipconfig))))
 
 ;; don't load splash screen
 (setq inhibit-splash-screen t)
@@ -78,15 +163,15 @@
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 160))
-	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
-	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
+    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun font-size-thunderbolt ()
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 170))
-	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
-	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
+    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun toggle-maximized ()
   "Toggle whether window is maximized or not (currently only supports X11 with wmctrl installed)"
@@ -117,10 +202,10 @@
   :ensure t
   :if window-system
   :config (progn (setq git-gutter-fr:side 'right-fringe)
-               (setq-default left-fringe-width (floor (* 0.4 (frame-char-width))))
-               (setq-default right-fringe-width (floor (* 1.2 (frame-char-width))))
-               (global-git-gutter-mode)
-               (diminish 'git-gutter-mode "")))
+                 (setq-default left-fringe-width (floor (* 0.4 (frame-char-width))))
+                 (setq-default right-fringe-width (floor (* 1.2 (frame-char-width))))
+                 (global-git-gutter-mode)
+                 (diminish 'git-gutter-mode "")))
 
 (use-package powerline
   :ensure t)
@@ -129,7 +214,7 @@
   :ensure t
   :config (progn (powerline-moe-theme)
                  (moe-theme-set-color 'purple)
-				 (moe-dark)))
+                 (moe-dark)))
 
 ;;; expression highlight
 (setq show-paren-style 'parenthesis)
@@ -606,7 +691,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    (let (org-log-done org-log-states)   ; turn off logging
                      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
                  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-                 ;; remap ace-jump-word-mode (org-mode automatically disables)
+                 ;; remap ace--word-mode (org-mode automatically disables)
                  (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
@@ -684,8 +769,8 @@ magit-mode."
                                                    (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
 
                                                    (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
-				 (setq clojure-align-forms-automatically t)
-				 (add-hook 'clojure-mode-hook (lambda ()
+                 (setq clojure-align-forms-automatically t)
+                 (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
                  (add-hook 'clojure-mode-hook
@@ -700,11 +785,11 @@ magit-mode."
   :mode "\\.js\\'"
   :config (use-package tern
             :ensure t
-			:commands (tern-mode)
+            :commands (tern-mode)
             :init (progn (add-hook 'js2-mode-hook 'tern-mode)
                          (setq js2-include-node-externs t
                                js2-include-browser-externs t))
-			:config (progn (use-package company-tern
+            :config (progn (use-package company-tern
                              :ensure t
                              :commands company-tern
                              :init (add-to-list 'company-backends 'company-tern))
@@ -743,17 +828,17 @@ magit-mode."
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
-(use-package elpy
-  :ensure t
-  :commands (elpy-enable)
-  :init (with-eval-after-load 'python (elpy-enable))
-  :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
-				 (setq elpy-rpc-backend "jedi")
-                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+;; (use-package elpy
+;;   :ensure t
+;;   :commands (elpy-enable)
+;;   :init (with-eval-after-load 'python (elpy-enable))
+;;   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
+;;               (setq elpy-rpc-backend "jedi")
+;;                  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+;;                  (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+;;                  (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+;;                  (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+;;                  (add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
@@ -766,7 +851,7 @@ magit-mode."
   :commands (smartparens-global-mode smartparens-mode)
   :init (smartparens-global-mode t)
   :config (progn (use-package smartparens-config)
-				 ;; highlights matching pairs
+                 ;; highlights matching pairs
                  (show-smartparens-global-mode t)
                  ;; custom keybindings for smartparens mode
                  (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
@@ -853,7 +938,7 @@ magit-mode."
           :ensure t
           :commands (ensime-scala-mode-hook)
           :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-					   ;; Despite the name, this really just enables ensime-mode
+                       ;; Despite the name, this really just enables ensime-mode
                        (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
           :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
                          (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
@@ -960,10 +1045,66 @@ magit-mode."
   :commands popup-imenu
   :bind ("M-i" . popup-imenu))
 
-(load-library "file-settings.el")
+;; use gfm-mode (github formatted md) instead of regular markdown-mode
+
+(add-to-list 'auto-mode-alist '("\\.gate$" . xml-mode))
+
+;;; open Cask files in lisp-mode
+(add-to-list 'auto-mode-alist '("Cask" . lisp-mode))
+
+;; recognize .zsh files for sh-mode
+(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh-theme$" . sh-mode))
+
+(add-to-list 'auto-minor-mode-alist '("My Clippings.txt" . read-only-mode))
+
 (when (eq system-type 'darwin)
-  (load-library "osx-config.el"))
+  ;; OS X specific configuration
+  ;; ---------------------------
+
+  ;; Make cut and paste work with the OS X clipboard
+
+  (defun live-copy-from-osx ()
+    (shell-command-to-string "pbpaste"))
+
+  (defun live-paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+
+  (when (not window-system)
+    (setq interprogram-cut-function #'live-paste-to-osx)
+    (setq interprogram-paste-function #'live-copy-from-osx))
+
+  ;; Work around a bug on OS X where system-name is a fully qualified
+  ;; domain name
+  (setq system-name (car (split-string system-name "\\.")))
+
+  ;; Ensure the exec-path honours the shell PATH
+  (use-package exec-path-from-shell
+    :ensure t
+    :config (exec-path-from-shell-initialize))
+
+  ;; Ignore .DS_Store files with ido mode
+  (add-to-list 'ido-ignore-files "\\.DS_Store"))
+
 (when (eq system-type 'windows-nt)
   (load-library "windows-config.el"))
+
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (company-tern clj-refactor cider clojure-mode-extra-font-locking go-eldoc company-go gitignore-mode gitconfig-mode exec-path-from-shell use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
