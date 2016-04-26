@@ -88,17 +88,3 @@ if [ -f ~/.zshrc-osx ]
 then
 	source ~/.zshrc-osx
 fi
-
-export GIT_EDITOR='emacs -nw '
-export EDITOR='emacs -nw -q '
-
-alias ls='ls -G'
-
-# Change dpoggi theme to reverse ) and git status symbol
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}("
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[yellow]%})%{$fg[green]%}○%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%})%{$fg[red]%}⚡%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX=""
-
-ZSH_HIGHLIGHT_PATTERNS=('rm *-rf*' 'fg=white,bold,bg=red')
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
