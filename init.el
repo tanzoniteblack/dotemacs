@@ -8,6 +8,11 @@
 (add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 
+(setq custom-file "~/.emacs-custom.el")
+(let ((custom-file (locate-file custom-file load-path)))
+  (when custom-file
+    (load custom-file)))
+
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
@@ -294,7 +299,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; global-company-mode for completions
 (use-package company
   :ensure t
-  :commands (company-mode global-company-mode)
   :diminish company-mode
   :config (progn (setq company-idle-delay .2
                        company-dabbrev-ignore-case t
@@ -1097,17 +1101,3 @@ magit-mode."
 
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (company-tern clj-refactor cider clojure-mode-extra-font-locking go-eldoc company-go gitignore-mode gitconfig-mode exec-path-from-shell use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
