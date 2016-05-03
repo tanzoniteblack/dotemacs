@@ -506,11 +506,17 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 (use-package avy
   :ensure t
-  :bind (("C-c SPC" . avy-goto-word-1)
-         ("C-c S-SPC" . avy-goto-char)
+  :bind (("C-c SPC" . avy-goto-char)
+         ;; ("C-c S-SPC" . avy-goto-char)
          ("M-g g" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
                    '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
+
+(use-package ace-pinyin
+  :ensure t
+  :commands ace-pinyin-global-mode
+  ;; :config (ace-pinyin-global-mode +1)
+  )
 
 (use-package expand-region
   :ensure t
@@ -691,7 +697,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-display-inline-images t
                        org-deadline-warning-days 3
                        org-log-done 'time
-                       org-src-fontify-natively t)
+                       org-src-fontify-natively t
+					   org-src-tab-acts-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
