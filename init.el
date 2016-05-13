@@ -512,11 +512,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :config (progn (eval-after-load 'conf-mode
                    '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
-(use-package ace-pinyin
-  :ensure t
-  :commands ace-pinyin-global-mode
-  ;; :config (ace-pinyin-global-mode +1)
-  )
+;; (use-package ace-pinyin
+;;   :ensure t
+;;   :commands ace-pinyin-mode
+;;   ;; :config (ace-pinyin-global-mode +1)
+;;   )
 
 (use-package expand-region
   :ensure t
@@ -698,7 +698,8 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-deadline-warning-days 3
                        org-log-done 'time
                        org-src-fontify-natively t
-					   org-src-tab-acts-natively t)
+					   org-src-tab-acts-natively t
+					   org-todo-keywords '((sequence "TODO" "INPROGRESS" "|" "DONE")))
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -729,10 +730,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    (add-to-list 'ispell-skip-region-alist '("=" "="))
                    (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
                  (add-hook 'org-mode-hook #'endless/org-ispell)
-                 (defun org-align-to-edge ()
-                   (interactive)
-                   (let ((org-tags-column (* -1 (- (window-body-width) 4))))
-                     (org-align-all-tags)))
                  (use-package ox-gfm
                    ;; org-mode export in github flavored markdown
                    :ensure t)
