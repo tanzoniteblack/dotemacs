@@ -942,7 +942,7 @@ magit-mode."
   :defer t
   :ensure t)
 
-(use-package scala-mode2
+(use-package scala-mode
   :ensure t
   :defer t
   :init (use-package ensime
