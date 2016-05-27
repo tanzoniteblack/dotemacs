@@ -797,7 +797,7 @@ magit-mode."
 
 (use-package js2-mode
   :ensure t
-  :mode "\\.js\\'"
+  ;; :mode "\\.js\\'"
   :config (use-package tern
             :ensure t
             :commands (tern-mode)
@@ -1000,7 +1000,9 @@ magit-mode."
                (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode)))
+               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
   :config (progn (defun my-web-mode-hook ()
                    (setq web-mode-enable-auto-pairing nil))
 
@@ -1017,7 +1019,6 @@ magit-mode."
 
                      t))
 				 ;; recognize /* @jsx React.DOM */ at the top of files for web-mode
-				 (add-to-list 'magic-mode-alist '("/\\* @jsx React\\.DOM \\*/" . web-mode))
 				 (defun webmode-jsx-setup ()
 				   (when (or (string/ends-with buffer-file-name ".js")
 							 (string/ends-with buffer-file-name ".jsx"))
@@ -1025,6 +1026,7 @@ magit-mode."
 					 (web-mode-set-content-type "jsx")
 					 (setq-local web-mode-enable-auto-quoting nil)
 					 (setq-local web-mode-code-indent-offset 2)
+					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
                  (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))))
@@ -1042,6 +1044,10 @@ magit-mode."
   :ensure t)
 
 (use-package jape-mode
+  :defer t
+  :ensure t)
+
+(use-package yaml-mode
   :defer t
   :ensure t)
 
