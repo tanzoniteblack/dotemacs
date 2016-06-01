@@ -1022,6 +1022,7 @@ magit-mode."
 				 (defun webmode-jsx-setup ()
 				   (when (or (string/ends-with buffer-file-name ".js")
 							 (string/ends-with buffer-file-name ".jsx"))
+					 (yas-minor-mode)
 					 (yas-activate-extra-mode 'js-mode)
 					 (web-mode-set-content-type "jsx")
 					 (setq-local web-mode-enable-auto-quoting nil)
@@ -1029,7 +1030,8 @@ magit-mode."
 					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
-                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))))
+                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+                 (sp-local-pair 'web-mode "{" "}")))
 
 (use-package ruby-mode
   :ensure t
