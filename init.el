@@ -626,6 +626,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;;; ansi colors in compilation mode
 (ignore-errors
+  (add-to-list 'compilation-environment "TERM=xterm-256color")
   (defun my-colorize-compilation-buffer ()
     (when (eq major-mode 'compilation-mode)
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
@@ -1022,6 +1023,7 @@ magit-mode."
 				 (defun webmode-jsx-setup ()
 				   (when (or (string/ends-with buffer-file-name ".js")
 							 (string/ends-with buffer-file-name ".jsx"))
+					 (yas-minor-mode)
 					 (yas-activate-extra-mode 'js-mode)
 					 (web-mode-set-content-type "jsx")
 					 (setq-local web-mode-enable-auto-quoting nil)
@@ -1029,7 +1031,8 @@ magit-mode."
 					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
-                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))))
+                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+                 (sp-local-pair 'web-mode "{" "}")))
 
 (use-package ruby-mode
   :ensure t
