@@ -619,6 +619,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                  (defun projectile-lein-ancient ()
                    (interactive)
                    (projectile-run-compilation "lein with-profile ancient ancient :all"))
+
+                 (projectile-register-project-type 'npm '("package.json") "npm run build-dev" "npm run test")
+
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
