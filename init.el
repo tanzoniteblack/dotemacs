@@ -1019,8 +1019,7 @@ magit-mode."
                                        (get-text-property (point) 'block-side))))
 
                      t))
-				 ;; recognize /* @jsx React.DOM */ at the top of files for web-mode
-				 (defun webmode-jsx-setup ()
+                 (defun webmode-jsx-setup ()
 				   (when (or (string/ends-with buffer-file-name ".js")
 							 (string/ends-with buffer-file-name ".jsx"))
 					 (yas-minor-mode)
