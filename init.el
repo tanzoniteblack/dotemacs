@@ -317,10 +317,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 (use-package ido
   :ensure t
-  :config (progn (use-package flx-ido
-                   :ensure t
-                   :config (flx-ido-mode 1))
-                 (setq ido-enable-prefix nil
+  :config (progn (setq ido-enable-prefix nil
                        ido-create-new-buffer 'always
                        ido-max-prospects 10
                        ido-default-file-method 'selected-window
@@ -332,10 +329,15 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                        ;; ido file type ordering preferences
                        ido-file-extensions-order '(".org" ".clj"))
                  (icomplete-mode 1)
-                 (ido-mode t)
-                 (use-package ido-ubiquitous
-                   :ensure t
-                   :config (ido-ubiquitous-mode 1))))
+                 (ido-mode t)))
+
+(use-package flx-ido
+  :ensure t
+  :config (flx-ido-mode 1))
+
+(use-package ido-ubiquitous
+  :ensure t
+  :config (ido-ubiquitous-mode 1))
 
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
@@ -451,11 +453,13 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                   magit-diff-refine-hunk t
                   ;; don't attempt to save unsaved buffers
                   magit-save-repository-buffers nil
-                  magit-popup-use-prefix-argument 'default)
-                 (use-package gitconfig-mode
+                  magit-popup-use-prefix-argument 'default)))
+
+(use-package gitconfig-mode
                    :ensure t)
-                 (use-package gitignore-mode
-                   :ensure t)))
+
+(use-package gitignore-mode
+                   :ensure t)
 
 (use-package erc
   :defer t
@@ -470,31 +474,28 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package go-mode
   :ensure t
   :commands go-mode
-  :config (progn (use-package company-go
-                   :ensure t
-                   :if (executable-find "gocode")
-                   :commands company-go
-                   :config (add-to-list 'company-backends 'company-go))
-                 (use-package go-eldoc
-                   :ensure t
-                   :if (executable-find "gocode")
-                   :commands go-eldoc-setup
-                   :config (add-to-list 'go-mode-hook 'go-eldoc-setup))
-                 (bind-key "M-." 'godef-jump go-mode-map)
+  :config (progn (bind-key "M-." 'godef-jump go-mode-map)
                  (bind-key "M-," 'pop-tag-mark go-mode-map)
                  (bind-key "C-S-F" 'gofmt go-mode-map)
                  (bind-key "M-<return>" 'godef-describe go-mode-map)))
+
+(use-package company-go
+  :ensure t
+  :if (executable-find "gocode")
+  :commands company-go
+  :config (add-to-list 'company-backends 'company-go))
+
+(use-package go-eldoc
+  :ensure t
+  :if (executable-find "gocode")
+  :commands go-eldoc-setup
+  :config (add-to-list 'go-mode-hook 'go-eldoc-setup))
 
 ;;; flycheck mode
 (use-package flycheck
   :ensure t
   :commands global-flycheck-mode
-  :config (progn (use-package popup
-                   :ensure t)
-				 (use-package flycheck-pos-tip
-                   :ensure t
-                   :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
-				 (setq-default flycheck-disabled-checkers
+  :config (progn (setq-default flycheck-disabled-checkers
 							   (append flycheck-disabled-checkers
 									   '(javascript-jshint
 										 emacs-lisp-checkdoc)))
@@ -507,6 +508,13 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                        flycheck-flake8-maximum-line-length 160
                        flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
                        flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
+
+(use-package popup
+  :ensure t)
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
 
 (use-package avy
   :ensure t
@@ -708,8 +716,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-deadline-warning-days 3
                        org-log-done 'time
                        org-src-fontify-natively t
-					   org-src-tab-acts-natively t
-					   org-todo-keywords '((sequence "TODO" "INPROGRESS" "|" "DONE")))
+					   org-src-tab-acts-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -740,9 +747,6 @@ the checking happens for all pairs in auto-minor-mode-alist"
                    (add-to-list 'ispell-skip-region-alist '("=" "="))
                    (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
                  (add-hook 'org-mode-hook #'endless/org-ispell)
-                 (use-package ox-gfm
-                   ;; org-mode export in github flavored markdown
-                   :ensure t)
 
                  (defun kill-org-src-buffers (&rest args)
                    "Kill temporary buffers created by
@@ -756,41 +760,14 @@ magit-mode."
                  (advice-add 'org-src-font-lock-fontify-block
                              :after #'kill-org-src-buffers)))
 
+;; org-mode export in github flavored markdown
+(use-package ox-gfm
+  :ensure t)
+
 (use-package clojure-mode
   :ensure t
   :defer t
-  :config (progn (use-package clojure-mode-extra-font-locking
-                   :ensure t)
-                 (use-package cider
-                   :ensure t
-                   :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
-                                  (add-hook 'clojure-mode-hook 'eldoc-mode)
-                                  (add-hook 'cider-repl-mode-hook 'eldoc-mode)
-                                  (add-hook 'cider-repl-mode-hook 'subword-mode)
-                                  (setq cider-annotate-completion-candidates t
-                                        cider-mode-line " cider"
-                                        cider-prompt-for-symbol nil
-                                        cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
-                                  (add-hook 'cider-mode-hook
-                                            (lambda ()
-                                              (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
-                                              (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-                                              (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-
-                                  (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))
-
-                                  (use-package clj-refactor
-                                    :ensure t
-                                    :config (progn (setq cljr-suppress-middleware-warnings t)
-                                                   (add-hook 'cider-mode-hook (lambda ()
-                                                                                (clj-refactor-mode 1)
-                                                                                (cljr-add-keybindings-with-prefix "C-c C-m")))
-                                                   (add-hook 'cider-mode-hook 'yas-minor-mode)
-                                                   (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                                                   (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
-
-                                                   (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))))
-                 (setq clojure-align-forms-automatically t)
+  :config (progn (setq clojure-align-forms-automatically t)
                  (add-hook 'clojure-mode-hook (lambda ()
                                                 (setq buffer-save-without-query t)))
                  (add-hook 'clojure-mode-hook 'subword-mode)
@@ -801,10 +778,42 @@ magit-mode."
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
 
-(use-package js2-mode
+(use-package clojure-mode-extra-font-locking
+  :ensure t)
+
+(use-package cider
   :ensure t
-  ;; :mode "\\.js\\'"
-  :config (use-package tern
+  :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
+				 (add-hook 'clojure-mode-hook 'eldoc-mode)
+				 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
+				 (add-hook 'cider-repl-mode-hook 'subword-mode)
+				 (setq cider-annotate-completion-candidates t
+					   cider-mode-line " cider"
+					   cider-prompt-for-symbol nil
+					   cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+				 (add-hook 'cider-mode-hook
+						   (lambda ()
+							 (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
+							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
+
+(use-package clj-refactor
+  :ensure t
+  :config (progn (setq cljr-suppress-middleware-warnings t)
+				 (add-hook 'cider-mode-hook (lambda ()
+											  (clj-refactor-mode 1)
+											  (cljr-add-keybindings-with-prefix "C-c C-m")))
+				 (add-hook 'cider-mode-hook 'yas-minor-mode)
+				 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+				 (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
+
+				 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)))
+
+(use-package js2-mode
+  :ensure t)
+
+(use-package tern
             :ensure t
             :commands (tern-mode)
             :init (progn (add-hook 'js2-mode-hook 'tern-mode)
@@ -814,17 +823,18 @@ magit-mode."
 							   js2-indent-line 2
 							   js2-bounce-indent-p t
 							   js2-pretty-multiline-declarations t))
-            :config (progn (use-package company-tern
-                             :ensure t
-                             :commands company-tern
-                             :init (add-to-list 'company-backends 'company-tern))
-                           (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
+            :config (progn (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
                            (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
                            (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
                            (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
                            (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
                            (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
-                           (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs))))
+                           (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs)))
+
+(use-package company-tern
+  :ensure t
+  :commands company-tern
+  :init (add-to-list 'company-backends 'company-tern))
 
 (use-package stylus-mode
   :ensure t)
@@ -844,10 +854,11 @@ magit-mode."
   :defer t
   :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
                  (setq-default tab-width 4 indent-tabs-mode t)
-                 (add-hook 'java-mode-hook 'subword-mode)
-                 (use-package dtrt-indent
-                   :ensure t
-                   :init (add-hook 'java-mode-hook 'dtrt-indent-mode))))
+                 (add-hook 'java-mode-hook 'subword-mode)))
+
+(use-package dtrt-indent
+  :ensure t
+  :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -875,8 +886,8 @@ magit-mode."
   :ensure t
   :commands (smartparens-global-mode smartparens-mode)
   :init (smartparens-global-mode t)
-  :config (progn (use-package smartparens-config)
-                 ;; highlights matching pairs
+  :config (progn (require 'smartparens-config)
+				 ;; highlights matching pairs
                  (show-smartparens-global-mode t)
                  ;; custom keybindings for smartparens mode
                  (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
@@ -957,16 +968,16 @@ magit-mode."
   :ensure t)
 
 (use-package scala-mode
-  :ensure t
-  :defer t
-  :init (use-package ensime
+  :ensure t)
+
+(use-package ensime
           :ensure t
           :commands (ensime-scala-mode-hook)
           :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
                        ;; Despite the name, this really just enables ensime-mode
                        (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
           :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
-                         (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1))))))
+                         (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (use-package d-mode
   :defer t
@@ -1075,23 +1086,23 @@ magit-mode."
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp)))
 
-(use-package graphviz-dot-mode
-  :ensure t
-  :mode "\\.dot$"
-  :config (progn (defun graphviz-compile-and-preview ()
-                   (interactive)
-                   (if (buffer-file-name)
-                       (progn (shell-command (concat graphviz-dot-dot-program
-                                                     " -T" graphviz-dot-preview-extension " "
-                                                     (shell-quote-argument buffer-file-name)
-                                                     " -o "
-                                                     (shell-quote-argument
-                                                      (concat (file-name-sans-extension buffer-file-name)
-                                                              "." graphviz-dot-preview-extension))))
-                              (call-interactively 'graphviz-dot-preview))))
-                 (add-hook 'graphviz-dot-mode-hook
-                           (lambda ()
-                             (add-hook 'after-save-hook 'graphviz-compile-and-preview nil 'make-it-local)))))
+;; (use-package graphviz-dot-mode
+;;   :ensure t
+;;   :mode "\\.dot$"
+;;   :config (progn (defun graphviz-compile-and-preview ()
+;;                    (interactive)
+;;                    (if (buffer-file-name)
+;;                        (progn (shell-command (concat graphviz-dot-dot-program
+;;                                                      " -T" graphviz-dot-preview-extension " "
+;;                                                      (shell-quote-argument buffer-file-name)
+;;                                                      " -o "
+;;                                                      (shell-quote-argument
+;;                                                       (concat (file-name-sans-extension buffer-file-name)
+;;                                                               "." graphviz-dot-preview-extension))))
+;;                               (call-interactively 'graphviz-dot-preview))))
+;;                  (add-hook 'graphviz-dot-mode-hook
+;;                            (lambda ()
+;;                              (add-hook 'after-save-hook 'graphviz-compile-and-preview nil 'make-it-local)))))
 
 (use-package popup-imenu
   :ensure t
