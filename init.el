@@ -491,14 +491,18 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :commands global-flycheck-mode
   :config (progn (use-package popup
                    :ensure t)
-                 (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)
-                 (use-package flycheck-pos-tip
+				 (use-package flycheck-pos-tip
                    :ensure t
                    :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
-                 (global-flycheck-mode)
+				 (setq-default flycheck-disabled-checkers
+							   (append flycheck-disabled-checkers
+									   '(javascript-jshint
+										 emacs-lisp-checkdoc)))
+				 (flycheck-add-mode 'javascript-eslint 'web-mode)
+				 (global-flycheck-mode)
                  (require 'flycheck-checkstyle)
                  (add-to-list 'flycheck-checkers 'checkstyle)
-                 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
+				 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
                        flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
                        flycheck-flake8-maximum-line-length 160
                        flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
@@ -615,6 +619,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                  (defun projectile-lein-ancient ()
                    (interactive)
                    (projectile-run-compilation "lein with-profile ancient ancient :all"))
+
+                 (projectile-register-project-type 'npm '("package.json") "npm run build-dev" "npm run test")
+
                  (projectile-global-mode)))
 
 ;;; respect ansi colors
@@ -622,6 +629,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;;; ansi colors in compilation mode
 (ignore-errors
+  (add-to-list 'compilation-environment "TERM=xterm-256color")
   (defun my-colorize-compilation-buffer ()
     (when (eq major-mode 'compilation-mode)
       (ansi-color-apply-on-region compilation-filter-start (point-max))))
@@ -792,13 +800,17 @@ magit-mode."
 
 (use-package js2-mode
   :ensure t
-  :mode "\\.js\\'"
+  ;; :mode "\\.js\\'"
   :config (use-package tern
             :ensure t
             :commands (tern-mode)
             :init (progn (add-hook 'js2-mode-hook 'tern-mode)
                          (setq js2-include-node-externs t
-                               js2-include-browser-externs t))
+                               js2-include-browser-externs t
+							   js2-basic-offset 2
+							   js2-indent-line 2
+							   js2-bounce-indent-p t
+							   js2-pretty-multiline-declarations t))
             :config (progn (use-package company-tern
                              :ensure t
                              :commands company-tern
@@ -941,7 +953,7 @@ magit-mode."
   :defer t
   :ensure t)
 
-(use-package scala-mode2
+(use-package scala-mode
   :ensure t
   :defer t
   :init (use-package ensime
@@ -975,6 +987,12 @@ magit-mode."
   :commands (markdown-mode gfm-mode)
   :init (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode)))
 
+(defun string/ends-with (string suffix)
+  "Return t if STRING ends with SUFFIX."
+  (and (string-match (rx-to-string `(: ,suffix eos) t)
+					 string)
+	   t))
+
 (use-package web-mode
   :ensure t
   :commands web-mode
@@ -985,20 +1003,37 @@ magit-mode."
                (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode)))
+               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
   :config (progn (defun my-web-mode-hook ()
                    (setq web-mode-enable-auto-pairing nil))
 
                  (add-hook 'web-mode-hook  'my-web-mode-hook)
-
-                 (defun sp-web-mode-is-code-context (id action context)
+				 (defadvice web-mode-highlight-part (around tweak-jsx activate)
+				   (if (equal web-mode-content-type "jsx")
+					   (let ((web-mode-enable-part-face nil))
+						 ad-do-it)
+					 ad-do-it))
+				 (defun sp-web-mode-is-code-context (id action context)
                    (when (and (eq action 'insert)
                               (not (or (get-text-property (point) 'part-side)
                                        (get-text-property (point) 'block-side))))
 
                      t))
-
-                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))))
+                 (defun webmode-jsx-setup ()
+				   (when (or (string/ends-with buffer-file-name ".js")
+							 (string/ends-with buffer-file-name ".jsx"))
+					 (yas-minor-mode)
+					 (yas-activate-extra-mode 'js-mode)
+					 (web-mode-set-content-type "jsx")
+					 (setq-local web-mode-enable-auto-quoting nil)
+					 (setq-local web-mode-code-indent-offset 2)
+					 (setq-default indent-tabs-mode nil)
+					 (tern-mode)))
+				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
+                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+                 (sp-local-pair 'web-mode "{" "}")))
 
 (use-package ruby-mode
   :ensure t
@@ -1013,6 +1048,10 @@ magit-mode."
   :ensure t)
 
 (use-package jape-mode
+  :defer t
+  :ensure t)
+
+(use-package yaml-mode
   :defer t
   :ensure t)
 
