@@ -698,8 +698,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-deadline-warning-days 3
                        org-log-done 'time
                        org-src-fontify-natively t
-					   org-src-tab-acts-natively t
-					   org-todo-keywords '((sequence "TODO" "INPROGRESS" "|" "DONE")))
+					   org-src-tab-acts-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
