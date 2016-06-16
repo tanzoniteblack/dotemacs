@@ -26,3 +26,4 @@
 /.mc-lists.el
 *.swp
 /ensime/
+session.*
