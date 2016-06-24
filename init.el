@@ -624,7 +624,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                                        (read-string (projectile-prepend-project-name "Run test method: ")
                                                     (projectile-symbol-or-selection-at-point))))
                           (mvn-cmd (concat "cd " root " && "
-                                           "mvn -Dtest=" class-name (when test-name (concat "#" test-name))
+                                           "mvn -DfailIfNoTests=false -Dtest=" class-name (when test-name (concat "#" test-name))
                                            " test ")))
                      (projectile-run-compilation mvn-cmd)))
                  (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
