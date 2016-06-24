@@ -167,6 +167,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (set-face-attribute 'default nil :family default-font :height default-font-height :weight 'normal)
 '(variable-pitch ((t (:family default-font :slant normal :weight regular :height default-font-height))))
 
+;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
+(set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)))
+
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
   (interactive)
@@ -811,7 +814,6 @@ magit-mode."
 				 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
 				 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
 				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
-
 (use-package js2-mode
   :ensure t)
 
