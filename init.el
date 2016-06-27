@@ -809,11 +809,10 @@ magit-mode."
 											  (cljr-add-keybindings-with-prefix "C-c C-m")))
 				 (add-hook 'cider-mode-hook 'yas-minor-mode)
 				 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-				 (define-key cider-mode-map (kbd "C->") 'cljr-cycle-coll)
-
-				 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
+                 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
 				 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
 				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
+
 (use-package js2-mode
   :ensure t)
 
