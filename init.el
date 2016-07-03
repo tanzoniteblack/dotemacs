@@ -168,7 +168,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 '(variable-pitch ((t (:family default-font :slant normal :weight regular :height default-font-height))))
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
-(set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)))
+(set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
+												  :family "Noto Sans Tamil UI"))
 
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
@@ -868,17 +869,17 @@ magit-mode."
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
-;; (use-package elpy
-;;   :ensure t
-;;   :commands (elpy-enable)
-;;   :init (with-eval-after-load 'python (elpy-enable))
-;;   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
-;;               (setq elpy-rpc-backend "jedi")
-;;                  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-;;                  (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-;;                  (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-;;                  (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-;;                  (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+(use-package elpy
+  :ensure t
+  :commands (elpy-enable)
+  :init (with-eval-after-load 'python (elpy-enable))
+  :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
+              (setq elpy-rpc-backend "jedi")
+                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
@@ -1162,3 +1163,7 @@ magit-mode."
 
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
+
+(use-package php-mode
+  :ensure t
+  :defer t)
