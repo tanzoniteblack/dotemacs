@@ -1048,6 +1048,8 @@ magit-mode."
 					 (setq-local web-mode-enable-auto-quoting nil)
 					 (setq-local web-mode-code-indent-offset 2)
                      (setq-local web-mode-markup-indent-offset 2)
+                     (setq-local web-mode-attr-indent-offset 2)
+                     (setq-local web-mode-attr-value-indent-offset 2)
                      (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
