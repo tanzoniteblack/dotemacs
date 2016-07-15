@@ -1149,4 +1149,7 @@ magit-mode."
 (use-package crux
   :ensure t
   :bind (("C-a" . crux-move-beginning-of-line)
-         ("C-S-f" . crux-cleanup-buffer-or-region)))
+         ("C-S-f" . crux-cleanup-buffer-or-region))
+  :config
+  (crux-with-region-or-buffer indent-region)
+  (crux-with-region-or-buffer untabify))
