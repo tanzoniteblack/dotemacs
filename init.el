@@ -61,19 +61,6 @@
   (interactive)
   (insert (format-time-string "%D" (current-time))))
 
-(defun delete-this-buffer-and-file ()
-  "Removes file connected to current buffer and kills buffer."
-  (interactive)
-  (let ((filename (buffer-file-name))
-        (buffer (current-buffer))
-        (name (buffer-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (error "Buffer '%s' is not visiting a file!" name)
-      (when (yes-or-no-p "Are you sure you want to remove this file? ")
-        (delete-file filename)
-        (kill-buffer buffer)
-        (message "File '%s' successfully removed" filename)))))
-
 (defun live-delete-whitespace-except-one ()
   "Delete all whitespace around point except for 1 space,
 includes the deletion of new lines."
@@ -169,7 +156,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
 (set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
-												  :family "Noto Sans Tamil UI"))
+                                                  :family "Noto Sans Tamil UI"))
 
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
@@ -384,6 +371,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;; by default don't indent with tabs
 (set-default 'indent-tabs-mode nil)
+(setq indent-tabs-mode nil)
 (auto-compression-mode t)
 (show-paren-mode t)
 
@@ -460,10 +448,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                   magit-popup-use-prefix-argument 'default)))
 
 (use-package gitconfig-mode
-                   :ensure t)
+  :ensure t)
 
 (use-package gitignore-mode
-                   :ensure t)
+  :ensure t)
 
 (use-package erc
   :defer t
@@ -500,14 +488,14 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :ensure t
   :commands global-flycheck-mode
   :config (progn (setq-default flycheck-disabled-checkers
-							   (append flycheck-disabled-checkers
-									   '(javascript-jshint
-										 emacs-lisp-checkdoc)))
-				 (flycheck-add-mode 'javascript-eslint 'web-mode)
-				 (global-flycheck-mode)
+                               (append flycheck-disabled-checkers
+                                       '(javascript-jshint
+                                         emacs-lisp-checkdoc)))
+                 (flycheck-add-mode 'javascript-eslint 'web-mode)
+                 (global-flycheck-mode)
                  (require 'flycheck-checkstyle)
                  (add-to-list 'flycheck-checkers 'checkstyle)
-				 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
+                 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
                        flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
                        flycheck-flake8-maximum-line-length 160
                        flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
@@ -720,7 +708,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-deadline-warning-days 3
                        org-log-done 'time
                        org-src-fontify-natively t
-					   org-src-tab-acts-natively t)
+                       org-src-tab-acts-natively t)
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -788,52 +776,52 @@ magit-mode."
 (use-package cider
   :ensure t
   :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
-				 (add-hook 'clojure-mode-hook 'eldoc-mode)
-				 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
-				 (add-hook 'cider-repl-mode-hook 'subword-mode)
-				 (setq cider-annotate-completion-candidates t
-					   cider-mode-line " cider"
-					   cider-prompt-for-symbol nil
-					   cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
-				 (add-hook 'cider-mode-hook
-						   (lambda ()
-							 (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
-							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
+                 (add-hook 'clojure-mode-hook 'eldoc-mode)
+                 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
+                 (add-hook 'cider-repl-mode-hook 'subword-mode)
+                 (setq cider-annotate-completion-candidates t
+                       cider-mode-line " cider"
+                       cider-prompt-for-symbol nil
+                       cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+                 (add-hook 'cider-mode-hook
+                           (lambda ()
+                             (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+                             (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
+                             (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
 
 (use-package clj-refactor
   :ensure t
   :config (progn (setq cljr-suppress-middleware-warnings t)
-				 (add-hook 'cider-mode-hook (lambda ()
-											  (clj-refactor-mode 1)
-											  (cljr-add-keybindings-with-prefix "C-c C-m")))
-				 (add-hook 'cider-mode-hook 'yas-minor-mode)
-				 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+                 (add-hook 'cider-mode-hook (lambda ()
+                                              (clj-refactor-mode 1)
+                                              (cljr-add-keybindings-with-prefix "C-c C-m")))
+                 (add-hook 'cider-mode-hook 'yas-minor-mode)
+                 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
                  (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
-				 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
-				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
+                 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
+                 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
 
 (use-package js2-mode
   :ensure t)
 
 (use-package tern
-            :ensure t
-            :commands (tern-mode)
-            :init (progn (add-hook 'js2-mode-hook 'tern-mode)
-                         (setq js2-include-node-externs t
-                               js2-include-browser-externs t
-							   js2-basic-offset 2
-							   js2-indent-line 2
-							   js2-bounce-indent-p t
-							   js2-pretty-multiline-declarations t))
-            :config (progn (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
-                           (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
-                           (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
-                           (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
-                           (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
-                           (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
-                           (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs)))
+  :ensure t
+  :commands (tern-mode)
+  :init (progn (add-hook 'js2-mode-hook 'tern-mode)
+               (setq js2-include-node-externs t
+                     js2-include-browser-externs t
+                     js2-basic-offset 2
+                     js2-indent-line 2
+                     js2-bounce-indent-p t
+                     js2-pretty-multiline-declarations t))
+  :config (progn (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
+                 (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
+                 (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
+                 (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
+                 (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
+                 (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
+                 (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs)))
 
 (use-package company-tern
   :ensure t
@@ -842,17 +830,6 @@ magit-mode."
 
 (use-package stylus-mode
   :ensure t)
-
-(defun format-buffer ()
-  "format buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (when (eq major-mode 'clojure-mode)
-    (clojure-align (point-min) (point-max)))
-  (untabify (point-min) (point-max)))
-
-(global-set-key (kbd "C-S-f") 'format-buffer)
 
 (use-package cc-mode
   :defer t
@@ -873,12 +850,12 @@ magit-mode."
   :commands (elpy-enable)
   :init (with-eval-after-load 'python (elpy-enable))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
-              (setq elpy-rpc-backend "jedi")
-                 (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-                 (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-                 (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-                 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-                 (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+            (setq elpy-rpc-backend "jedi")
+            (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+            (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+            (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+            (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+            (add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
@@ -891,7 +868,7 @@ magit-mode."
   :commands (smartparens-global-mode smartparens-mode)
   :init (smartparens-global-mode t)
   :config (progn (require 'smartparens-config)
-				 ;; highlights matching pairs
+                 ;; highlights matching pairs
                  (show-smartparens-global-mode t)
                  ;; custom keybindings for smartparens mode
                  (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
@@ -975,13 +952,13 @@ magit-mode."
   :ensure t)
 
 (use-package ensime
-          :ensure t
-          :commands (ensime-scala-mode-hook)
-          :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-                       ;; Despite the name, this really just enables ensime-mode
-                       (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
-          :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
-                         (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
+  :ensure t
+  :commands (ensime-scala-mode-hook)
+  :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+               ;; Despite the name, this really just enables ensime-mode
+               (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
+  :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
+                 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (use-package d-mode
   :defer t
@@ -1008,8 +985,8 @@ magit-mode."
 (defun string/ends-with (string suffix)
   "Return t if STRING ends with SUFFIX."
   (and (string-match (rx-to-string `(: ,suffix eos) t)
-					 string)
-	   t))
+                     string)
+       t))
 
 (use-package web-mode
   :ensure t
@@ -1022,35 +999,35 @@ magit-mode."
                (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
                (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
+               (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
   :config (progn (defun my-web-mode-hook ()
                    (setq web-mode-enable-auto-pairing nil))
 
                  (add-hook 'web-mode-hook  'my-web-mode-hook)
-				 (defadvice web-mode-highlight-part (around tweak-jsx activate)
-				   (if (equal web-mode-content-type "jsx")
-					   (let ((web-mode-enable-part-face nil))
-						 ad-do-it)
-					 ad-do-it))
-				 (defun sp-web-mode-is-code-context (id action context)
+                 (defadvice web-mode-highlight-part (around tweak-jsx activate)
+                   (if (equal web-mode-content-type "jsx")
+                       (let ((web-mode-enable-part-face nil))
+                         ad-do-it)
+                     ad-do-it))
+                 (defun sp-web-mode-is-code-context (id action context)
                    (when (and (eq action 'insert)
                               (not (or (get-text-property (point) 'part-side)
                                        (get-text-property (point) 'block-side))))
 
                      t))
                  (defun webmode-jsx-setup ()
-				   (when (or (string/ends-with buffer-file-name ".js")
-							 (string/ends-with buffer-file-name ".jsx"))
+                   (when (or (string/ends-with buffer-file-name ".js")
+                             (string/ends-with buffer-file-name ".jsx"))
                      (yas-minor-mode)
-					 (yas-activate-extra-mode 'js-mode)
-					 (web-mode-set-content-type "jsx")
-					 (setq-local web-mode-enable-auto-quoting nil)
-					 (setq-local web-mode-code-indent-offset 2)
+                     (yas-activate-extra-mode 'js-mode)
+                     (web-mode-set-content-type "jsx")
+                     (setq-local web-mode-enable-auto-quoting nil)
+                     (setq-local web-mode-code-indent-offset 2)
                      (setq-local web-mode-markup-indent-offset 2)
                      (setq-default indent-tabs-mode nil)
-					 (tern-mode)))
-				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
+                     (tern-mode)))
+                 (add-hook 'web-mode-hook 'webmode-jsx-setup)
                  (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
                  (sp-local-pair 'web-mode "{" "}")))
 
@@ -1166,3 +1143,8 @@ magit-mode."
 (use-package php-mode
   :ensure t
   :defer t)
+
+(use-package crux
+  :ensure t
+  :bind (("C-a" . crux-move-beginning-of-line)
+         ("C-S-f" . crux-cleanup-buffer-or-region)))
