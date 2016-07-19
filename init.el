@@ -565,6 +565,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :init (progn (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
                (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode))
                (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
+               (add-to-list 'auto-mode-alist '(".tern-config" . json-mode))
                (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode))
                (add-to-list 'auto-mode-alist '(".eslintrc" . json-mode)))
   :config (progn (add-hook 'json-mode-hook 'flycheck-mode)
