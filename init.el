@@ -1154,3 +1154,7 @@ magit-mode."
   :config
   (crux-with-region-or-buffer indent-region)
   (crux-with-region-or-buffer untabify))
+
+(use-package imenu-anywhere
+  :ensure t
+  :bind (("C-c ." . imenu-anywhere)))
