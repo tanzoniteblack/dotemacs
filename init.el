@@ -158,6 +158,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
                                                   :family "Noto Sans Tamil UI"))
 
+;; Specify Telugu unicode block to use a larger font, otherwise I can't read it without straining
+(set-fontset-font t '(#x0C00 . #x0C7F) (font-spec :height (+ default-font-height 20)
+                                                  :family "Noto Sans Telugu UI"))
+
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
   (interactive)
@@ -1129,13 +1133,13 @@ magit-mode."
   ;; domain name
   (setq system-name (car (split-string system-name "\\.")))
 
-  ;; Ensure the exec-path honours the shell PATH
-  (use-package exec-path-from-shell
-    :ensure t
-    :config (exec-path-from-shell-initialize))
-
   ;; Ignore .DS_Store files with ido mode
   (add-to-list 'ido-ignore-files "\\.DS_Store"))
+
+;; Ensure the exec-path honours the shell PATH
+(use-package exec-path-from-shell
+  :ensure t
+  :config (exec-path-from-shell-initialize))
 
 (when (eq system-type 'windows-nt)
   (load-library "windows-config.el"))
