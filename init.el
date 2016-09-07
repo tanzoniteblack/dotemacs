@@ -902,7 +902,6 @@ magit-mode."
 (use-package smartparens
   :ensure t
   :commands (smartparens-global-mode smartparens-mode)
-  :diminish " ⦕⦖"
   :init (smartparens-global-mode t)
   :config (progn (require 'smartparens-config)
 				 ;; highlights matching pairs
@@ -1198,3 +1197,8 @@ magit-mode."
 
 (eval-after-load "auto-revert-mode"
   '(diminish 'auto-revert-mode))
+
+(eval-after-load 'yas-minor-mode
+  '(diminish 'yas-minor-mode))
+
+(diminish 'subword-mode)
