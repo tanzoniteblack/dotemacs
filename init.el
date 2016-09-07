@@ -11,13 +11,13 @@
 (setq custom-file "~/.emacs-custom.el")
 (let ((custom-file (locate-file custom-file load-path)))
   (when custom-file
-    (load custom-file)))
+	(load custom-file)))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
-    (package-refresh-contents)
-    (package-install 'use-package)))
+	(package-refresh-contents)
+	(package-install 'use-package)))
 
 (eval-when-compile
   (require 'use-package))
@@ -30,7 +30,7 @@
   "`eval-after-load' MODE evaluate BODY."
   (declare (indent defun))
   `(eval-after-load ,mode
-     '(progn ,@body)))
+	 '(progn ,@body)))
 
 (use-package dash
   :ensure t)
@@ -39,7 +39,7 @@
 (use-package auto-compile
   :ensure t
   :config (progn (auto-compile-on-load-mode 1)
-                 (auto-compile-on-save-mode 1)))
+				 (auto-compile-on-save-mode 1)))
 
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
@@ -52,7 +52,7 @@
 ;;; if local-environment.el file is found in load-path, load it, else skip
 (let ((local-environment-file (locate-file "local-environment.el" load-path)))
   (when local-environment-file
-    (load-file local-environment-file)))
+	(load-file local-environment-file)))
 
 ;; handy util fns, many borrowed from emacs-live
 
@@ -72,60 +72,60 @@ includes the deletion of new lines."
 If BACKWARD-ONLY is non-nil, only delete them before point."
   (interactive "*P")
   (let ((orig-pos (point)))
-    (delete-region
-     (if backward-only
-         orig-pos
-       (progn
-         (skip-chars-forward "[:space:]\n")
-         (constrain-to-field nil orig-pos t)))
-     (progn
-       (skip-chars-backward "[:space:]\n")
-       (constrain-to-field nil orig-pos)))))
+	(delete-region
+	 (if backward-only
+		 orig-pos
+	   (progn
+		 (skip-chars-forward "[:space:]\n")
+		 (constrain-to-field nil orig-pos t)))
+	 (progn
+	   (skip-chars-backward "[:space:]\n")
+	   (constrain-to-field nil orig-pos)))))
 
 (defun live-delete-and-extract-sexp ()
   "Delete the sexp and return it."
   (interactive)
   (let* ((begin (point)))
-    (forward-sexp)
-    (let* ((result (buffer-substring-no-properties begin (point))))
-      (delete-region begin (point))
-      result)))
+	(forward-sexp)
+	(let* ((result (buffer-substring-no-properties begin (point))))
+	  (delete-region begin (point))
+	  result)))
 
 (defun copy-file-path ()
   "Put the current file name on the clipboard"
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
-                      (file-name-directory default-directory)
-                    (buffer-file-name))))
-    (when filename
-      (kill-new filename nil))))
+					  (file-name-directory default-directory)
+					(buffer-file-name))))
+	(when filename
+	  (kill-new filename nil))))
 
 (defun ask-before-closing ()
   "Ask whether or not to close, and then close if y was pressed"
   (interactive)
   (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
-      (if (< emacs-major-version 22)
-          (save-buffers-kill-terminal)
-        (save-buffers-kill-emacs))
-    (message "Canceled exit")))
+	  (if (< emacs-major-version 22)
+		  (save-buffers-kill-terminal)
+		(save-buffers-kill-emacs))
+	(message "Canceled exit")))
 
 (defun beautify-xml ()
   (interactive)
   (let ((b (if mark-active (min (point) (mark)) (point-min)))
-        (e (if mark-active (max (point) (mark)) (point-max))))
-    (shell-command-on-region b e "xmllint --format -" (current-buffer) t)))
+		(e (if mark-active (max (point) (mark)) (point-max))))
+	(shell-command-on-region b e "xmllint --format -" (current-buffer) t)))
 
 (defun sudo-edit (&optional arg)
   (interactive "P")
   (if (or arg (not buffer-file-name))
-      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+	  (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+	(find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (defun get-ip-addr ()
   (interactive)
   (let ((ipconfig (shell-command-to-string "wget http://ipinfo.io/ip -qO -")))
-    (string-match "\\(\\([0-9]+.\\)+[0-9]+\\)" ipconfig)
-    (insert (match-string 0 ipconfig))))
+	(string-match "\\(\\([0-9]+.\\)+[0-9]+\\)" ipconfig)
+	(insert (match-string 0 ipconfig))))
 
 ;; don't load splash screen
 (setq inhibit-splash-screen t)
@@ -156,33 +156,33 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
 (set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
-                                                  :family "Noto Sans Tamil UI"))
+												  :family "Noto Sans Tamil UI"))
 
 ;; Specify Telugu unicode block to use a larger font, otherwise I can't read it without straining
 (set-fontset-font t '(#x0C00 . #x0C7F) (font-spec :height (+ default-font-height 20)
-                                                  :family "Noto Sans Telugu UI"))
+												  :family "Noto Sans Telugu UI"))
 
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 160))
-    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
-    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
+	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun font-size-thunderbolt ()
   "Set font values to something good for a mac laptop"
   (interactive)
   (let ((default-font-height 170))
-    (set-face-attribute 'default nil :height default-font-height :weight 'normal)
-    '(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
+	(set-face-attribute 'default nil :height default-font-height :weight 'normal)
+	'(variable-pitch ((t (:slant normal :weight regular :height default-font-height))))))
 
 (defun toggle-maximized ()
   "Toggle whether window is maximized or not (currently only supports X11 with wmctrl installed)"
   (interactive)
   (when (executable-find "wmctrl")
-    (shell-command (concat "wmctrl -i -r "
-                           (frame-parameter nil 'outer-window-id)
-                           " -btoggle,maximized_vert,maximized_horz"))))
+	(shell-command (concat "wmctrl -i -r "
+						   (frame-parameter nil 'outer-window-id)
+						   " -btoggle,maximized_vert,maximized_horz"))))
 
 ;;; On home laptop, start maximized
 (toggle-maximized)
@@ -191,11 +191,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   "Toggle full screen on X11"
   (interactive)
   (if (executable-find "wmctrl")
-      (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen")
-    (set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
+	  (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen")
+	(set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
 (setq display-time-day-and-date nil
-      display-time-24hr-format t)
+	  display-time-24hr-format t)
 (display-time)
 
 ;;; always reuse frames when calling display-buffer
@@ -205,10 +205,20 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :ensure t
   :if window-system
   :config (progn (setq git-gutter-fr:side 'right-fringe)
-                 (setq-default left-fringe-width (floor (* 0.4 (frame-char-width))))
-                 (setq-default right-fringe-width (floor (* 1.2 (frame-char-width))))
-                 (global-git-gutter-mode)
-                 (diminish 'git-gutter-mode "")))
+				 (define-fringe-bitmap 'git-gutter-fr:added
+				   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+				   nil nil 'center)
+				 (define-fringe-bitmap 'git-gutter-fr:modified
+				   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+				   nil nil 'center)
+				 (define-fringe-bitmap 'git-gutter-fr:deleted
+				   [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+				   nil nil 'center)
+				 (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+				 (setq-default left-fringe-width (floor (* 0.4 (frame-char-width))))
+				 (setq-default right-fringe-width (floor (* 1.2 (frame-char-width))))
+				 (global-git-gutter-mode)
+				 (diminish 'git-gutter-mode)))
 
 (use-package powerline
   :ensure t)
@@ -216,8 +226,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package moe-theme
   :ensure t
   :config (progn (powerline-moe-theme)
-                 (moe-theme-set-color 'purple)
-                 (moe-dark)))
+				 (moe-theme-set-color 'purple)
+				 (moe-dark)))
 
 ;;; expression highlight
 (setq show-paren-style 'parenthesis)
@@ -227,20 +237,22 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; modify linum space
 (setq linum-format "%2d ")
 ;;; disable linum for certain modes
-(setq linum-disabled-modes-list '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode cider-repl-mode fundamental-mode shell-mode cider-inspector-mode magit-status-mode special-mode))
+(defvar linum-disabled-modes-list
+  '(eshell-mode wl-summary-mode compilation-mode org-mode dired-mode doc-view-mode image-mode cider-mode cider-repl-mode fundamental-mode shell-mode cider-inspector-mode magit-status-mode special-mode)
+  "Modes which shouldn't display line numbers.")
 
 (defun linum-on ()
   "* When linum is running globally, disable line number in modes defined in `linum-disabled-modes-list'. Changed by linum-off."
   (unless (or (minibufferp)
-              (apply #'derived-mode-p linum-disabled-modes-list)
-              (> (buffer-size) (* 5 1024 1024))) ;; disable linum on buffer greater than 5MB, otherwise it's unbearably slow
-    (linum-mode 1)))
+			  (apply #'derived-mode-p linum-disabled-modes-list)
+			  (> (buffer-size) (* 5 1024 1024))) ;; disable linum on buffer greater than 5MB, otherwise it's unbearably slow
+	(linum-mode 1)))
 
 ;;; color directories in file completion
 (require 'dircolors)
 
 (setq font-lock-maximum-decoration t
-      color-theme-is-global t)
+	  color-theme-is-global t)
 
 ;;; Line-wrapping
 (set-default 'fill-column 80)
@@ -284,47 +296,47 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package hydra
   :ensure t
   :config (global-set-key (kbd "<f2>")
-                          (defhydra hydra-zoom (:color blue)
-                            "zoom"
-                            ("t" font-size-thunderbolt "thunderbolt")
-                            ("l" font-size-mac-laptop "laptop")
-                            ("+" text-scale-increase "zoom in")
-                            ("-" text-scale-decrease "zoom out"))))
+						  (defhydra hydra-zoom (:color blue)
+							"zoom"
+							("t" font-size-thunderbolt "thunderbolt")
+							("l" font-size-mac-laptop "laptop")
+							("+" text-scale-increase "zoom in")
+							("-" text-scale-decrease "zoom out"))))
 
 ;;; global-company-mode for completions
 (use-package company
   :ensure t
   :diminish company-mode
   :config (progn (setq company-idle-delay .2
-                       company-dabbrev-ignore-case t
-                       company-dabbrev-code-ignore-case t
-                       company-dabbrev-downcase nil
-                       company-tooltip-flip-when-above t)
-                 (bind-key "C-<tab>" 'company-manual-begin)
-                 (bind-key "C-n" 'company-select-next company-active-map)
-                 (bind-key "C-p" 'company-select-previous company-active-map)
-                 (global-company-mode)))
+					   company-dabbrev-ignore-case t
+					   company-dabbrev-code-ignore-case t
+					   company-dabbrev-downcase nil
+					   company-tooltip-flip-when-above t)
+				 (bind-key "C-<tab>" 'company-manual-begin)
+				 (bind-key "C-n" 'company-select-next company-active-map)
+				 (bind-key "C-p" 'company-select-previous company-active-map)
+				 (global-company-mode)))
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-      create-lockfiles nil)
+	  auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+	  create-lockfiles nil)
 
 (use-package ido
   :ensure t
   :config (progn (setq ido-enable-prefix nil
-                       ido-create-new-buffer 'always
-                       ido-max-prospects 10
-                       ido-default-file-method 'selected-window
-                       ido-everywhere 1
-                       ;; if exact match not found, look for other files containing these characters
-                       ido-enable-flex-matching t
-                       ;; don't leave the current directory if we don't find the file we typed
-                       ido-auto-merge-work-directories-length -1
-                       ;; ido file type ordering preferences
-                       ido-file-extensions-order '(".org" ".clj"))
-                 (icomplete-mode 1)
-                 (ido-mode t)))
+					   ido-create-new-buffer 'always
+					   ido-max-prospects 10
+					   ido-default-file-method 'selected-window
+					   ido-everywhere 1
+					   ;; if exact match not found, look for other files containing these characters
+					   ido-enable-flex-matching t
+					   ;; don't leave the current directory if we don't find the file we typed
+					   ido-auto-merge-work-directories-length -1
+					   ;; ido file type ordering preferences
+					   ido-file-extensions-order '(".org" ".clj"))
+				 (icomplete-mode 1)
+				 (ido-mode t)))
 
 (use-package flx-ido
   :ensure t
@@ -337,32 +349,32 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;use file path to ensure buffer name uniqueness
 (use-package uniquify
   :config (setq uniquify-buffer-name-style 'forward
-                uniquify-separator "/"
-                uniquify-after-kill-buffer-p t
-                uniquify-ignore-buffers-re "^\\*"))
+				uniquify-separator "/"
+				uniquify-after-kill-buffer-p t
+				uniquify-ignore-buffers-re "^\\*"))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
 (use-package saveplace
   :config (progn (setq-default save-place t)
-                 (make-directory live-tmp-dir t)
-                 (setq save-place-file (concat live-tmp-dir "places"))))
+				 (make-directory live-tmp-dir t)
+				 (setq save-place-file (concat live-tmp-dir "places"))))
 
 (setq initial-major-mode 'fundamental-mode
-      redisplay-dont-pause t
-      column-number-mode t
-      echo-keystrokes 0.02
-      inhibit-startup-message t
-      transient-mark-mode t
-      shift-select-mode nil
-      require-final-newline t
-      truncate-partial-width-windows nil
-      delete-by-moving-to-trash t
-      confirm-nonexistent-file-or-buffer nil
-      query-replace-highlight t
-      next-error-highlight t
-      next-error-highlight-no-select t
-      x-select-enable-clipboard t)
+	  redisplay-dont-pause t
+	  column-number-mode t
+	  echo-keystrokes 0.02
+	  inhibit-startup-message t
+	  transient-mark-mode t
+	  shift-select-mode nil
+	  require-final-newline t
+	  truncate-partial-width-windows nil
+	  delete-by-moving-to-trash t
+	  confirm-nonexistent-file-or-buffer nil
+	  query-replace-highlight t
+	  next-error-highlight t
+	  next-error-highlight-no-select t
+	  x-select-enable-clipboard t)
 
 ;;set all coding systems to utf-8
 (set-language-environment 'utf-8)
@@ -385,25 +397,25 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package ediff
   :defer t
   :config (setq diff-switches "-u"
-                ediff-window-setup-function 'ediff-setup-windows-plain))
+				ediff-window-setup-function 'ediff-setup-windows-plain))
 
 ;;remove all trailing whitespace and trailing blank lines before
 ;;saving the file
 (defvar live-ignore-whitespace-modes '(markdown-mode))
 (defun live-cleanup-whitespace ()
   (when (not (member major-mode live-ignore-whitespace-modes))
-    (let ((whitespace-style '(trailing empty)))
-      (whitespace-cleanup))))
+	(let ((whitespace-style '(trailing empty)))
+	  (whitespace-cleanup))))
 (add-hook 'before-save-hook 'live-cleanup-whitespace)
 
 ;; savehist keeps track of some history
 (setq savehist-additional-variables
-      ;; search entries
-      '(search ring regexp-search-ring)
-      ;; save every minute
-      savehist-autosave-interval 60
-      ;; keep the home clean
-      savehist-file (concat live-tmp-dir "savehist"))
+	  ;; search entries
+	  '(search ring regexp-search-ring)
+	  ;; save every minute
+	  savehist-autosave-interval 60
+	  ;; keep the home clean
+	  savehist-file (concat live-tmp-dir "savehist"))
 (savehist-mode t)
 
 ;;; smex
@@ -411,7 +423,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :ensure t
   :config (smex-initialize)
   :bind (("M-x" . smex)
-         ("M-X" . smex-major-mode-commands)))
+		 ("M-X" . smex-major-mode-commands)))
 
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
@@ -420,14 +432,17 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package ispell
   :commands (flyspell-mode flyspell-prog-mode turn-off-flyspell)
   :init (progn (setq ispell-program-name "aspell" ; use aspell instead of ispell
-                     ispell-extra-args '("--sug-mode=ultra"))
-               (add-hook 'text-mode-hook 'flyspell-mode)
-               (add-hook 'prog-mode-hook
-                         (lambda ()
-                           (flyspell-prog-mode)))
-               (add-hook 'sh-mode
-                         (lambda ()
-                           (turn-off-flyspell)))))
+					 ispell-extra-args '("--sug-mode=ultra"))
+			   (add-hook 'text-mode-hook 'flyspell-mode)
+			   (add-hook 'prog-mode-hook
+						 (lambda ()
+						   (flyspell-prog-mode)))
+			   (add-hook 'sh-mode
+						 (lambda ()
+						   (turn-off-flyspell)))))
+
+(eval-after-load "flyspell"
+  '(diminish 'flyspell-mode))
 
 ;;; magit
 (use-package magit
@@ -435,21 +450,29 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :bind (("C-x g" . magit-status))
   ;; Don't show setup instructions
   :init (setq magit-last-seen-setup-instructions "1.4.0")
+  (defadvice vc-mode-line (after strip-backend () activate)
+	(when (stringp vc-mode)
+	  (let ((noback (concat (replace-regexp-in-string
+							 (format "^ %s:" (vc-backend buffer-file-name))
+							 " ᛘ" vc-mode)
+							"ᛘ")))
+		(setq vc-mode noback))))
   :config (progn (add-hook 'magit-log-edit-mode-hook
-                           (lambda ()
-                             (set-fill-column 72)
-                             (auto-fill-mode 1)))
-                 ;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
-                 (setq
-                  ;; use ido to look for branches
-                  magit-completing-read-function 'magit-ido-completing-read
-                  ;; don't put "origin-" in front of new branch names by default
-                  magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
-                  ;; highlight word/letter changes in hunk diffs
-                  magit-diff-refine-hunk t
-                  ;; don't attempt to save unsaved buffers
-                  magit-save-repository-buffers nil
-                  magit-popup-use-prefix-argument 'default)))
+						   (lambda ()
+							 (set-fill-column 72)
+							 (auto-fill-mode 1)))
+
+				 ;; (add-hook 'magit-mode-hook '(lambda () (auto-complete-mode 0)))
+				 (setq
+				  ;; use ido to look for branches
+				  magit-completing-read-function 'magit-ido-completing-read
+				  ;; don't put "origin-" in front of new branch names by default
+				  magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
+				  ;; highlight word/letter changes in hunk diffs
+				  magit-diff-refine-hunk t
+				  ;; don't attempt to save unsaved buffers
+				  magit-save-repository-buffers nil
+				  magit-popup-use-prefix-argument 'default)))
 
 (use-package gitconfig-mode
   :ensure t)
@@ -460,20 +483,20 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package erc
   :defer t
   :config (progn (setq erc-nick "tanzoniteblack")
-                 (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
+				 (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
-                            (sql-set-product 'postgres)
-                            (setq indent-tabs-mode nil)))
+							(sql-set-product 'postgres)
+							(setq indent-tabs-mode nil)))
 
 (use-package go-mode
   :ensure t
   :commands go-mode
   :config (progn (bind-key "M-." 'godef-jump go-mode-map)
-                 (bind-key "M-," 'pop-tag-mark go-mode-map)
-                 (bind-key "C-S-F" 'gofmt go-mode-map)
-                 (bind-key "M-<return>" 'godef-describe go-mode-map)))
+				 (bind-key "M-," 'pop-tag-mark go-mode-map)
+				 (bind-key "C-S-F" 'gofmt go-mode-map)
+				 (bind-key "M-<return>" 'godef-describe go-mode-map)))
 
 (use-package company-go
   :ensure t
@@ -491,19 +514,19 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package flycheck
   :ensure t
   :commands global-flycheck-mode
-  :config (progn (setq-default flycheck-disabled-checkers
-                               (append flycheck-disabled-checkers
-                                       '(javascript-jshint
-                                         emacs-lisp-checkdoc)))
-                 (flycheck-add-mode 'javascript-eslint 'web-mode)
-                 (global-flycheck-mode)
-                 (require 'flycheck-checkstyle)
-                 (add-to-list 'flycheck-checkers 'checkstyle)
-                 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
-                       flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
-                       flycheck-flake8-maximum-line-length 160
-                       flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
-                       flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
+  :config (progn (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers
+																  '(javascript-jshint
+																	emacs-lisp-checkdoc))
+							   flycheck-mode-line-prefix " Φ")
+				 (flycheck-add-mode 'javascript-eslint 'web-mode)
+				 (global-flycheck-mode)
+				 (require 'flycheck-checkstyle)
+				 (add-to-list 'flycheck-checkers 'checkstyle)
+				 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
+					   flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
+					   flycheck-flake8-maximum-line-length 160
+					   flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
+					   flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
 
 (use-package popup
   :ensure t)
@@ -515,10 +538,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package avy
   :ensure t
   :bind (("C-c SPC" . avy-goto-char)
-         ;; ("C-c S-SPC" . avy-goto-char)
-         ("M-g g" . avy-goto-line))
+		 ;; ("C-c S-SPC" . avy-goto-char)
+		 ("M-g g" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
-                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
+				   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
 
 ;; (use-package ace-pinyin
 ;;   :ensure t
@@ -545,9 +568,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :diminish ""
   :commands (highlight-symbol-mode)
   :bind (("C-<f3>" . highlight-symbol-at-point)
-         ("<f3>" . highlight-symbol-next)
-         ("S-<f3>" . highlight-symbol-prev)
-         ("M-<f3>" . highlight-symbol-prev))
+		 ("<f3>" . highlight-symbol-next)
+		 ("S-<f3>" . highlight-symbol-prev)
+		 ("M-<f3>" . highlight-symbol-prev))
   :init (add-hook 'prog-mode-hook 'highlight-symbol-mode)
   :config (setq highlight-symbol-idle-delay 0.5))
 
@@ -555,19 +578,19 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :ensure t
   :defer t
   :init (progn (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-               (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode))
-               (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
-               (add-to-list 'auto-mode-alist '(".tern-config" . json-mode))
-               (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode))
-               (add-to-list 'auto-mode-alist '(".eslintrc" . json-mode)))
+			   (add-to-list 'auto-mode-alist '("\\.jsonld$" . json-mode))
+			   (add-to-list 'auto-mode-alist '(".tern-project" . json-mode))
+			   (add-to-list 'auto-mode-alist '(".tern-config" . json-mode))
+			   (add-to-list 'auto-mode-alist '(".jshintrc" . json-mode))
+			   (add-to-list 'auto-mode-alist '(".eslintrc" . json-mode)))
   :config (progn (add-hook 'json-mode-hook 'flycheck-mode)
-                 (bind-key "C-S-f" 'json-mode-beautify json-mode-map)
-                 (setq json-reformat:pretty-string? t)))
+				 (bind-key "C-S-f" 'json-mode-beautify json-mode-map)
+				 (setq json-reformat:pretty-string? t)))
 
 (use-package nxml-mode
   :defer t
   :init (progn (add-to-list 'auto-mode-alist '("\\.xml$" . nxml-mode))
-               (add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode)))
+			   (add-to-list 'auto-mode-alist '("\\.gapp$" . nxml-mode)))
   :config (progn (bind-key "C-S-f" 'beautify-xml nxml-mode-map)))
 
 ;;; quit settings
@@ -585,7 +608,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;; start the emacs server
 (use-package server
   :config (unless (server-running-p)
-            (server-start)))
+			(server-start)))
 
 (cua-mode 0)
 
@@ -593,43 +616,43 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package browse-kill-ring
   :ensure t
   :config (setq browse-kill-ring-highlight-current-entry t
-                browse-kill-ring-no-duplicates t
-                browse-kill-ring-display-duplicates nil
-                browse-kill-ring-highlight-inserted-item nil))
+				browse-kill-ring-no-duplicates t
+				browse-kill-ring-display-duplicates nil
+				browse-kill-ring-highlight-inserted-item nil))
 
 (use-package projectile
   :ensure t
-  :config (progn (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name)))
-                       projectile-create-missing-test-files t)
-                 ;; add to the globally ignored files
-                 (dolist (file-name '("*~" "*.elc"))
-                   (add-to-list 'projectile-globally-ignored-files file-name))
-                 (when (eq system-type 'windows-nt)
-                   (setq projectile-indexing-method 'alien))
+  :config (progn (setq projectile-mode-line '(:eval (format " [%s]" (projectile-project-name)))
+					   projectile-create-missing-test-files t)
+				 ;; add to the globally ignored files
+				 (dolist (file-name '("*~" "*.elc"))
+				   (add-to-list 'projectile-globally-ignored-files file-name))
+				 (when (eq system-type 'windows-nt)
+				   (setq projectile-indexing-method 'alien))
 
-                 (defun run-junit-test-unit (universal-arg)
-                   (interactive "P")
-                   (let* ((file-name (buffer-file-name))
-                          (class-name (car (split-string
-                                            (car (last (split-string file-name "/")))
-                                            "\\.")))
-                          (root (projectile-project-root))
-                          (test-name (when universal-arg
-                                       (read-string (projectile-prepend-project-name "Run test method: ")
-                                                    (projectile-symbol-or-selection-at-point))))
-                          (mvn-cmd (concat "cd " root " && "
-                                           "mvn -DfailIfNoTests=false -Dtest=" class-name (when test-name (concat "#" test-name))
-                                           " test ")))
-                     (projectile-run-compilation mvn-cmd)))
-                 (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
+				 (defun run-junit-test-unit (universal-arg)
+				   (interactive "P")
+				   (let* ((file-name (buffer-file-name))
+						  (class-name (car (split-string
+											(car (last (split-string file-name "/")))
+											"\\.")))
+						  (root (projectile-project-root))
+						  (test-name (when universal-arg
+									   (read-string (projectile-prepend-project-name "Run test method: ")
+													(projectile-symbol-or-selection-at-point))))
+						  (mvn-cmd (concat "cd " root " && "
+										   "mvn -DfailIfNoTests=false -Dtest=" class-name (when test-name (concat "#" test-name))
+										   " test ")))
+					 (projectile-run-compilation mvn-cmd)))
+				 (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
 
-                 (defun projectile-lein-ancient ()
-                   (interactive)
-                   (projectile-run-compilation "lein with-profile ancient ancient :all"))
+				 (defun projectile-lein-ancient ()
+				   (interactive)
+				   (projectile-run-compilation "lein with-profile ancient ancient :all"))
 
-                 (projectile-register-project-type 'npm '("package.json") "npm run build-dev" "npm run test")
+				 (projectile-register-project-type 'npm '("package.json") "npm run build-dev" "npm run test")
 
-                 (projectile-global-mode)))
+				 (projectile-global-mode)))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
@@ -638,8 +661,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (ignore-errors
   (add-to-list 'compilation-environment "TERM=xterm-256color")
   (defun my-colorize-compilation-buffer ()
-    (when (eq major-mode 'compilation-mode)
-      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+	(when (eq major-mode 'compilation-mode)
+	  (ansi-color-apply-on-region compilation-filter-start (point-max))))
   (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
 
 ;;; warn when opening files bigger than 100MB (default is 10MB)
@@ -648,16 +671,16 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (defun large-file-protector ()
   "Function to be run when opening a file to detect if special large-file changes need made."
   (let ((too-many-bytes (> (buffer-size) (* 8 1024 1024)))
-        (too-many-lines (> (count-lines (point-min) (point-max)) 9000)))
-    (when too-many-bytes
-      (setq buffer-read-only t)
-      (buffer-disable-undo))
-    (when (or too-many-bytes too-many-lines)
-      (highlight-symbol-mode -1)
-      (company-mode -1)
-      (git-gutter-mode -1)
-      (smartparens-mode -1)
-      (show-paren-mode -1))))
+		(too-many-lines (> (count-lines (point-min) (point-max)) 9000)))
+	(when too-many-bytes
+	  (setq buffer-read-only t)
+	  (buffer-disable-undo))
+	(when (or too-many-bytes too-many-lines)
+	  (highlight-symbol-mode -1)
+	  (company-mode -1)
+	  (git-gutter-mode -1)
+	  (smartparens-mode -1)
+	  (show-paren-mode -1))))
 
 (add-hook 'find-file-hook 'large-file-protector)
 
@@ -682,19 +705,19 @@ All elements of this alist are checked, meaning you can enable multiple minor mo
   "check file name against auto-minor-mode-alist to enable minor modes
 the checking happens for all pairs in auto-minor-mode-alist"
   (when buffer-file-name
-    (let ((name buffer-file-name)
-          (remote-id (file-remote-p buffer-file-name))
-          (alist auto-minor-mode-alist))
-      ;; Remove backup-suffixes from file name.
-      (setq name (file-name-sans-versions name))
-      ;; Remove remote file name identification.
-      (when (and (stringp remote-id)
-                 (string-match-p (regexp-quote remote-id) name))
-        (setq name (substring name (match-end 0))))
-      (while (and alist (caar alist) (cdar alist))
-        (if (string-match (caar alist) name)
-            (funcall (cdar alist) 1))
-        (setq alist (cdr alist))))))
+	(let ((name buffer-file-name)
+		  (remote-id (file-remote-p buffer-file-name))
+		  (alist auto-minor-mode-alist))
+	  ;; Remove backup-suffixes from file name.
+	  (setq name (file-name-sans-versions name))
+	  ;; Remove remote file name identification.
+	  (when (and (stringp remote-id)
+				 (string-match-p (regexp-quote remote-id) name))
+		(setq name (substring name (match-end 0))))
+	  (while (and alist (caar alist) (cdar alist))
+		(if (string-match (caar alist) name)
+			(funcall (cdar alist) 1))
+		(setq alist (cdr alist))))))
 
 (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
@@ -702,60 +725,60 @@ the checking happens for all pairs in auto-minor-mode-alist"
   :ensure t
   :defer t
   :config (progn (setq org-completion-use-ido t
-                       org-outline-path-complete-in-steps nil
-                       org-startup-indented nil
-                       org-hide-leading-stars t
-                       org-agenda-files (list "~/Dropbox/.org/yummly.org"
-                                              "~/Dropbox/.org/home.org"
-                                              "~/Dropbox/.org/beer.org")
-                       org-directory "~/Dropbox/.org/"
-                       org-display-inline-images t
-                       org-deadline-warning-days 3
-                       org-log-done 'time
-                       org-src-fontify-natively t
-                       org-src-tab-acts-natively t)
-                 ;; if all children of a TODO are done, then change status of TODO to DONE
-                 (defun org-summary-todo (n-done n-not-done)
-                   "Switch entry to DONE when all subentries are done, to TODO otherwise."
-                   (let (org-log-done org-log-states)   ; turn off logging
-                     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-                 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-                 ;; remap ace--word-mode (org-mode automatically disables)
-                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-                 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
-                 (define-key org-mode-map (kbd "M-h") 'help-command)
-                 (bind-key "C-c a" 'org-agenda-list)
-                 ;; enable flyspell-mode on load of org buffer
-                 (add-hook 'org-mode-hook 'flyspell-mode)
-                 ;; (use-package htmlize
-                 ;;   :ensure t)
-                 ;; windmove compatibility
-                 (add-hook 'org-shiftup-final-hook 'windmove-up)
-                 (add-hook 'org-shiftleft-final-hook 'windmove-left)
-                 (add-hook 'org-shiftdown-final-hook 'windmove-down)
-                 (add-hook 'org-shiftright-final-hook 'windmove-right)
-                 (add-hook 'org-mode-hook 'turn-on-auto-fill)
+					   org-outline-path-complete-in-steps nil
+					   org-startup-indented nil
+					   org-hide-leading-stars t
+					   org-agenda-files (list "~/Dropbox/.org/yummly.org"
+											  "~/Dropbox/.org/home.org"
+											  "~/Dropbox/.org/beer.org")
+					   org-directory "~/Dropbox/.org/"
+					   org-display-inline-images t
+					   org-deadline-warning-days 3
+					   org-log-done 'time
+					   org-src-fontify-natively t
+					   org-src-tab-acts-natively t)
+				 ;; if all children of a TODO are done, then change status of TODO to DONE
+				 (defun org-summary-todo (n-done n-not-done)
+				   "Switch entry to DONE when all subentries are done, to TODO otherwise."
+				   (let (org-log-done org-log-states)   ; turn off logging
+					 (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+				 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+				 ;; remap ace--word-mode (org-mode automatically disables)
+				 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+				 (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
+				 (define-key org-mode-map (kbd "M-h") 'help-command)
+				 (bind-key "C-c a" 'org-agenda-list)
+				 ;; enable flyspell-mode on load of org buffer
+				 (add-hook 'org-mode-hook 'flyspell-mode)
+				 ;; (use-package htmlize
+				 ;;   :ensure t)
+				 ;; windmove compatibility
+				 (add-hook 'org-shiftup-final-hook 'windmove-up)
+				 (add-hook 'org-shiftleft-final-hook 'windmove-left)
+				 (add-hook 'org-shiftdown-final-hook 'windmove-down)
+				 (add-hook 'org-shiftright-final-hook 'windmove-right)
+				 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
-                 (defun endless/org-ispell ()
-                   "Configure `ispell-skip-region-alist' for `org-mode'."
-                   (make-local-variable 'ispell-skip-region-alist)
-                   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
-                   (add-to-list 'ispell-skip-region-alist '("~" "~"))
-                   (add-to-list 'ispell-skip-region-alist '("=" "="))
-                   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
-                 (add-hook 'org-mode-hook #'endless/org-ispell)
+				 (defun endless/org-ispell ()
+				   "Configure `ispell-skip-region-alist' for `org-mode'."
+				   (make-local-variable 'ispell-skip-region-alist)
+				   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+				   (add-to-list 'ispell-skip-region-alist '("~" "~"))
+				   (add-to-list 'ispell-skip-region-alist '("=" "="))
+				   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC")))
+				 (add-hook 'org-mode-hook #'endless/org-ispell)
 
-                 (defun kill-org-src-buffers (&rest args)
-                   "Kill temporary buffers created by
+				 (defun kill-org-src-buffers (&rest args)
+				   "Kill temporary buffers created by
 org-src-font-lock-fontify-block so they don't interfere with
 magit-mode."
-                   (dolist (b (buffer-list))
-                     (let ((bufname (buffer-name b)))
-                       (if (string-prefix-p " org-src-fontification:" bufname)
-                           (kill-buffer b)))))
+				   (dolist (b (buffer-list))
+					 (let ((bufname (buffer-name b)))
+					   (if (string-prefix-p " org-src-fontification:" bufname)
+						   (kill-buffer b)))))
 
-                 (advice-add 'org-src-font-lock-fontify-block
-                             :after #'kill-org-src-buffers)))
+				 (advice-add 'org-src-font-lock-fontify-block
+							 :after #'kill-org-src-buffers)))
 
 ;; org-mode export in github flavored markdown
 (use-package ox-gfm
@@ -765,15 +788,15 @@ magit-mode."
   :ensure t
   :defer t
   :config (progn (setq clojure-align-forms-automatically t)
-                 (add-hook 'clojure-mode-hook (lambda ()
-                                                (setq buffer-save-without-query t)))
-                 (add-hook 'clojure-mode-hook 'subword-mode)
-                 (add-hook 'clojure-mode-hook
-                           (lambda ()
-                             (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-                 ;; Fancy docstrings for schema/defn when in the form:
-                 ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
-                 (put 'schema/defn 'clojure-doc-string-elt 4)))
+				 (add-hook 'clojure-mode-hook (lambda ()
+												(setq buffer-save-without-query t)))
+				 (add-hook 'clojure-mode-hook 'subword-mode)
+				 (add-hook 'clojure-mode-hook
+						   (lambda ()
+							 (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+				 ;; Fancy docstrings for schema/defn when in the form:
+				 ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
+				 (put 'schema/defn 'clojure-doc-string-elt 4)))
 
 (use-package clojure-mode-extra-font-locking
   :ensure t)
@@ -781,31 +804,31 @@ magit-mode."
 (use-package cider
   :ensure t
   :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
-                 (add-hook 'clojure-mode-hook 'eldoc-mode)
-                 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
-                 (add-hook 'cider-repl-mode-hook 'subword-mode)
-                 (setq cider-annotate-completion-candidates t
-                       cider-mode-line " cider"
-                       cider-prompt-for-symbol nil
-                       cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
-                 (add-hook 'cider-mode-hook
-                           (lambda ()
-                             (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
-                             (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-                             (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-                 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
+				 (add-hook 'clojure-mode-hook 'eldoc-mode)
+				 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
+				 (add-hook 'cider-repl-mode-hook 'subword-mode)
+				 (setq cider-annotate-completion-candidates t
+					   cider-mode-line " cider"
+					   cider-prompt-for-symbol nil
+					   cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+				 (add-hook 'cider-mode-hook
+						   (lambda ()
+							 (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
+							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
+							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
 
 (use-package clj-refactor
   :ensure t
   :config (progn (setq cljr-suppress-middleware-warnings t)
-                 (add-hook 'cider-mode-hook (lambda ()
-                                              (clj-refactor-mode 1)
-                                              (cljr-add-keybindings-with-prefix "C-c C-m")))
-                 (add-hook 'cider-mode-hook 'yas-minor-mode)
-                 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
-                 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
-                 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
-                 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
+				 (add-hook 'cider-mode-hook (lambda ()
+											  (clj-refactor-mode 1)
+											  (cljr-add-keybindings-with-prefix "C-c C-m")))
+				 (add-hook 'cider-mode-hook 'yas-minor-mode)
+				 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
+				 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
+				 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
+				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
 
 (use-package js2-mode
   :ensure t)
@@ -814,19 +837,19 @@ magit-mode."
   :ensure t
   :commands (tern-mode)
   :init (progn (add-hook 'js2-mode-hook 'tern-mode)
-               (setq js2-include-node-externs t
-                     js2-include-browser-externs t
-                     js2-basic-offset 2
-                     js2-indent-line 2
-                     js2-bounce-indent-p t
-                     js2-pretty-multiline-declarations t))
+			   (setq js2-include-node-externs t
+					 js2-include-browser-externs t
+					 js2-basic-offset 2
+					 js2-indent-line 2
+					 js2-bounce-indent-p t
+					 js2-pretty-multiline-declarations t))
   :config (progn (define-key tern-mode-keymap (kbd "M-.") 'tern-find-definition)
-                 (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
-                 (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
-                 (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
-                 (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
-                 (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
-                 (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs)))
+				 (define-key tern-mode-keymap (kbd "C-M-.") 'tern-find-definition-by-name)
+				 (define-key tern-mode-keymap (kbd "M-,") 'tern-pop-find-definition)
+				 (define-key tern-mode-keymap (kbd "C-c C-r") 'tern-rename-variable)
+				 (define-key tern-mode-keymap (kbd "C-c C-c") 'tern-get-type)
+				 (define-key tern-mode-keymap (kbd "C-c C-d") 'tern-get-docs)
+				 (define-key tern-mode-keymap (kbd "M-<return>") 'tern-get-docs)))
 
 (use-package company-tern
   :ensure t
@@ -839,8 +862,8 @@ magit-mode."
 (use-package cc-mode
   :defer t
   :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
-                 (setq-default tab-width 4 indent-tabs-mode t)
-                 (add-hook 'java-mode-hook 'subword-mode)))
+				 (setq-default tab-width 4 indent-tabs-mode t)
+				 (add-hook 'java-mode-hook 'subword-mode)))
 
 (use-package dtrt-indent
   :ensure t
@@ -855,61 +878,62 @@ magit-mode."
   :commands (elpy-enable)
   :init (with-eval-after-load 'python (elpy-enable))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
-            (setq elpy-rpc-backend "jedi")
-            (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
-            (define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
-            (define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
-            (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-            (add-hook 'python-mode-hook 'highlight-symbol-mode)))
+			(setq elpy-rpc-backend "jedi")
+			(define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
+			(define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
+			(define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
+			(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+			(add-hook 'python-mode-hook 'highlight-symbol-mode)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
   (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
-    (add-hook mode-hook 'rainbow-delimiters-mode)
-    (add-hook mode-hook 'smartparens-strict-mode)))
+	(add-hook mode-hook 'rainbow-delimiters-mode)
+	(add-hook mode-hook 'smartparens-strict-mode)))
 
 (use-package smartparens
   :ensure t
   :commands (smartparens-global-mode smartparens-mode)
+  :diminish " ⦕⦖"
   :init (smartparens-global-mode t)
   :config (progn (require 'smartparens-config)
-                 ;; highlights matching pairs
-                 (show-smartparens-global-mode t)
-                 ;; custom keybindings for smartparens mode
-                 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
-                 (define-key smartparens-mode-map (kbd "M-(") 'sp-forward-barf-sexp)
-                 (define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
-                 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
+				 ;; highlights matching pairs
+				 (show-smartparens-global-mode t)
+				 ;; custom keybindings for smartparens mode
+				 (define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+				 (define-key smartparens-mode-map (kbd "M-(") 'sp-forward-barf-sexp)
+				 (define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+				 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
 
-                 (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
-                 (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
-                 (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
-                 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
+				 (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
+				 (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
+				 (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
+				 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
 
-                 (sp-with-modes '(clojure-mode cider-repl-mode)
-                   (sp-local-pair "#{" "}")
-                   (sp-local-pair "`" nil :actions nil)
-                   (sp-local-pair "@(" ")")
-                   (sp-local-pair "#(" ")"))
+				 (sp-with-modes '(clojure-mode cider-repl-mode)
+				   (sp-local-pair "#{" "}")
+				   (sp-local-pair "`" nil :actions nil)
+				   (sp-local-pair "@(" ")")
+				   (sp-local-pair "#(" ")"))
 
-                 (sp-local-pair 'markdown-mode "`" nil :actions nil)
-                 (sp-local-pair 'gfm-mode "`" nil :actions nil)
+				 (sp-local-pair 'markdown-mode "`" nil :actions nil)
+				 (sp-local-pair 'gfm-mode "`" nil :actions nil)
 
-                 (sp-local-pair 'web-mode "{" "}" :actions nil)
-                 (-each sp--lisp-modes 'enable-lisp-hooks)))
+				 (sp-local-pair 'web-mode "{" "}" :actions nil)
+				 (-each sp--lisp-modes 'enable-lisp-hooks)))
 
 ;;; elisp tag navigation
 ;;; many functions borrowed from emacs-live
 (use-package elisp-slime-nav
   :ensure t
   :init (progn (add-to-list 'auto-mode-alist '("\\.el$" . emacs-lisp-mode))
-               (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
+			   (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
   :diminish "")
 
 (use-package eldoc
   :init (progn (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-               (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
-               (add-hook 'ielm-mode-hook 'eldoc-mode))
+			   (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
+			   (add-hook 'ielm-mode-hook 'eldoc-mode))
   :diminish "")
 
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
@@ -918,34 +942,34 @@ magit-mode."
 (defun live-lisp-describe-thing-at-point ()
   "Show the documentation of the Elisp function and variable near point.
    This checks in turn:
-     -- for a function name where point is
-     -- for a variable name where point is
-     -- for a surrounding function call"
+	 -- for a function name where point is
+	 -- for a variable name where point is
+	 -- for a surrounding function call"
   (interactive)
   (let (sym)
-    ;; sigh, function-at-point is too clever.  we want only the first half.
-    (cond ((setq sym (ignore-errors
-                       (with-syntax-table emacs-lisp-mode-syntax-table
-                         (save-excursion
-                           (or (not (zerop (skip-syntax-backward "_w")))
-                               (eq (char-syntax (char-after (point))) ?w)
-                               (eq (char-syntax (char-after (point))) ?_)
-                               (forward-sexp -1))
-                           (skip-chars-forward "`'")
-                           (let ((obj (read (current-buffer))))
-                             (and (symbolp obj) (fboundp obj) obj))))))
-           (describe-function sym))
-          ((setq sym (variable-at-point)) (describe-variable sym)))))
+	;; sigh, function-at-point is too clever.  we want only the first half.
+	(cond ((setq sym (ignore-errors
+					   (with-syntax-table emacs-lisp-mode-syntax-table
+						 (save-excursion
+						   (or (not (zerop (skip-syntax-backward "_w")))
+							   (eq (char-syntax (char-after (point))) ?w)
+							   (eq (char-syntax (char-after (point))) ?_)
+							   (forward-sexp -1))
+						   (skip-chars-forward "`'")
+						   (let ((obj (read (current-buffer))))
+							 (and (symbolp obj) (fboundp obj) obj))))))
+		   (describe-function sym))
+		  ((setq sym (variable-at-point)) (describe-variable sym)))))
 
 (use-package buffer-move
   :ensure t
   :config (global-set-key (kbd "C-c w")
-                          (defhydra hydra-buffer-move (:color blue)
-                            "buffer-move"
-                            ("p" buf-move-up "up")
-                            ("n" buf-move-down "down")
-                            ("b" buf-move-left "left")
-                            ("f" buf-move-right "right"))))
+						  (defhydra hydra-buffer-move (:color blue)
+							"buffer-move"
+							("p" buf-move-up "up")
+							("n" buf-move-down "down")
+							("b" buf-move-left "left")
+							("f" buf-move-right "right"))))
 
 ;; Random other modes
 
@@ -960,10 +984,10 @@ magit-mode."
   :ensure t
   :commands (ensime-scala-mode-hook)
   :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-               ;; Despite the name, this really just enables ensime-mode
-               (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
+			   ;; Despite the name, this really just enables ensime-mode
+			   (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
   :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
-                 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
+				 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (use-package d-mode
   :defer t
@@ -990,59 +1014,59 @@ magit-mode."
 (defun string/ends-with (string suffix)
   "Return t if STRING ends with SUFFIX."
   (and (string-match (rx-to-string `(: ,suffix eos) t)
-                     string)
-       t))
+					 string)
+	   t))
 
 (use-package web-mode
   :ensure t
   :commands web-mode
   :init (progn (add-to-list 'auto-mode-alist '("\\.phtml$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.tpl\\.php$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.[gj]sp$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.as[cp]x$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-               (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
+			   (add-to-list 'auto-mode-alist '("\\.tpl\\.php$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.[gj]sp$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.as[cp]x$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
   :config (progn (defun my-web-mode-hook ()
-                   (setq web-mode-enable-auto-pairing nil))
+				   (setq web-mode-enable-auto-pairing nil))
 
-                 (add-hook 'web-mode-hook  'my-web-mode-hook)
-                 (defadvice web-mode-highlight-part (around tweak-jsx activate)
-                   (if (equal web-mode-content-type "jsx")
-                       (let ((web-mode-enable-part-face nil))
-                         ad-do-it)
-                     ad-do-it))
-                 (defun sp-web-mode-is-code-context (id action context)
-                   (when (and (eq action 'insert)
-                              (not (or (get-text-property (point) 'part-side)
-                                       (get-text-property (point) 'block-side))))
+				 (add-hook 'web-mode-hook  'my-web-mode-hook)
+				 (defadvice web-mode-highlight-part (around tweak-jsx activate)
+				   (if (equal web-mode-content-type "jsx")
+					   (let ((web-mode-enable-part-face nil))
+						 ad-do-it)
+					 ad-do-it))
+				 (defun sp-web-mode-is-code-context (id action context)
+				   (when (and (eq action 'insert)
+							  (not (or (get-text-property (point) 'part-side)
+									   (get-text-property (point) 'block-side))))
 
-                     t))
-                 (defun webmode-jsx-setup ()
-                   (when (or (string/ends-with buffer-file-name ".js")
-                             (string/ends-with buffer-file-name ".jsx"))
-                     (yas-minor-mode)
-                     (yas-activate-extra-mode 'js-mode)
-                     (web-mode-set-content-type "jsx")
-                     (setq-local web-mode-enable-auto-quoting nil)
-                     (setq-local web-mode-code-indent-offset 2)
-                     (setq-local web-mode-markup-indent-offset 2)
-                     (setq-local web-mode-attr-indent-offset 2)
-                     (setq-local web-mode-attr-value-indent-offset 2)
-                     (setq-default indent-tabs-mode nil)
-                     (tern-mode)))
-                 (add-hook 'web-mode-hook 'webmode-jsx-setup)
-                 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
-                 (sp-local-pair 'web-mode "{" "}")))
+					 t))
+				 (defun webmode-jsx-setup ()
+				   (when (or (string/ends-with buffer-file-name ".js")
+							 (string/ends-with buffer-file-name ".jsx"))
+					 (yas-minor-mode)
+					 (yas-activate-extra-mode 'js-mode)
+					 (web-mode-set-content-type "jsx")
+					 (setq-local web-mode-enable-auto-quoting nil)
+					 (setq-local web-mode-code-indent-offset 2)
+					 (setq-local web-mode-markup-indent-offset 2)
+					 (setq-local web-mode-attr-indent-offset 2)
+					 (setq-local web-mode-attr-value-indent-offset 2)
+					 (setq-default indent-tabs-mode nil)
+					 (tern-mode)))
+				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
+				 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+				 (sp-local-pair 'web-mode "{" "}")))
 
 (use-package ruby-mode
   :ensure t
   :commands ruby-mode
   :init (progn (add-to-list 'auto-mode-alist '("vagrantfile" . ruby-mode))
-               (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))))
+			   (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))))
 
 (setq line-move-visual t)
 
@@ -1072,7 +1096,7 @@ magit-mode."
   :ensure t
   :config (global-anzu-mode 1)
   :bind (("M-%" . anzu-query-replace)
-         ("C-M-%" . anzu-query-replace-regexp)))
+		 ("C-M-%" . anzu-query-replace-regexp)))
 
 ;; (use-package graphviz-dot-mode
 ;;   :ensure t
@@ -1117,17 +1141,17 @@ magit-mode."
   ;; Make cut and paste work with the OS X clipboard
 
   (defun live-copy-from-osx ()
-    (shell-command-to-string "pbpaste"))
+	(shell-command-to-string "pbpaste"))
 
   (defun live-paste-to-osx (text &optional push)
-    (let ((process-connection-type nil))
-      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-        (process-send-string proc text)
-        (process-send-eof proc))))
+	(let ((process-connection-type nil))
+	  (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+		(process-send-string proc text)
+		(process-send-eof proc))))
 
   (when (not window-system)
-    (setq interprogram-cut-function #'live-paste-to-osx)
-    (setq interprogram-paste-function #'live-copy-from-osx))
+	(setq interprogram-cut-function #'live-paste-to-osx)
+	(setq interprogram-paste-function #'live-copy-from-osx))
 
   ;; Work around a bug on OS X where system-name is a fully qualified
   ;; domain name
@@ -1154,7 +1178,7 @@ magit-mode."
 (use-package crux
   :ensure t
   :bind (("C-a" . crux-move-beginning-of-line)
-         ("C-S-f" . crux-cleanup-buffer-or-region))
+		 ("C-S-f" . crux-cleanup-buffer-or-region))
   :demand
   :config
   (crux-with-region-or-buffer indent-region)
@@ -1163,3 +1187,6 @@ magit-mode."
 (use-package imenu-anywhere
   :ensure t
   :bind (("C-c ." . imenu-anywhere)))
+
+(eval-after-load "auto-revert-mode"
+  '(diminish 'auto-revert-mode))
