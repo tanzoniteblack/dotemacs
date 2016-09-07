@@ -27,3 +27,4 @@
 *.swp
 /ensime/
 session.*
+/elpa-outdated/
