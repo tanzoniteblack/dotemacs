@@ -461,10 +461,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :init (setq magit-last-seen-setup-instructions "1.4.0")
   (defadvice vc-mode-line (after strip-backend () activate)
 	(when (stringp vc-mode)
-	  (let ((noback (concat (replace-regexp-in-string
-							 (format "^ %s[:-]?" (vc-backend buffer-file-name))
-							 " ᛘ" vc-mode)
-							"ᛘ")))
+	  (let ((noback (replace-regexp-in-string
+							  (format "^ %s[:-]?" (vc-backend buffer-file-name))
+							  " " vc-mode)))
 		(setq vc-mode noback))))
   :config (progn (add-hook 'magit-log-edit-mode-hook
 						   (lambda ()
