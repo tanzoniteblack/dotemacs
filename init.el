@@ -127,11 +127,20 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 	(string-match "\\(\\([0-9]+.\\)+[0-9]+\\)" ipconfig)
 	(insert (match-string 0 ipconfig))))
 
-;; don't load splash screen
-(setq inhibit-splash-screen t)
+
+(setq inhibit-splash-screen t ; don't load splash screen
+	  indicate-buffer-boundaries nil ; don't show where buffer starts/ends
+	  jit-lock-defer-time nil
+	  jit-lock-stealth-nice 0.1
+	  jit-lock-stealth-time 0.2
+	  jit-lock-stealth-verbose nil)
 
 ;;; don't load menubar
 (menu-bar-mode -1)
+
+;; Disable fringe in the minibuffer
+(add-hook 'emacs-startup-hook
+		  (lambda () (set-window-fringes (minibuffer-window) 0 0 nil)))
 
 ;; replace title with buffername
 (setq frame-title-format "%b")
@@ -453,7 +462,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   (defadvice vc-mode-line (after strip-backend () activate)
 	(when (stringp vc-mode)
 	  (let ((noback (concat (replace-regexp-in-string
-							 (format "^ %s:" (vc-backend buffer-file-name))
+							 (format "^ %s[:-]?" (vc-backend buffer-file-name))
 							 " ᛘ" vc-mode)
 							"ᛘ")))
 		(setq vc-mode noback))))
