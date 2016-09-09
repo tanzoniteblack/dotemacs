@@ -1066,6 +1066,7 @@ magit-mode."
 					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
+                 (add-hook 'web-mode-hook 'subword-mode)
 				 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
 				 (sp-local-pair 'web-mode "{" "}")))
 
