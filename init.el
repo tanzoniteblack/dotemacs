@@ -877,6 +877,11 @@ magit-mode."
   :ensure t
   :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
+(use-package meghanada
+  :ensure t
+  :commands meghanada-mode
+  :init (add-hook 'java-mode-hook 'meghanada-mode))
+
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
@@ -990,9 +995,7 @@ magit-mode."
 (use-package ensime
   :ensure t
   :commands (ensime-scala-mode-hook)
-  :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-			   ;; Despite the name, this really just enables ensime-mode
-			   (add-hook 'java-mode-hook 'ensime-scala-mode-hook))
+  :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
   :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
 				 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
