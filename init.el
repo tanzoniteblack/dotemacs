@@ -1206,3 +1206,6 @@ magit-mode."
   '(diminish 'yas-minor-mode))
 
 (diminish 'subword-mode)
+
+(use-package systemd
+  :ensure t)
