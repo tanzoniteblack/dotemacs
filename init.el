@@ -528,13 +528,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 							   flycheck-mode-line-prefix " Φ")
 				 (flycheck-add-mode 'javascript-eslint 'web-mode)
 				 (global-flycheck-mode)
-				 (require 'flycheck-checkstyle)
-				 (add-to-list 'flycheck-checkers 'checkstyle)
 				 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
 					   flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
-					   flycheck-flake8-maximum-line-length 160
-					   flycheck-checkstylerc (concat (getenv "HOME") "/.emacs.d/google_checks.xml")
-					   flycheck-checkstyle-jar (concat (getenv "HOME") "/.emacs.d/checkstyle-6.15-all.jar"))))
+					   flycheck-flake8-maximum-line-length 160)))
 
 (use-package popup
   :ensure t)
