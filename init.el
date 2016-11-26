@@ -1177,6 +1177,7 @@ magit-mode."
 
 (load-library "live-fontify-hex-config.el")
 (load-library "bindings.el")
+(load-library "jekyll.el")
 
 (use-package php-mode
   :ensure t
