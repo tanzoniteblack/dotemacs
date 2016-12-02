@@ -9,11 +9,8 @@
   (interactive "MTitle: ")
   (let ((slug (sluggify title))
         (date (current-time)))
-    (find-file (concat website-dir "_posts/"
-                       (format-time-string "%Y-%m-%d") "-" slug
-                       ".markdown"))
+    (find-file (concat website-dir "_drafts/" slug ".markdown"))
     (insert "---\n")
     (insert "layout: post\n")
     (insert "title: \"") (insert title) (insert "\"\n")
-    (insert "date: ") (insert (format-time-string "%Y-%m-%d %H:%M:%S")) (insert "\n")
-    (insert "---\n\n")))
+	(insert "---\n\n")))
