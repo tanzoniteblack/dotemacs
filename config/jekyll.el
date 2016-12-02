@@ -13,4 +13,5 @@
     (insert "---\n")
     (insert "layout: post\n")
     (insert "title: \"") (insert title) (insert "\"\n")
+	(insert "comments: true\n")
 	(insert "---\n\n")))
