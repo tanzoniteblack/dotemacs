@@ -1194,7 +1194,10 @@ magit-mode."
 
 (use-package imenu-anywhere
   :ensure t
-  :bind (("C-c ." . imenu-anywhere)))
+  :bind (("C-c ." . imenu-anywhere))
+  :config (add-hook 'java-mode-hook
+					(lambda ()
+					  (define-key java-mode-map (kbd "C-c .") 'imenu-anywhere))))
 
 (eval-after-load "auto-revert-mode"
   '(diminish 'auto-revert-mode))
