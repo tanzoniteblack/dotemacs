@@ -157,7 +157,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;; OS X tends to display things small
 (when (eq system-type 'darwin)
-  (setq default-font-height 170))
+  (setq default-font-height 150))
 
 ;; Change font to enlarged Ubuntu Mono, if it exists
 (set-face-attribute 'default nil :family default-font :height default-font-height :weight 'normal)
@@ -1142,6 +1142,10 @@ magit-mode."
 (add-to-list 'auto-minor-mode-alist '("My Clippings.txt" . read-only-mode))
 
 (when (eq system-type 'darwin)
+  ;; Fix keyboard alt/meta keys
+  (setq mac-option-modifier 'alt)
+  (setq mac-command-modifier 'meta)
+
   ;; OS X specific configuration
   ;; ---------------------------
 
