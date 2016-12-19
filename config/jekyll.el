@@ -3,7 +3,7 @@
 
 (defun sluggify (s)
   "Turn a string S into a slug."
-  (replace-regexp-in-string " " "-" (downcase (replace-regexp-in-string "[\]\[(){}!#$~^\\]" "" s))))
+  (replace-regexp-in-string " " "-" (downcase (replace-regexp-in-string "[\]\[(){}&!#$~^\\]" "" s))))
 
 (defun new-post (title)
   (interactive "MTitle: ")
