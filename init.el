@@ -892,7 +892,9 @@ magit-mode."
 			(define-key elpy-mode-map (kbd "M-,") 'pop-tag-mark)
 			(define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
 			(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-			(add-hook 'python-mode-hook 'highlight-symbol-mode)))
+			(add-hook 'python-mode-hook 'highlight-symbol-mode)
+			(setenv "WORKON_HOME" "~/.pyenv/versions/")
+			(setq python-shell-prompt-detect-failure-warning nil)))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
@@ -1213,3 +1215,5 @@ magit-mode."
 
 (use-package systemd
   :ensure t)
+
+(add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))

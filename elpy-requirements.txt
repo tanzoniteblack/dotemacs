@@ -1,0 +1,6 @@
+# Packages used by elpy for import management, code completion, and style checking
+jedi
+importmagic
+autopep8
+yapf
+virtualenvwrapper

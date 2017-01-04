@@ -46,7 +46,7 @@ ZSH_THEME="dpoggi"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang terminalapp brew docker git-extras lein mvn python docker brew-cask colored-man zsh-syntax-highlighting)
+plugins=(git golang terminalapp brew docker git-extras lein mvn python docker brew-cask colored-man zsh-syntax-highlighting virtualenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,3 +88,5 @@ if [ -f ~/.zshrc-osx ]
 then
 	source ~/.zshrc-osx
 fi
+
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)" && eval "$(pyenv init -)"; fi
