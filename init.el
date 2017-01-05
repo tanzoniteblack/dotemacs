@@ -882,10 +882,14 @@ magit-mode."
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
+(use-package python-mode
+  :ensure t
+  :demand t)
+
 (use-package elpy
   :ensure t
   :commands (elpy-enable)
-  :init (with-eval-after-load 'python (elpy-enable))
+  :init (with-eval-after-load 'python-mode (elpy-enable))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
 			(setq elpy-rpc-backend "jedi")
 			(define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
@@ -1145,7 +1149,7 @@ magit-mode."
 
 (when (eq system-type 'darwin)
   ;; Fix keyboard alt/meta keys
-  (setq mac-option-modifier 'alt)
+  (setq mac-option-modifier 'meta)
   (setq mac-command-modifier 'meta)
 
   ;; OS X specific configuration
@@ -1203,7 +1207,10 @@ magit-mode."
   :bind (("C-c ." . imenu-anywhere))
   :config (add-hook 'java-mode-hook
 					(lambda ()
-					  (define-key java-mode-map (kbd "C-c .") 'imenu-anywhere))))
+					  (define-key java-mode-map (kbd "C-c .") 'imenu-anywhere)))
+  (add-hook 'python-mode-hook
+					(lambda ()
+					  (define-key python-mode-map (kbd "C-c .") 'imenu-anywhere))))
 
 (eval-after-load "auto-revert-mode"
   '(diminish 'auto-revert-mode))
