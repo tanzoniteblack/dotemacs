@@ -889,6 +889,7 @@ magit-mode."
 (use-package elpy
   :ensure t
   :commands (elpy-enable)
+  :bind ("C-S-f" . elpy-yapf-fix-code)
   :init (with-eval-after-load 'python-mode (elpy-enable))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
 			(setq elpy-rpc-backend "jedi")
