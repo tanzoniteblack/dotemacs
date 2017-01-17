@@ -32,6 +32,11 @@
   `(eval-after-load ,mode
 	 '(progn ,@body)))
 
+;; Ensure the exec-path honours the shell PATH
+(use-package exec-path-from-shell
+  :ensure t
+  :config (exec-path-from-shell-initialize))
+
 (use-package dash
   :ensure t)
 
@@ -494,7 +499,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
 							(sql-set-product 'postgres)
-							(setq indent-tabs-mode nil)))
+							(setq indent-tabs-mode nil)
+                            (bind-key "C-j" 'newline sql-mode-map)))
 
 (use-package go-mode
   :ensure t
@@ -887,7 +893,6 @@ magit-mode."
 (use-package elpy
   :ensure t
   :commands (elpy-enable)
-  :bind ("C-S-f" . elpy-yapf-fix-code)
   :init (with-eval-after-load 'python-mode (elpy-enable))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
 			(setq elpy-rpc-backend "jedi")
@@ -897,7 +902,14 @@ magit-mode."
 			(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 			(add-hook 'python-mode-hook 'highlight-symbol-mode)
 			(setenv "WORKON_HOME" "~/.pyenv/versions/")
-			(setq python-shell-prompt-detect-failure-warning nil)))
+			(setq ansi-color-for-comint-mode t)
+			(elpy-use-ipython "ipython")
+			(setq python-shell-prompt-detect-failure-warning nil
+				  python-shell-interpreter-args "--simple-prompt --pprint")
+			(add-hook 'elpy-mode-hook
+					  (lambda ()
+						(define-key elpy-mode-map (kbd "C-S-f") 'elpy-yapf-fix-code)
+						(define-key inferior-python-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
@@ -1040,7 +1052,8 @@ magit-mode."
 			   (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode)))
+			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
+			   (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
   :config (progn (defun my-web-mode-hook ()
 				   (setq web-mode-enable-auto-pairing nil))
 
@@ -1063,10 +1076,10 @@ magit-mode."
 					 (yas-activate-extra-mode 'js-mode)
 					 (web-mode-set-content-type "jsx")
 					 (setq-local web-mode-enable-auto-quoting nil)
-					 (setq-local web-mode-code-indent-offset 2)
-					 (setq-local web-mode-markup-indent-offset 2)
-					 (setq-local web-mode-attr-indent-offset 2)
-					 (setq-local web-mode-attr-value-indent-offset 2)
+					 ;; (setq-local web-mode-code-indent-offset 4)
+					 ;; (setq-local web-mode-markup-indent-offset 4)
+					 ;; (setq-local web-mode-attr-indent-offset 4)
+					 ;; (setq-local web-mode-attr-value-indent-offset 4)
 					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
@@ -1175,11 +1188,6 @@ magit-mode."
 
   ;; Ignore .DS_Store files with ido mode
   (add-to-list 'ido-ignore-files "\\.DS_Store"))
-
-;; Ensure the exec-path honours the shell PATH
-(use-package exec-path-from-shell
-  :ensure t
-  :config (exec-path-from-shell-initialize))
 
 (when (eq system-type 'windows-nt)
   (load-library "windows-config.el"))

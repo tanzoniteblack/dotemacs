@@ -4,3 +4,4 @@ importmagic
 autopep8
 yapf
 virtualenvwrapper
+ipython
