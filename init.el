@@ -893,7 +893,10 @@ magit-mode."
 (use-package elpy
   :ensure t
   :commands (elpy-enable)
-  :init (with-eval-after-load 'python-mode (elpy-enable))
+  :init (progn (with-eval-after-load 'python-mode (elpy-enable))
+			   (add-to-list 'display-buffer-alist
+							`(,"*Python*"
+							  (display-buffer-reuse-window))))
   :config (progn ;; (delete 'elpy-module-highlight-indentation elpy-modules)
 			(setq elpy-rpc-backend "jedi")
 			(define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition)
@@ -901,6 +904,7 @@ magit-mode."
 			(define-key elpy-mode-map (kbd "M-<RET>") 'elpy-doc)
 			(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 			(add-hook 'python-mode-hook 'highlight-symbol-mode)
+			(add-hook 'python-mode-hook 'subword-mode)
 			(setenv "WORKON_HOME" "~/.pyenv/versions/")
 			(setq ansi-color-for-comint-mode t)
 			(elpy-use-ipython "ipython")
