@@ -997,7 +997,9 @@ magit-mode."
   :ensure t
   :commands (ensime-scala-mode-hook)
   :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
-  :config (progn (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
+  :config (progn (setq ensime-startup-snapshot-notification nil
+					   ensime-startup-notification nil)
+				 (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
 				 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (use-package d-mode
