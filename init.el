@@ -168,11 +168,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
 (set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
-												  :family "Noto Sans Tamil UI"))
+												  :family "Noto Sans Tamil"))
 
 ;; Specify Telugu unicode block to use a larger font, otherwise I can't read it without straining
 (set-fontset-font t '(#x0C00 . #x0C7F) (font-spec :height (+ default-font-height 20)
-												  :family "Noto Sans Telugu UI"))
+												  :family "Noto Sans Telugu"))
 
 (defun font-size-mac-laptop ()
   "Set font values to something good for a mac laptop"
@@ -465,8 +465,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   (defadvice vc-mode-line (after strip-backend () activate)
 	(when (stringp vc-mode)
 	  (let ((noback (replace-regexp-in-string
-							  (format "^ %s[:-]?" (vc-backend buffer-file-name))
-							  " " vc-mode)))
+					 (format "^ %s[:-]?" (vc-backend buffer-file-name))
+					 " " vc-mode)))
 		(setq vc-mode noback))))
   :config (progn (add-hook 'magit-log-edit-mode-hook
 						   (lambda ()
@@ -500,7 +500,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (add-hook 'sql-mode-hook '(lambda ()
 							(sql-set-product 'postgres)
 							(setq indent-tabs-mode nil)
-                            (bind-key "C-j" 'newline sql-mode-map)))
+							(bind-key "C-j" 'newline sql-mode-map)))
 
 (use-package go-mode
   :ensure t
@@ -532,6 +532,16 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 							   flycheck-mode-line-prefix " Φ")
 				 (flycheck-add-mode 'javascript-eslint 'web-mode)
 				 (global-flycheck-mode)
+				 (flycheck-define-checker proselint
+				   "A linter for prose."
+				   :command ("proselint" source-inplace)
+				   :error-patterns
+				   ((warning line-start (file-name) ":" line ":" column ": "
+							 (id (one-or-more (not (any " "))))
+							 (message) line-end))
+				   :modes (text-mode markdown-mode gfm-mode))
+
+				 (add-to-list 'flycheck-checkers 'proselint)
 				 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
 					   flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
 					   flycheck-flake8-maximum-line-length 160)))
@@ -1089,7 +1099,7 @@ magit-mode."
 					 (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
-                 (add-hook 'web-mode-hook 'subword-mode)
+				 (add-hook 'web-mode-hook 'subword-mode)
 				 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
 				 (sp-local-pair 'web-mode "{" "}")))
 
