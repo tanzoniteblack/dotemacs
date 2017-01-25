@@ -117,3 +117,6 @@ man() {
 		LESS_TERMCAP_us=$(printf "\e[1;32m") \
 		man "$@"
 }
+
+export PAGER=less
+export LESS="-iMSx4 -FX"
