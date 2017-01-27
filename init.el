@@ -919,7 +919,7 @@ magit-mode."
 			(setq ansi-color-for-comint-mode t)
 			(elpy-use-ipython "ipython")
 			(setq python-shell-prompt-detect-failure-warning nil
-				  python-shell-interpreter-args "--simple-prompt --pprint")
+				  python-shell-interpreter-args "-i --simple-prompt --pprint")
 			(add-hook 'elpy-mode-hook
 					  (lambda ()
 						(define-key elpy-mode-map (kbd "C-S-f") 'elpy-yapf-fix-code)
