@@ -4,3 +4,4 @@
 \pset null '[NULL]'
 \timing on
 \set PROMPT1 '(%[%033[1;33m%]%n%]%[%033[1;30m%]@%]%[%033[1;35m%]%M%]%[%033[0;33m%]:%>%]%[%033[0m%])=> %]'
+\pset pager always

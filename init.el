@@ -828,7 +828,7 @@ magit-mode."
 				 (setq cider-annotate-completion-candidates t
 					   cider-mode-line " cider"
 					   cider-prompt-for-symbol nil
-					   cider-cljs-lein-repl "(require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl)")
+					   cider-cljs-lein-repl "(do (user/run) (user/browser-repl))")
 				 (add-hook 'cider-mode-hook
 						   (lambda ()
 							 (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
@@ -919,7 +919,7 @@ magit-mode."
 			(setq ansi-color-for-comint-mode t)
 			(elpy-use-ipython "ipython")
 			(setq python-shell-prompt-detect-failure-warning nil
-				  python-shell-interpreter-args "--simple-prompt --pprint")
+				  python-shell-interpreter-args "-i --simple-prompt")
 			(add-hook 'elpy-mode-hook
 					  (lambda ()
 						(define-key elpy-mode-map (kbd "C-S-f") 'elpy-yapf-fix-code)
