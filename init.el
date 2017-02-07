@@ -13,6 +13,9 @@
   (when custom-file
 	(load custom-file)))
 
+(defun load-external-python-mode ()
+  (load (locate-file "python-mode.el" load-path)))
+
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
@@ -899,8 +902,8 @@ magit-mode."
 (help-at-pt-set-timer)
 
 (use-package python-mode
-  :ensure t
-  :demand t)
+  :init (load-external-python-mode)
+  :ensure t)
 
 (use-package elpy
   :ensure t
@@ -1250,3 +1253,4 @@ magit-mode."
   :ensure t)
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
+(load-external-python-mode)
