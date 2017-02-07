@@ -19,6 +19,8 @@
 	(package-refresh-contents)
 	(package-install 'use-package)))
 
+(defvar use-package-enable-imenu-support t)
+
 (eval-when-compile
   (require 'use-package))
 
