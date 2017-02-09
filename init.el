@@ -507,6 +507,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 							(setq indent-tabs-mode nil)
 							(bind-key "C-j" 'newline sql-mode-map)))
 
+(use-package sqlup-mode
+  :ensure t
+  :init (add-hook 'sql-mode-hook 'sqlup-mode))
+
 (use-package go-mode
   :ensure t
   :commands go-mode
