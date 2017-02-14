@@ -13,11 +13,16 @@
   (when custom-file
 	(load custom-file)))
 
+(defun load-external-python-mode ()
+  (load (locate-file "python-mode.el" load-path)))
+
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (progn
 	(package-refresh-contents)
 	(package-install 'use-package)))
+
+(defvar use-package-enable-imenu-support t)
 
 (eval-when-compile
   (require 'use-package))
@@ -498,9 +503,17 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
-							(sql-set-product 'postgres)
+							(sql-set-product 'mysql)
 							(setq indent-tabs-mode nil)
 							(bind-key "C-j" 'newline sql-mode-map)))
+
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
+
+(use-package sqlup-mode
+  :ensure t
+  :init (add-hook 'sql-mode-hook 'sqlup-mode))
 
 (use-package go-mode
   :ensure t
@@ -897,8 +910,8 @@ magit-mode."
 (help-at-pt-set-timer)
 
 (use-package python-mode
-  :ensure t
-  :demand t)
+  :init (load-external-python-mode)
+  :ensure t)
 
 (use-package elpy
   :ensure t
@@ -1248,3 +1261,4 @@ magit-mode."
   :ensure t)
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
+(load-external-python-mode)
