@@ -1,4 +1,5 @@
 # Packages used by elpy for import management, code completion, and style checking
+flake8
 jedi
 importmagic
 autopep8

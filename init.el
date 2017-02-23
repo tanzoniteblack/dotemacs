@@ -1109,7 +1109,7 @@ magit-mode."
 					 ;; (setq-local web-mode-markup-indent-offset 4)
 					 ;; (setq-local web-mode-attr-indent-offset 4)
 					 ;; (setq-local web-mode-attr-value-indent-offset 4)
-					 (setq-default indent-tabs-mode nil)
+					 ;; (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
 				 (add-hook 'web-mode-hook 'subword-mode)
@@ -1262,3 +1262,19 @@ magit-mode."
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
 (load-external-python-mode)
+
+(use-package which-key
+  :ensure t
+  :demand
+  :config (which-key-mode))
+
+(use-package editorconfig
+  :ensure t
+  :diminish editorconfig-mode
+  :config
+  (editorconfig-mode 1))
+
+;;; if local-environment.el file is found in load-path, load it, else skip
+(let ((local-environment-file (locate-file "local-extras.el" load-path)))
+  (when local-environment-file
+	(load-file local-environment-file)))
