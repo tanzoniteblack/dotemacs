@@ -1277,3 +1277,7 @@ magit-mode."
 (let ((local-environment-file (locate-file "local-extras.el" load-path)))
   (when local-environment-file
 	(load-file local-environment-file)))
+
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
