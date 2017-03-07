@@ -941,8 +941,7 @@ magit-mode."
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
   (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
-	(add-hook mode-hook 'rainbow-delimiters-mode)
-	(add-hook mode-hook 'smartparens-strict-mode)))
+	(add-hook mode-hook 'rainbow-delimiters-mode)))
 
 (use-package smartparens
   :ensure t
@@ -957,8 +956,8 @@ magit-mode."
 				 (define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
 				 (define-key smartparens-mode-map (kbd "M-)") 'sp-forward-slurp-sexp)
 
-				 (define-key smartparens-strict-mode-map (kbd "M-d") 'kill-sexp)
-				 (define-key smartparens-strict-mode-map (kbd "M-D") 'sp-kill-sexp)
+				 (define-key smartparens-mode-map (kbd "M-d") 'kill-sexp)
+				 (define-key smartparens-mode-map (kbd "M-D") 'sp-kill-sexp)
 				 (define-key smartparens-mode-map (kbd "s-S") 'sp-split-sexp)
 				 (define-key smartparens-mode-map (kbd "M-<up>") 'sp-raise-sexp)
 
