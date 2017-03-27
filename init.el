@@ -941,6 +941,7 @@ magit-mode."
 (defun enable-lisp-hooks (mode-name)
   "Enable lisp-y goodness for MODE-NAME."
   (let ((mode-hook (intern (concat (symbol-name mode-name) "-hook"))))
+	(add-hook mode-hook 'smartparens-strict-mode)
 	(add-hook mode-hook 'rainbow-delimiters-mode)))
 
 (use-package smartparens
@@ -1281,3 +1282,6 @@ magit-mode."
 (defun close-all-buffers ()
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
+
+(eval-after-load "term"
+  '(define-key term-raw-map (kbd "C-c C-y") 'term-paste))
