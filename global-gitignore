@@ -16,3 +16,4 @@ Thumbs.db
 .projectile
 .nvmrc
 .python-version
+.node-version
