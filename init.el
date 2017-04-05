@@ -503,7 +503,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
-							(sql-set-product 'mysql)
+							(sql-set-product 'postgres)
 							(setq indent-tabs-mode nil)
 							(bind-key "C-j" 'newline sql-mode-map)))
 
