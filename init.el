@@ -930,6 +930,7 @@ magit-mode."
 			(add-hook 'python-mode-hook 'subword-mode)
 			(setenv "WORKON_HOME" "~/.pyenv/versions/")
 			(setq ansi-color-for-comint-mode t)
+			(setq elpy-rpc-timeout 4)
 			(elpy-use-ipython "ipython")
 			(setq python-shell-prompt-detect-failure-warning nil
 				  python-shell-interpreter-args "-i --simple-prompt")
