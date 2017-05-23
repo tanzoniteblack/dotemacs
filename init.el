@@ -501,6 +501,46 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :config (progn (setq erc-nick "tanzoniteblack")
 				 (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
+;; sql-indent, until it's on melpa
+(load-library "sql-indent.el")
+
+(defvar m-indentation-offsets-alist
+  `((select-clause                 0)
+    (insert-clause                 0)
+    (delete-clause                 0)
+    (update-clause                 0)
+    (in-insert-clause              +)
+    (in-select-clause sqlind-lineup-close-paren-to-open)
+	(nested-statement-open sqlind-use-anchor-indentation ++)
+    (nested-statement-continuation sqlind-lineup-into-nested-statement
+                                   sqlind-align-comma
+                                   sqlind-lineup-close-paren-to-open)
+    (select-column                 sqlind-indent-select-column
+                                   sqlind-align-comma)
+    (select-column-continuation    sqlind-indent-select-column
+                                   sqlind-lineup-close-paren-to-open)
+    (select-table-continuation     sqlind-indent-select-table
+                                   sqlind-lineup-joins-to-anchor
+                                   sqlind-lineup-open-paren-to-anchor
+                                   sqlind-lineup-close-paren-to-open
+                                   sqlind-align-comma)
+    ,@sqlind-default-indentation-offsets-alist))
+
+(add-hook 'sql-mode-hook (lambda ()
+						   (setq sqlind-basic-offset 4)
+						   (setq sqlind-indentation-offsets-alist
+								 m-indentation-offsets-alist)
+						   ;; Something in sql-mode is overwriting face names,
+						   ;; have this be the last executed hook (by adding it
+						   ;; first) and force it to turn rainbow-*-mode off and
+						   ;; on again
+						   (rainbow-identifiers-mode 0)
+						   (rainbow-identifiers-mode 1)
+						   (rainbow-delimiters-mode 0)
+						   (rainbow-delimiters-mode 1)))
+
+(add-hook 'sql-mode-hook 'sqlind-minor-mode)
+
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
 							(sql-set-product 'postgres)
