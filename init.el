@@ -928,7 +928,7 @@ magit-mode."
 			(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 			(add-hook 'python-mode-hook 'highlight-symbol-mode)
 			(add-hook 'python-mode-hook 'subword-mode)
-			(setenv "WORKON_HOME" "~/.pyenv/versions/")
+			;; (setenv "WORKON_HOME" "~/.pyenv/versions/")
 			(setq ansi-color-for-comint-mode t)
 			(elpy-use-ipython "ipython")
 			(setq python-shell-prompt-detect-failure-warning nil
