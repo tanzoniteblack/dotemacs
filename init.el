@@ -886,7 +886,8 @@ magit-mode."
 						   (lambda ()
 							 (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
 							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
-							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
+							 (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
 				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
 
 (use-package clj-refactor
