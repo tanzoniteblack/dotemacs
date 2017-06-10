@@ -1327,3 +1327,17 @@ magit-mode."
 
 (eval-after-load "term"
   '(define-key term-raw-map (kbd "C-c C-y") 'term-paste))
+
+(use-package elm-mode
+  :ensure t
+  :init (add-to-list 'company-backends 'company-elm))
+
+(use-package flycheck-elm
+  :ensure t
+  :init (progn (eval-after-load 'flycheck
+				 '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
+			   (define-key elm-mode-map (kbd "M-RET") 'elm-oracle-doc-at-point)
+			   (define-key elm-mode-map (kbd "C-S-f") 'elm-mode-format-buffer)
+			   (setq elm-format-on-save t)
+			   ;; (define-key elm-mode-map (kbd "C-j") 'reindent-then-newline-and-indent)
+			   ))
