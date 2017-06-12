@@ -30,3 +30,4 @@ session.*
 /elpa-outdated/
 /meghanada/
 /local-extras.el
+/metastore_db/
