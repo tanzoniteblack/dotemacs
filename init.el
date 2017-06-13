@@ -1111,6 +1111,12 @@ magit-mode."
 					 string)
 	   t))
 
+(use-package prettier-js
+  :init (progn (load-library "prettier-js.el")
+			   (add-hook 'js2-mode-hook 'prettier-js-mode)
+			   (setq prettier-js-args '("--tab-width" "4")))
+  :commands prettier-js-mode)
+
 (use-package web-mode
   :ensure t
   :commands web-mode
@@ -1146,6 +1152,7 @@ magit-mode."
 					 (yas-minor-mode)
 					 (yas-activate-extra-mode 'js-mode)
 					 (web-mode-set-content-type "jsx")
+					 (prettier-js-mode 1)
 					 (setq-local web-mode-enable-auto-quoting nil)
 					 ;; (setq-local web-mode-code-indent-offset 4)
 					 ;; (setq-local web-mode-markup-indent-offset 4)
