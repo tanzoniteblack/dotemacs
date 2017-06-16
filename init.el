@@ -485,7 +485,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 				  magit-diff-refine-hunk t
 				  ;; don't attempt to save unsaved buffers
 				  magit-save-repository-buffers nil
-				  magit-popup-use-prefix-argument 'default)))
+				  magit-popup-use-prefix-argument 'default)
+
+				 ;; As mentioned in https://magit.vc/manual/2.2/magit/Performance.html, color will slow magit down...
+				 ;; But I like it anyways
+				 (add-to-list 'magit-log-arguments "--color")))
 
 (use-package gitconfig-mode
   :ensure t)
