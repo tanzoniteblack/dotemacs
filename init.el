@@ -1117,8 +1117,8 @@ magit-mode."
 	   t))
 
 (use-package prettier-js
-  :init (progn (load-library "prettier-js.el")
-			   (add-hook 'js2-mode-hook 'prettier-js-mode)
+  :ensure t
+  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode)
 			   (setq prettier-js-args '("--tab-width" "4")))
   :commands prettier-js-mode)
 
