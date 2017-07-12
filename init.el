@@ -1083,11 +1083,11 @@ magit-mode."
 
 (use-package ensime
   :ensure t
-  :commands (ensime-scala-mode-hook)
-  :init (progn (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
   :config (progn (setq ensime-startup-snapshot-notification nil
-					   ensime-startup-notification nil)
+					   ensime-startup-notification nil
+					   scala-imenu:should-flatten-index t)
 				 (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
+				 (bind-key "C-S-F" 'ensime-format-source ensime-mode-map)
 				 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
 
 (use-package d-mode
