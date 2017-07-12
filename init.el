@@ -1120,8 +1120,9 @@ magit-mode."
 
 (use-package prettier-js
   :ensure t
-  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode)
-			   (setq prettier-js-args '("--tab-width" "4")))
+  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
+  :config (bind-key "C-S-F" 'prettier-js js2-mode-map)
+  (bind-key "C-S-F" 'prettier-js web-mode-map)
   :commands prettier-js-mode)
 
 (use-package web-mode
