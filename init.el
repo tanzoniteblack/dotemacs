@@ -356,7 +356,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :ensure t
   :config (flx-ido-mode 1))
 
-(use-package ido-ubiquitous
+(use-package ido-completing-read+
   :ensure t
   :config (ido-ubiquitous-mode 1))
 
@@ -1121,9 +1121,10 @@ magit-mode."
 (use-package prettier-js
   :ensure t
   :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
-  :config (bind-key "C-S-F" 'prettier-js js2-mode-map)
-  (bind-key "C-S-F" 'prettier-js web-mode-map)
-  :commands prettier-js-mode)
+  :config (progn (eval-after-load "js2-mode"
+				   (bind-key "C-S-F" 'prettier-js js2-mode-map))
+				 (eval-after-load "web-mode"
+				   (bind-key "C-S-F" 'prettier-js web-mode-map))))
 
 (use-package web-mode
   :ensure t
