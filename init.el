@@ -154,26 +154,15 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;; lines tall
 (setq split-height-threshold 180)
 
-(setq default-font "Ubuntu Mono")
-(setq default-font-height 120)
-;;; fraktur font for when we're feeling odd:
-;; (setq default-font "UnifrakturMaguntia")
-;; (setq default-font-height 130)
-
-;; OS X tends to display things small
-(when (eq system-type 'darwin)
-  (setq default-font-height 150))
-
-;; Change font to enlarged Ubuntu Mono, if it exists
-(set-face-attribute 'default nil :family default-font :height default-font-height :weight 'normal)
-'(variable-pitch ((t (:family default-font :slant normal :weight regular :height default-font-height))))
+(set-frame-font "Ubuntu Mono-12")
+;; (set-frame-font "Fira Code-11")
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
-(set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height (+ default-font-height 20)
+(set-fontset-font t '(#x0B80 . #x0BFF) (font-spec :height 140
 												  :family "Noto Sans Tamil"))
 
 ;; Specify Telugu unicode block to use a larger font, otherwise I can't read it without straining
-(set-fontset-font t '(#x0C00 . #x0C7F) (font-spec :height (+ default-font-height 20)
+(set-fontset-font t '(#x0C00 . #x0C7F) (font-spec :height 140
 												  :family "Noto Sans Telugu"))
 
 (defun font-size-mac-laptop ()
