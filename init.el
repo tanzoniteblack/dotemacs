@@ -1120,11 +1120,8 @@ magit-mode."
 
 (use-package prettier-js
   :ensure t
-  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
-  :config (progn (eval-after-load "js2-mode"
-				   (bind-key "C-S-F" 'prettier-js js2-mode-map))
-				 (eval-after-load "web-mode"
-				   (bind-key "C-S-F" 'prettier-js web-mode-map))))
+  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))q
+  :config (progn (bind-key "C-S-F" 'prettier-js js2-mode-map)))
 
 (use-package web-mode
   :ensure t
@@ -1140,7 +1137,8 @@ magit-mode."
 			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
-  :config (progn (defun my-web-mode-hook ()
+  :config (progn (bind-key "C-S-F" 'prettier-js web-mode-map)
+				 (defun my-web-mode-hook ()
 				   (setq web-mode-enable-auto-pairing nil))
 
 				 (add-hook 'web-mode-hook  'my-web-mode-hook)
