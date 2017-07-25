@@ -1109,7 +1109,7 @@ magit-mode."
 
 (use-package prettier-js
   :ensure t
-  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))q
+  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
   :config (progn (bind-key "C-S-F" 'prettier-js js2-mode-map)))
 
 (use-package web-mode
