@@ -899,7 +899,12 @@ magit-mode."
 				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
 
 (use-package js2-mode
-  :ensure t)
+  :ensure t
+  :init (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+
+(use-package rjsx-mode
+  :ensure t
+  :init (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode)))
 
 (use-package tern
   :ensure t
@@ -936,11 +941,6 @@ magit-mode."
 (use-package dtrt-indent
   :ensure t
   :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
-
-(use-package meghanada
-  :ensure t
-  :commands meghanada-mode
-  :init (add-hook 'java-mode-hook 'meghanada-mode))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -1109,8 +1109,9 @@ magit-mode."
 
 (use-package prettier-js
   :ensure t
-  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))q
-  :config (progn (bind-key "C-S-F" 'prettier-js js2-mode-map)))
+  :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
+  :config (progn (setq prettier-js-args '("--single-quote"))
+				 (bind-key "C-S-F" 'prettier-js js2-mode-map)))
 
 (use-package web-mode
   :ensure t
@@ -1123,9 +1124,10 @@ magit-mode."
 			   (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+			   ;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
+			   ;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+			   )
   :config (progn (bind-key "C-S-F" 'prettier-js web-mode-map)
 				 (defun my-web-mode-hook ()
 				   (setq web-mode-enable-auto-pairing nil))
@@ -1150,10 +1152,10 @@ magit-mode."
 					 (web-mode-set-content-type "jsx")
 					 (prettier-js-mode 1)
 					 (setq-local web-mode-enable-auto-quoting nil)
-					 ;; (setq-local web-mode-code-indent-offset 4)
-					 ;; (setq-local web-mode-markup-indent-offset 4)
-					 ;; (setq-local web-mode-attr-indent-offset 4)
-					 ;; (setq-local web-mode-attr-value-indent-offset 4)
+					 (setq-local web-mode-code-indent-offset 2)
+					 (setq-local web-mode-markup-indent-offset 2)
+					 (setq-local web-mode-attr-indent-offset 2)
+					 (setq-local web-mode-attr-value-indent-offset 2)
 					 ;; (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
