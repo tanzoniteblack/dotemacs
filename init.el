@@ -874,6 +874,8 @@ magit-mode."
 				 (add-hook 'clojure-mode-hook 'eldoc-mode)
 				 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
 				 (add-hook 'cider-repl-mode-hook 'subword-mode)
+				 (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+				 (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 				 (setq cider-annotate-completion-candidates t
 					   cider-mode-line " cider"
 					   cider-prompt-for-symbol nil
@@ -884,7 +886,7 @@ magit-mode."
 							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
 							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
 							 (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
-				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
+				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
 
 (use-package clj-refactor
   :ensure t
