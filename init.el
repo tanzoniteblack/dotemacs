@@ -784,12 +784,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
-;; You might need to get rid of the built in org mode to get this to work right
-;; on osx, installed with hombrew (mv, or just delete it if you'd prefer):
-;; mv /Applications/Emacs.app/Contents/Resources/lisp/org/ ~/Documents/builtin-org-backup/
 (use-package org
-  :ensure org-plus-contrib
-  :pin org
   :defer t
   :config (progn (setq org-completion-use-ido t
 					   org-outline-path-complete-in-steps nil
