@@ -782,12 +782,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
 
 (add-hook 'find-file-hook 'enable-minor-mode-based-on-extension)
 
-;; You might need to get rid of the built in org mode to get this to work right
-;; on osx, installed with hombrew (mv, or just delete it if you'd prefer):
-;; mv /Applications/Emacs.app/Contents/Resources/lisp/org/ ~/Documents/builtin-org-backup/
 (use-package org
-  :ensure org-plus-contrib
-  :pin org
   :defer t
   :config (progn (setq org-completion-use-ido t
 					   org-outline-path-complete-in-steps nil
@@ -872,6 +867,8 @@ magit-mode."
 			   (add-hook 'clojure-mode-hook 'eldoc-mode))
   :config (progn (add-hook 'cider-repl-mode-hook 'eldoc-mode)
 				 (add-hook 'cider-repl-mode-hook 'subword-mode)
+				 (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+				 (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 				 (setq cider-annotate-completion-candidates t
 					   cider-mode-line " cider"
 					   cider-prompt-for-symbol nil
@@ -882,7 +879,7 @@ magit-mode."
 							 (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
 							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
 							 (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
-				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.3"))))
+				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
 
 (use-package clj-refactor
   :ensure t
@@ -899,7 +896,11 @@ magit-mode."
 
 (use-package js2-mode
   :ensure t
-  :commands js2-mode)
+  :init (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+
+(use-package rjsx-mode
+  :ensure t
+  :mode components\\/.*\\.js\\')
 
 (use-package tern
   :ensure t
@@ -936,11 +937,6 @@ magit-mode."
 (use-package dtrt-indent
   :ensure t
   :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
-
-(use-package meghanada
-  :ensure t
-  :commands meghanada-mode
-  :init (add-hook 'java-mode-hook 'meghanada-mode))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
@@ -1124,9 +1120,10 @@ magit-mode."
 			   (add-to-list 'auto-mode-alist '("\\.mustache$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.djhtml$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+			   ;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 			   (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
-			   (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
+			   ;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+			   )
   :config (progn (bind-key "C-S-F" 'prettier-js web-mode-map)
 				 (defun my-web-mode-hook ()
 				   (setq web-mode-enable-auto-pairing nil))
@@ -1151,10 +1148,10 @@ magit-mode."
 					 (web-mode-set-content-type "jsx")
 					 (prettier-js-mode 1)
 					 (setq-local web-mode-enable-auto-quoting nil)
-					 ;; (setq-local web-mode-code-indent-offset 4)
-					 ;; (setq-local web-mode-markup-indent-offset 4)
-					 ;; (setq-local web-mode-attr-indent-offset 4)
-					 ;; (setq-local web-mode-attr-value-indent-offset 4)
+					 (setq-local web-mode-code-indent-offset 2)
+					 (setq-local web-mode-markup-indent-offset 2)
+					 (setq-local web-mode-attr-indent-offset 2)
+					 (setq-local web-mode-attr-value-indent-offset 2)
 					 ;; (setq-default indent-tabs-mode nil)
 					 (tern-mode)))
 				 (add-hook 'web-mode-hook 'webmode-jsx-setup)
