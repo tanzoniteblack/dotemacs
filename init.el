@@ -896,11 +896,11 @@ magit-mode."
 
 (use-package js2-mode
   :ensure t
-  :init (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+  :mode "\\.js$")
 
 (use-package rjsx-mode
   :ensure t
-  :mode components\\/.*\\.js\\')
+  :mode "components\\/.*\\.js\\'")
 
 (use-package tern
   :ensure t
