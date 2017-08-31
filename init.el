@@ -1,3 +1,8 @@
+;;; ;get rid of clutter
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -9,9 +14,6 @@
 (let ((custom-file (locate-file custom-file load-path)))
   (when custom-file
 	(load custom-file)))
-
-(defun load-external-python-mode ()
-  (load (locate-file "python-mode.el" load-path)))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
@@ -34,10 +36,6 @@
   `(eval-after-load ,mode
 	 '(progn ,@body)))
 
-;; Ensure the exec-path honours the shell PATH
-(use-package exec-path-from-shell
-  :ensure t
-  :config (exec-path-from-shell-initialize))
 
 (use-package dash
   :ensure t)
@@ -260,11 +258,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; Line-wrapping
 (set-default 'fill-column 80)
 
-;;; ;get rid of clutter
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-
 ;;; remove bells
 (setq ring-bell-function 'ignore)
 
@@ -310,15 +303,16 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (use-package company
   :ensure t
   :diminish company-mode
+  :commands (company-manual-begin)
+  :bind ("C-<tab>" . company-manual-begin)
   :config (progn (setq company-idle-delay .2
 					   company-dabbrev-ignore-case t
 					   company-dabbrev-code-ignore-case t
 					   company-dabbrev-downcase nil
 					   company-tooltip-flip-when-above t)
-				 (bind-key "C-<tab>" 'company-manual-begin)
-				 (bind-key "C-n" 'company-select-next company-active-map)
-				 (bind-key "C-p" 'company-select-previous company-active-map)
-				 (global-company-mode)))
+                 (bind-key "C-n" 'company-select-next company-active-map)
+                 (bind-key "C-p" 'company-select-previous company-active-map)
+                 (global-company-mode)))
 
 ;;; Save backup files in dedicated directory
 (setq backup-directory-alist `((".*" . ,temporary-file-directory))
@@ -494,34 +488,38 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 				 (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
 ;; sql-indent, until it's on melpa
-(load-library "sql-indent.el")
-
-(defvar m-indentation-offsets-alist
-  `((select-clause                 0)
-    (insert-clause                 0)
-    (delete-clause                 0)
-    (update-clause                 0)
-    (in-insert-clause              +)
-    (in-select-clause sqlind-lineup-close-paren-to-open)
-	(nested-statement-open sqlind-use-anchor-indentation ++)
-    (nested-statement-continuation sqlind-lineup-into-nested-statement
-                                   sqlind-align-comma
-                                   sqlind-lineup-close-paren-to-open)
-    (select-column                 sqlind-indent-select-column
-                                   sqlind-align-comma)
-    (select-column-continuation    sqlind-indent-select-column
-                                   sqlind-lineup-close-paren-to-open)
-    (select-table-continuation     sqlind-indent-select-table
-                                   sqlind-lineup-joins-to-anchor
-                                   sqlind-lineup-open-paren-to-anchor
-                                   sqlind-lineup-close-paren-to-open
-                                   sqlind-align-comma)
-    ,@sqlind-default-indentation-offsets-alist))
+(use-package sql-indent
+  :load-path "lib/"
+  :commands sqlind-minor-mode
+  :init (add-hook 'sql-mode-hook 'sqlind-minor-mode)
+  :config (progn (setq m-indentation-offsets-alist
+					  `((select-clause                 0)
+						(insert-clause                 0)
+						(delete-clause                 0)
+						(update-clause                 0)
+						(in-insert-clause              +)
+						(in-select-clause sqlind-lineup-close-paren-to-open)
+						(nested-statement-open sqlind-use-anchor-indentation ++)
+						(nested-statement-continuation sqlind-lineup-into-nested-statement
+													   sqlind-align-comma
+													   sqlind-lineup-close-paren-to-open)
+						(select-column                 sqlind-indent-select-column
+													   sqlind-align-comma)
+						(select-column-continuation    sqlind-indent-select-column
+													   sqlind-lineup-close-paren-to-open)
+						(select-table-continuation     sqlind-indent-select-table
+													   sqlind-lineup-joins-to-anchor
+													   sqlind-lineup-open-paren-to-anchor
+													   sqlind-lineup-close-paren-to-open
+													   sqlind-align-comma)
+						,@sqlind-default-indentation-offsets-alist))
+				 (add-hook 'sqlind-minor-mode-hook
+						   (lambda ()
+							 (setq sqlind-basic-offset 4)
+							 (setq sqlind-indentation-offsets-alist
+								   m-indentation-offsets-alist)))))
 
 (add-hook 'sql-mode-hook (lambda ()
-						   (setq sqlind-basic-offset 4)
-						   (setq sqlind-indentation-offsets-alist
-								 m-indentation-offsets-alist)
 						   ;; Something in sql-mode is overwriting face names,
 						   ;; have this be the last executed hook (by adding it
 						   ;; first) and force it to turn rainbow-*-mode off and
@@ -530,8 +528,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 						   (rainbow-identifiers-mode 1)
 						   (rainbow-delimiters-mode 0)
 						   (rainbow-delimiters-mode 1)))
-
-(add-hook 'sql-mode-hook 'sqlind-minor-mode)
 
 ;;; sql
 (add-hook 'sql-mode-hook '(lambda ()
@@ -545,6 +541,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 (use-package sqlup-mode
   :ensure t
+  :commands sqlup-mode
   :init (add-hook 'sql-mode-hook 'sqlup-mode))
 
 (use-package go-mode
@@ -596,6 +593,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 (use-package flycheck-pos-tip
   :ensure t
+  :commands flycheck-pos-tip-error-messages
   :config (setq flycheck-display-errors-function 'flycheck-pos-tip-error-messages))
 
 (use-package avy
@@ -845,34 +843,34 @@ magit-mode."
 						   (kill-buffer b)))))
 
 				 (advice-add 'org-src-font-lock-fontify-block
-							 :after #'kill-org-src-buffers)))
-
-;; org-mode export in github flavored markdown
-(use-package ox-gfm
-  :ensure t)
+							 :after #'kill-org-src-buffers)
+				 ;; org-mode export in github flavored markdown
+				 (use-package ox-gfm
+				   :ensure t)))
 
 (use-package clojure-mode
   :ensure t
   :defer t
   :config (progn (setq clojure-align-forms-automatically t)
-				 (add-hook 'clojure-mode-hook (lambda ()
-												(setq buffer-save-without-query t)))
-				 (add-hook 'clojure-mode-hook 'subword-mode)
-				 (add-hook 'clojure-mode-hook
-						   (lambda ()
-							 (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
-				 ;; Fancy docstrings for schema/defn when in the form:
-				 ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
-				 (put 'schema/defn 'clojure-doc-string-elt 4)))
+                 (add-hook 'clojure-mode-hook (lambda ()
+                                                (setq buffer-save-without-query t)))
+                 (add-hook 'clojure-mode-hook 'subword-mode)
+                 (add-hook 'clojure-mode-hook
+                           (lambda ()
+                             (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                 ;; Fancy docstrings for schema/defn when in the form:
+                 ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
+                 (put 'schema/defn 'clojure-doc-string-elt 4)))
 
 (use-package clojure-mode-extra-font-locking
-  :ensure t)
+    :ensure t)
 
 (use-package cider
   :ensure t
-  :config (progn (add-hook 'clojure-mode-hook 'cider-mode)
-				 (add-hook 'clojure-mode-hook 'eldoc-mode)
-				 (add-hook 'cider-repl-mode-hook 'eldoc-mode)
+  :commands (cider-mode cider-mode-hook)
+  :init (progn (add-hook 'clojure-mode-hook 'cider-mode)
+			   (add-hook 'clojure-mode-hook 'eldoc-mode))
+  :config (progn (add-hook 'cider-repl-mode-hook 'eldoc-mode)
 				 (add-hook 'cider-repl-mode-hook 'subword-mode)
 				 (setq cider-annotate-completion-candidates t
 					   cider-mode-line " cider"
@@ -888,18 +886,20 @@ magit-mode."
 
 (use-package clj-refactor
   :ensure t
+  :commands (clj-refactor-mode cljr-add-keybindings-with-prefix)
+  :init (progn (add-hook 'cider-mode-hook (lambda ()
+											(clj-refactor-mode 1)
+											(cljr-add-keybindings-with-prefix "C-c C-m")))
+			   (add-hook 'cider-mode-hook 'yas-minor-mode))
   :config (progn (setq cljr-suppress-middleware-warnings t)
-				 (add-hook 'cider-mode-hook (lambda ()
-											  (clj-refactor-mode 1)
-											  (cljr-add-keybindings-with-prefix "C-c C-m")))
-				 (add-hook 'cider-mode-hook 'yas-minor-mode)
 				 (define-key cider-mode-map (kbd "C-:") 'clojure-toggle-keyword-string)
 				 (define-key cider-mode-map (kbd "C-M-r") 'hydra-cljr-help-menu/body)
 				 (define-key cider-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)
 				 (define-key cider-repl-mode-map (kbd "C-c C-x") 'cider-pprint-eval-last-sexp)))
 
 (use-package js2-mode
-  :ensure t)
+  :ensure t
+  :commands js2-mode)
 
 (use-package tern
   :ensure t
@@ -922,7 +922,7 @@ magit-mode."
 (use-package company-tern
   :ensure t
   :commands company-tern
-  :init (add-to-list 'company-backends 'company-tern))
+  :config (add-to-list 'company-backends 'company-tern))
 
 (use-package stylus-mode
   :ensure t)
@@ -945,10 +945,6 @@ magit-mode."
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
-
-(use-package python-mode
-  :init (load-external-python-mode)
-  :ensure t)
 
 (use-package elpy
   :ensure t
@@ -1016,14 +1012,16 @@ magit-mode."
 ;;; many functions borrowed from emacs-live
 (use-package elisp-slime-nav
   :ensure t
+  :commands (elisp-slime-nav-mode)
   :init (progn (add-to-list 'auto-mode-alist '("\\.el$" . emacs-lisp-mode))
-			   (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
+               (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
   :diminish "")
 
 (use-package eldoc
+  :commands (eldoc-mode)
   :init (progn (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-			   (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
-			   (add-hook 'ielm-mode-hook 'eldoc-mode))
+               (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
+               (add-hook 'ielm-mode-hook 'eldoc-mode))
   :diminish "")
 
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
@@ -1068,10 +1066,12 @@ magit-mode."
   :ensure t)
 
 (use-package scala-mode
-  :ensure t)
+  :ensure t
+  :mode "\\.\\(scala\\|sbt\\)\\'")
 
 (use-package ensime
   :ensure t
+  :commands ensime
   :config (progn (setq ensime-startup-snapshot-notification nil
 					   ensime-startup-notification nil
 					   scala-imenu:should-flatten-index t)
@@ -1109,6 +1109,7 @@ magit-mode."
 
 (use-package prettier-js
   :ensure t
+  :commands (prettier-js-mode prettier-js)
   :init (progn (add-hook 'js2-mode-hook 'prettier-js-mode))
   :config (progn (bind-key "C-S-F" 'prettier-js js2-mode-map)))
 
@@ -1266,7 +1267,18 @@ magit-mode."
 (when (eq system-type 'windows-nt)
   (load-library "windows-config.el"))
 
-(load-library "live-fontify-hex-config.el")
+(use-package live-fontify-hex
+  :load-path "lib/"
+  :commands live-fontify-hex-colors
+  :init (progn (font-lock-add-keywords 'lisp-mode
+                                       '((live-fontify-hex-colors)))
+               (font-lock-add-keywords 'emacs-lisp-mode
+                                       '((live-fontify-hex-colors)))
+               (font-lock-add-keywords 'lisp-interaction-mode
+                                       '((live-fontify-hex-colors)))
+               (font-lock-add-keywords 'css-mode
+                                       '((live-fontify-hex-colors)))))
+
 (load-library "bindings.el")
 (load-library "jekyll.el")
 
@@ -1276,9 +1288,9 @@ magit-mode."
 
 (use-package crux
   :ensure t
+  :commands (crux-move-beginning-of-line crux-cleanup-buffer-or-region crux-delete-file-and-buffer crux-sudo-edit)
   :bind (("C-a" . crux-move-beginning-of-line)
-		 ("C-S-f" . crux-cleanup-buffer-or-region))
-  :demand
+         ("C-S-f" . crux-cleanup-buffer-or-region))
   :config
   (crux-with-region-or-buffer indent-region)
   (crux-with-region-or-buffer untabify))
@@ -1303,10 +1315,10 @@ magit-mode."
 (diminish 'subword-mode)
 
 (use-package systemd
-  :ensure t)
+  :ensure t
+  :mode "[-.0-9@-Z\\_a-z]+?\\.\\(?:\\(?:automount\\|busname\\|link\\|mount\\|net\\(?:dev\\|work\\)\\|s\\(?:ervice\\|lice\\|ocket\\|wap\\)\\|t\\(?:arget\\|imer\\)\\)\\)\\'")
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
-(load-external-python-mode)
 
 (use-package which-key
   :ensure t
@@ -1333,14 +1345,14 @@ magit-mode."
 
 (use-package elm-mode
   :ensure t
-  :init (add-to-list 'company-backends 'company-elm))
+  :mode "\\.elm\\'"
+  :config (progn (add-to-list 'company-backends 'company-elm)
+                 (define-key elm-mode-map (kbd "M-RET") 'elm-oracle-doc-at-point)
+                 (define-key elm-mode-map (kbd "C-S-f") 'elm-mode-format-buffer)
+                 (setq elm-format-on-save t)))
 
 (use-package flycheck-elm
   :ensure t
-  :init (progn (eval-after-load 'flycheck
-				 '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
-			   (define-key elm-mode-map (kbd "M-RET") 'elm-oracle-doc-at-point)
-			   (define-key elm-mode-map (kbd "C-S-f") 'elm-mode-format-buffer)
-			   (setq elm-format-on-save t)
-			   ;; (define-key elm-mode-map (kbd "C-j") 'reindent-then-newline-and-indent)
-			   ))
+  :commands flycheck-elm-setup
+  :init (progn (eval-after-load 'elm-mode
+                 '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))))
