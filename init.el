@@ -881,7 +881,8 @@ magit-mode."
 
 (use-package flycheck-clojure
   :ensure t
-  :init (flycheck-clojure-setup))
+  :commands (flycheck-clojure-setup)
+  :init (add-hook 'cider-mode-hook 'flycheck-clojure-setup))
 
 (use-package clj-refactor
   :ensure t
