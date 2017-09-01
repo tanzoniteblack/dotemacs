@@ -573,7 +573,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :commands global-flycheck-mode
   :config (progn (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers
 																  '(javascript-jshint
-																	emacs-lisp-checkdoc))
+																	emacs-lisp-checkdoc
+																	clojure-cider-typed))
 							   flycheck-mode-line-prefix " Φ")
 				 (flycheck-add-mode 'javascript-eslint 'web-mode)
 				 (global-flycheck-mode)
@@ -882,6 +883,10 @@ magit-mode."
 							 (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
 							 (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
 				 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
+
+(use-package flycheck-clojure
+  :ensure t
+  :init (flycheck-clojure-setup))
 
 (use-package clj-refactor
   :ensure t
