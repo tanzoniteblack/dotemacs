@@ -36,6 +36,10 @@
   `(eval-after-load ,mode
      '(progn ,@body)))
 
+;; Make sure that $PATH is set from a shell environment
+(use-package exec-path-from-shell
+  :ensure t
+  :config (exec-path-from-shell-initialize))
 
 (use-package dash
   :ensure t)
