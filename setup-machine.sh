@@ -1,6 +1,6 @@
 set -x
 # Setup git
-git config --global user.email "ryan@yummly.com"
+git config --global user.email "rnsmith2@gmail.com"
 git config --global user.name "Ryan Smith"
 git config --global color.ui auto
 

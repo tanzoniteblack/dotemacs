@@ -1,0 +1,19 @@
+# -*- mode: gitignore; -*-
+# load this via: git config --global core.excludesfile ~/.emacs.d/global-gitignore
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Project config files #
+########################
+.tern-project
+.tern-port
+.projectile
+.nvmrc
+.python-version
+.node-version
