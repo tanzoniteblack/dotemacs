@@ -153,7 +153,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;; lines tall
 (setq split-height-threshold 180)
 
-(set-frame-font "Ubuntu Mono-12")
+(if (eq system-type 'darwin)
+    (set-frame-font "Ubuntu Mono-14")
+    (set-frame-font "Ubuntu Mono-12"))
+
 ;; (set-frame-font "Fira Code-11")
 
 ;; Specify Tamil unicode block to use a larger font, otherwise I can't read it without straining
@@ -251,7 +254,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
     (linum-mode 1)))
 
 ;;; color directories in file completion
-(require 'dircolors)
+(use-package dircolors)
 
 (setq font-lock-maximum-decoration t
       color-theme-is-global t)
