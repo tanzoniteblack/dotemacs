@@ -1318,9 +1318,7 @@ magit-mode."
 
 (diminish 'subword-mode)
 
-(use-package systemd
-  :ensure t
-  :mode "[-.0-9@-Z\\_a-z]+?\\.\\(?:\\(?:automount\\|busname\\|link\\|mount\\|net\\(?:dev\\|work\\)\\|s\\(?:ervice\\|lice\\|ocket\\|wap\\)\\|t\\(?:arget\\|imer\\)\\)\\)\\'")
+(use-package systemd)
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
 
