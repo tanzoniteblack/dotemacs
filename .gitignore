@@ -31,3 +31,4 @@ session.*
 /meghanada/
 /local-extras.el
 /metastore_db/
+/flycheck_init.el
