@@ -123,3 +123,5 @@ export LESS="-iMSx4 -FX -r"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+alias copy='xclip -sel clip'
