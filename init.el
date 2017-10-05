@@ -2,10 +2,12 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(setq x-stretch-cursor t)
 
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (package-initialize)
@@ -877,7 +879,9 @@ magit-mode."
                  (setq cider-annotate-completion-candidates t
                        cider-mode-line " cider"
                        cider-prompt-for-symbol nil
-                       cider-cljs-lein-repl "(do (user/run) (user/browser-repl))")
+                       cider-cljs-lein-repl "(do (user/run) (user/browser-repl))"
+                       cider-repl-use-pretty-printing t
+                       cider-pprint-fn 'puget)
                  (add-hook 'cider-mode-hook
                            (lambda ()
                              (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
@@ -890,6 +894,11 @@ magit-mode."
   :ensure t
   :commands (flycheck-clojure-setup)
   :init (add-hook 'cider-mode-hook 'flycheck-clojure-setup))
+
+(use-package hugsql-ghosts
+  :ensure t
+  :commands (hugsql-ghosts-install-hook)
+  :init (add-hook 'cider-mode-hook 'hugsql-ghosts-install-hook))
 
 (use-package clj-refactor
   :ensure t
@@ -1078,6 +1087,7 @@ magit-mode."
 (use-package ensime
   :ensure t
   :commands ensime
+  :pin melpa-stable
   :config (progn (setq ensime-startup-snapshot-notification nil
                        ensime-startup-notification nil
                        scala-imenu:should-flatten-index t)
