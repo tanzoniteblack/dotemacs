@@ -890,11 +890,6 @@ magit-mode."
                              (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
                  (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
 
-(use-package flycheck-clojure
-  :ensure t
-  :commands (flycheck-clojure-setup)
-  :init (add-hook 'cider-mode-hook 'flycheck-clojure-setup))
-
 (use-package hugsql-ghosts
   :ensure t
   :commands (hugsql-ghosts-install-hook)
@@ -1093,7 +1088,8 @@ magit-mode."
                        scala-imenu:should-flatten-index t)
                  (define-key ensime-mode-map (kbd "M-<RET>") 'ensime-show-doc-for-symbol-at-point)
                  (bind-key "C-S-F" 'ensime-format-source ensime-mode-map)
-                 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))))
+                 (add-hook 'ensime-inf-mode '(lambda () (define-key ensime-inf-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                 (add-hook 'java-mode-hook '(lambda() (ensime-mode 1)))))
 
 (use-package d-mode
   :defer t
