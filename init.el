@@ -255,9 +255,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
               (> (buffer-size) (* 5 1024 1024))) ;; disable linum on buffer greater than 5MB, otherwise it's unbearably slow
     (linum-mode 1)))
 
-;;; color directories in file completion
-(use-package dircolors)
-
 (setq font-lock-maximum-decoration t
       color-theme-is-global t)
 
