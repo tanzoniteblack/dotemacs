@@ -1327,7 +1327,8 @@ magit-mode."
 
 (diminish 'subword-mode)
 
-(use-package systemd)
+(use-package systemd
+  :ensure t)
 
 (add-to-list 'auto-mode-alist '(".ovpn" . conf-mode))
 
