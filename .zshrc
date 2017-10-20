@@ -83,6 +83,11 @@ then
 	source ~/.environment
 fi
 
+if [ -f ~/.profile ]
+then
+	source ~/.profile
+fi
+
 if [ -f ~/.zshrc-osx ]
 then
 	source ~/.zshrc-osx
