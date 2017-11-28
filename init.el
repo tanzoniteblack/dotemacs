@@ -878,13 +878,14 @@ magit-mode."
                        cider-prompt-for-symbol nil
                        cider-cljs-lein-repl "(do (user/run) (user/browser-repl))"
                        cider-repl-use-pretty-printing t
-                       cider-pprint-fn 'puget)
+                       cider-pprint-fn 'pprint)
                  (add-hook 'cider-mode-hook
                            (lambda ()
                              (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
                              (define-key cider-mode-map (kbd "M-RET") 'cider-doc)
                              (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
-                             (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)))
+                             (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)
+                             (define-key cider-mode-map (kbd "C-c C-n") 'cider-refresh)))
                  (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
 
 (use-package hugsql-ghosts
