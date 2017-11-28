@@ -877,7 +877,7 @@ magit-mode."
                        cider-mode-line " cider"
                        cider-prompt-for-symbol nil
                        cider-cljs-lein-repl "(do (user/run) (user/browser-repl))"
-                       cider-repl-use-pretty-printing t
+                       cider-repl-use-pretty-printing nil
                        cider-pprint-fn 'pprint)
                  (add-hook 'cider-mode-hook
                            (lambda ()
@@ -1292,6 +1292,7 @@ magit-mode."
 
 (load-library "bindings.el")
 (load-library "jekyll.el")
+(load-library "aws.el")
 
 (use-package php-mode
   :ensure t
