@@ -28,7 +28,8 @@
 (eval-when-compile
   (require 'use-package))
 
-(require 'diminish)                ;; if you use :diminish
+(use-package diminish
+  :ensure t)
 (require 'bind-key)                ;; if you use any :bind variant
 
 ;; http://milkbox.net/note/single-file-master-emacs-configuration/
@@ -54,9 +55,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/lib")
 (add-to-list 'load-path "~/.emacs.d/config")
-
-(use-package diminish
-  :ensure t)
 
 (setenv "LANG" "en_US.UTF-8")
 
@@ -490,9 +488,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :config (progn (setq erc-nick "tanzoniteblack")
                  (setq erc-hide-list '("JOIN" "PART" "QUIT"))))
 
-;; sql-indent, until it's on melpa
 (use-package sql-indent
-  :load-path "lib/"
+  ;; there's a different sql-indent package on melpa, make sure to pin to gnu elpa
+  :pin gnu
+  :ensure t
   :commands sqlind-minor-mode
   :init (add-hook 'sql-mode-hook 'sqlind-minor-mode)
   :config (progn (setq m-indentation-offsets-alist
@@ -877,7 +876,7 @@ magit-mode."
                        cider-mode-line " cider"
                        cider-prompt-for-symbol nil
                        cider-cljs-lein-repl "(do (user/run) (user/browser-repl))"
-                       cider-repl-use-pretty-printing nil
+                       cider-repl-use-pretty-printing t
                        cider-pprint-fn 'pprint)
                  (add-hook 'cider-mode-hook
                            (lambda ()
@@ -1367,3 +1366,10 @@ magit-mode."
   :commands flycheck-elm-setup
   :init (progn (eval-after-load 'elm-mode
                  '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))))
+
+(defun generate-random-uuid ()
+  (string-trim (shell-command-to-string "uuidgen")))
+
+(defun insert-random-uuid ()
+  (interactive)
+  (insert (generate-random-uuid)))
