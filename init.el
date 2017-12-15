@@ -666,9 +666,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;; turn on rainbow delimiters for all programming modes (in theory, in practice we need to specify a few more)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-;; overwrite selection rather than insert before selection
-(delete-selection-mode 1)
-
 ;; start the emacs server
 (use-package server
   :config (unless (server-running-p)
@@ -865,6 +862,7 @@ magit-mode."
 
 (use-package cider
   :ensure t
+  :pin melpa-stable
   :commands (cider-mode cider-mode-hook)
   :init (progn (add-hook 'clojure-mode-hook 'cider-mode)
                (add-hook 'clojure-mode-hook 'eldoc-mode))
@@ -1373,3 +1371,7 @@ magit-mode."
 (defun insert-random-uuid ()
   (interactive)
   (insert (generate-random-uuid)))
+
+;; Don't let any other package override these values, evaluate last
+;; overwrite selection rather than insert before selection
+(delete-selection-mode 1)
