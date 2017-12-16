@@ -569,27 +569,26 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; flycheck mode
 (use-package flycheck
   :ensure t
-  :commands global-flycheck-mode
   :config (progn (setq-default flycheck-disabled-checkers (append flycheck-disabled-checkers
-																  '(javascript-jshint
+                                                                  '(javascript-jshint
                                                                     emacs-lisp-checkdoc
-																	clojure-cider-typed))
+                                                                    clojure-cider-typed))
                                flycheck-mode-line-prefix " Φ")
                  (flycheck-add-mode 'javascript-eslint 'web-mode)
                  (global-flycheck-mode)
                  (flycheck-define-checker proselint
-                                          "A linter for prose."
-                                          :command ("proselint" source-inplace)
-                                          :error-patterns
-                                          ((warning line-start (file-name) ":" line ":" column ": "
-                                                    (id (one-or-more (not (any " "))))
-                                                    (message) line-end))
-                                          :modes (text-mode markdown-mode gfm-mode))
-
+                   "A linter for prose."
+                   :command ("proselint" source-inplace)
+                   :error-patterns
+                   ((warning line-start (file-name) ":" line ":" column ": "
+                             (id (one-or-more (not (any " "))))
+                             (message) line-end))
+                   :modes (text-mode markdown-mode gfm-mode)
+                   :next-checkers (markdown-mdl))
                  (add-to-list 'flycheck-checkers 'proselint)
-                 (setq flycheck-scalastyle-jar (concat (getenv "HOME") "/.emacs.d/scalastyle_2.11-0.7.0-batch.jar")
-                       flycheck-scalastylerc (concat (getenv "HOME") "/.emacs.d/scalastyle_config.xml")
-                       flycheck-flake8-maximum-line-length 160)))
+                 (setq flycheck-flake8-maximum-line-length 160
+                       ;; Don't flag long lines in markdown
+                       flycheck-markdown-mdl-rules '("~MD013"))))
 
 (use-package popup
   :ensure t)
