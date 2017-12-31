@@ -718,12 +718,24 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (ansi-color-for-comint-mode-on)
 
 ;;; ansi colors in compilation mode
-(ignore-errors
-  (add-to-list 'compilation-environment "TERM=xterm-256color")
-  (defun my-colorize-compilation-buffer ()
-    (when (eq major-mode 'compilation-mode)
-      (ansi-color-apply-on-region compilation-filter-start (point-max))))
-  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+(add-to-list 'compilation-environment "TERM=xterm-256color")
+
+(use-package xterm-color
+  :ensure t
+  :functions (xterm-color-filter)
+  :init (add-hook 'compilation-start-hook
+                  (lambda (proc)
+                    ;; We need to differentiate between compilation-mode buffers
+                    ;; and running as part of comint (which at this point we assume
+                    ;; has been configured separately for xterm-color)
+                    (when (eq (process-filter proc) 'compilation-filter)
+                      ;; This is a process associated with a compilation-mode buffer.
+                      ;; We may call `xterm-color-filter' before its own filter function.
+                      (set-process-filter
+                       proc
+                       (lambda (proc string)
+                         (funcall 'compilation-filter proc
+                                  (xterm-color-filter string))))))))
 
 ;;; warn when opening files bigger than 100MB (default is 10MB)
 (setq large-file-warning-threshold 100000000)
