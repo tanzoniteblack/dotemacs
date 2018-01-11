@@ -1300,7 +1300,6 @@ magit-mode."
 
 (load-library "bindings.el")
 (load-library "jekyll.el")
-(load-library "aws.el")
 
 (use-package php-mode
   :ensure t
