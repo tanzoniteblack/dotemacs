@@ -1,0 +1,8 @@
+#+TODO: TODO DOING | DONE
+#+OPTIONS: todo:t
+
+* Test list
+** TODO Test TODO
+** DOING Test DOING
+** DONE Test Done
+   CLOSED: [2018-01-17 Wed 14:16]
