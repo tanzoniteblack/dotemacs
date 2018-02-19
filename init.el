@@ -1376,6 +1376,11 @@ magit-mode."
   :init (progn (eval-after-load 'elm-mode
                  '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))))
 
+(use-package realgud
+  :ensure t
+  ;; list any used debuggers here
+  :commands (realgud:bashdb))
+
 (defun generate-random-uuid ()
   (string-trim (shell-command-to-string "uuidgen")))
 
