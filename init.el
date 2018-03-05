@@ -1392,3 +1392,6 @@ magit-mode."
 ;; Don't let any other package override these values, evaluate last
 ;; overwrite selection rather than insert before selection
 (delete-selection-mode 1)
+
+;; Performance bug in this feature
+(setq auto-window-vscroll nil)
