@@ -952,7 +952,8 @@ magit-mode."
 (use-package cc-mode
   :defer t
   :config (progn (setq-default c-basic-offset 4 c-default-style "linux")
-                 (setq-default tab-width 4 indent-tabs-mode t)
+                 (setq-default tab-width 4
+							   indent-tabs-mode nil)
                  (add-hook 'java-mode-hook 'subword-mode)))
 
 (use-package dtrt-indent
@@ -1301,7 +1302,6 @@ magit-mode."
 
 (load-library "bindings.el")
 (load-library "jekyll.el")
-(load-library "aws.el")
 
 (use-package php-mode
   :ensure t
@@ -1376,6 +1376,11 @@ magit-mode."
   :commands flycheck-elm-setup
   :init (progn (eval-after-load 'elm-mode
                  '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))))
+
+(use-package realgud
+  :ensure t
+  ;; list any used debuggers here
+  :commands (realgud:bashdb))
 
 (defun generate-random-uuid ()
   (string-trim (shell-command-to-string "uuidgen")))
