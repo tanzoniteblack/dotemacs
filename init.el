@@ -587,8 +587,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                    :next-checkers (markdown-mdl))
                  (add-to-list 'flycheck-checkers 'proselint)
                  (setq flycheck-flake8-maximum-line-length 160
-                       ;; Don't flag long lines in markdown
-                       flycheck-markdown-mdl-rules '("~MD013"))))
+                       ;; ~MD013: Ignore long lines in markdown
+                       ;; ~MD009: Ignore trailing spaces (we trim whitespace on save, so this only ever flags while I'm in the middle of a thought)
+                       flycheck-markdown-mdl-rules '("~MD013" "~MD009"))))
 
 (use-package popup
   :ensure t)
