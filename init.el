@@ -706,10 +706,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                      (projectile-run-compilation mvn-cmd)))
                  (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
 
-                 (defun projectile-lein-ancient ()
-                   (interactive)
-                   (projectile-run-compilation "lein with-profile ancient ancient :all"))
-
                  (projectile-register-project-type 'npm '("package.json") :compile "npm run build-dev" :test "npm run test")
 
                  (projectile-global-mode)))

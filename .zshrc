@@ -45,7 +45,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang terminalapp docker git-extras lein mvn python docker colored-man zsh-syntax-highlighting virtualenv)
+plugins=(git golang terminalapp docker git-extras lein mvn python docker colored-man zsh-syntax-highlighting virtualenv aws)
 
 source $ZSH/oh-my-zsh.sh
 
