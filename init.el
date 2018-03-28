@@ -587,8 +587,9 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                    :next-checkers (markdown-mdl))
                  (add-to-list 'flycheck-checkers 'proselint)
                  (setq flycheck-flake8-maximum-line-length 160
-                       ;; Don't flag long lines in markdown
-                       flycheck-markdown-mdl-rules '("~MD013"))))
+                       ;; ~MD013: Ignore long lines in markdown
+                       ;; ~MD009: Ignore trailing spaces (we trim whitespace on save, so this only ever flags while I'm in the middle of a thought)
+                       flycheck-markdown-mdl-rules '("~MD013" "~MD009"))))
 
 (use-package popup
   :ensure t)
@@ -803,7 +804,9 @@ the checking happens for all pairs in auto-minor-mode-alist"
                        org-deadline-warning-days 3
                        org-log-done 'time
                        org-src-fontify-natively t
-                       org-src-tab-acts-natively t)
+                       org-src-tab-acts-natively t
+                       org-time-clocksum-use-effort-durations nil
+                       org-time-clocksum-format '(:days "%d days " :hours "%d hours"))
                  ;; if all children of a TODO are done, then change status of TODO to DONE
                  (defun org-summary-todo (n-done n-not-done)
                    "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -814,6 +817,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
+                 (define-key org-mode-map (kbd "C-c C-x C-q") 'org-columns-quit)
                  (bind-key "C-c a" 'org-agenda-list)
                  ;; enable flyspell-mode on load of org buffer
                  (add-hook 'org-mode-hook 'flyspell-mode)
@@ -1383,6 +1387,9 @@ magit-mode."
 (defun insert-random-uuid ()
   (interactive)
   (insert (generate-random-uuid)))
+
+;; Performance bug in this feature
+(setq auto-window-vscroll nil)
 
 ;; Don't let any other package override these values, evaluate last
 ;; overwrite selection rather than insert before selection
