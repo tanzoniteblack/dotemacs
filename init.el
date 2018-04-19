@@ -957,7 +957,9 @@ magit-mode."
 
 (use-package dtrt-indent
   :ensure t
-  :init (add-hook 'java-mode-hook 'dtrt-indent-mode))
+  :init (progn (add-hook 'java-mode-hook 'dtrt-indent-mode)
+               (eval-after-load 'json-mode
+                 (add-hook 'json-mode-hook 'dtrt-indent-mode))))
 
 (setq help-at-pt-display-when-idle t)
 (setq help-at-pt-timer-delay 0.1)
