@@ -1395,4 +1395,6 @@ magit-mode."
 
 ;; Don't let any other package override these values, evaluate last
 ;; overwrite selection rather than insert before selection
-(delete-selection-mode 1)
+(add-hook 'after-change-major-mode-hook
+          (lambda ()
+            (delete-selection-mode 1)))
