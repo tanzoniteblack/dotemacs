@@ -864,6 +864,7 @@ magit-mode."
                  (add-hook 'clojure-mode-hook
                            (lambda ()
                              (define-key clojure-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+
                  ;; Fancy docstrings for schema/defn when in the form:
                  ;; (schema/defn NAME :- TYPE "DOCSTRING" ...)
                  (put 'schema/defn 'clojure-doc-string-elt 4)))
@@ -886,7 +887,9 @@ magit-mode."
                        cider-prompt-for-symbol nil
                        cider-cljs-lein-repl "(do (user/run) (user/browser-repl))"
                        cider-repl-use-pretty-printing t
-                       cider-pprint-fn 'pprint)
+                       cider-pprint-fn 'pprint
+                       cider-jdk-src-paths '("~/Documents/clojure-1.9.0-sources"
+                                             "~/Documents/openjdk-11-src"))
                  (add-hook 'cider-mode-hook
                            (lambda ()
                              (define-key cider-repl-mode-map (kbd "M-RET") 'cider-doc)
