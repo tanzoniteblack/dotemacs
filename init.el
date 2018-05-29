@@ -257,7 +257,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
       color-theme-is-global t)
 
 ;;; Line-wrapping
-(set-default 'fill-column 80)
+(set-default 'fill-column 120)
 
 ;;; remove bells
 (setq ring-bell-function 'ignore)
@@ -702,12 +702,17 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                                        (read-string (projectile-prepend-project-name "Run test method: ")
                                                     (projectile-symbol-or-selection-at-point))))
                           (mvn-cmd (concat "cd " root " && "
-                                           "mvn -DfailIfNoTests=false -Dtest=" class-name (when test-name (concat "#" test-name))
+                                           "MAVEN_OPTS=\"-XX:+TieredCompilation -XX:TieredStopAtLevel=1\" mvn -T 4 -DPropertyManager.file=src/test/resources/local.properties -DfailIfNoTests=false -Dtest=" class-name (when test-name (concat "#" test-name))
                                            " test ")))
                      (projectile-run-compilation mvn-cmd)))
                  (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
 
                  (projectile-register-project-type 'npm '("package.json") :compile "npm run build-dev" :test "npm run test")
+
+                 ;; use "lein check" instead of "lein compile"
+                 (plist-put (gethash 'lein-test projectile-project-types) 'compile-command "lein check")
+                 ;; just ignore midje
+                 (remhash 'lein-midje projectile-project-types)
 
                  (projectile-global-mode)))
 
@@ -1385,6 +1390,20 @@ magit-mode."
   :ensure t
   ;; list any used debuggers here
   :commands (realgud:bashdb))
+
+(use-package lsp-java
+  :ensure t
+  :commands (lsp-java-enable)
+  :init (add-hook 'java-mode-hook #'lsp-java-enable)
+  :config (setq lsp-java--workspace-folders (list "~/Code/qa/")))
+
+(use-package lsp-ui
+  :ensure t
+  :commands (lsp-ui-mode)
+  :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package company-lsp
+  :ensure t)
 
 (defun generate-random-uuid ()
   (string-trim (shell-command-to-string "uuidgen")))
