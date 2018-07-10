@@ -602,7 +602,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
          ;; ("C-c S-SPC" . avy-goto-char)
          ("M-g g" . avy-goto-line))
   :config (progn (eval-after-load 'conf-mode
-                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))))
+                   '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))
+                 (setq avy-all-windows 'all-frames)))
 
 ;; (use-package ace-pinyin
 ;;   :ensure t
