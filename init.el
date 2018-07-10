@@ -708,6 +708,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
                  ;; use "lein check" instead of "lein compile"
                  (plist-put (gethash 'lein-test projectile-project-types) 'compile-command "lein check")
+                 ;; use "lein eftest :required" instead of "lein test", more common at work
+                 (plist-put (gethash 'lein-test projectile-project-types) 'test-command "lein eftest :required")
                  ;; just ignore midje
                  (remhash 'lein-midje projectile-project-types)
 
