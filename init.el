@@ -256,9 +256,6 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 (setq font-lock-maximum-decoration t
       color-theme-is-global t)
 
-;;; Line-wrapping
-(set-default 'fill-column 120)
-
 ;;; remove bells
 (setq ring-bell-function 'ignore)
 
@@ -973,6 +970,8 @@ magit-mode."
 (setq help-at-pt-timer-delay 0.1)
 (help-at-pt-set-timer)
 
+;; take a look at to set up lsp-mode for python instead of elpy?
+;; https://vxlabs.com/2018/06/08/python-language-server-with-emacs-and-lsp-mode/
 (use-package elpy
   :ensure t
   :commands (elpy-enable)
