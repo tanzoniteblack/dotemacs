@@ -1390,19 +1390,19 @@ magit-mode."
   ;; list any used debuggers here
   :commands (realgud:bashdb))
 
-(use-package lsp-java
-  :ensure t
-  :commands (lsp-java-enable)
-  :init (add-hook 'java-mode-hook #'lsp-java-enable)
-  :config (setq lsp-java--workspace-folders (list "~/Code/qa/")))
+;; (use-package lsp-java
+;;   :ensure t
+;;   :commands (lsp-java-enable)
+;;   :init (add-hook 'java-mode-hook #'lsp-java-enable)
+;;   :config (setq lsp-java--workspace-folders (list "~/Code/qa/")))
 
-(use-package lsp-ui
-  :ensure t
-  :commands (lsp-ui-mode)
-  :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :commands (lsp-ui-mode)
+;;   :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
-(use-package company-lsp
-  :ensure t)
+;; (use-package company-lsp
+;;   :ensure t)
 
 (defun generate-random-uuid ()
   (string-trim (shell-command-to-string "uuidgen")))
