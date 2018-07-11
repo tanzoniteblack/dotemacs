@@ -605,6 +605,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                    '(bind-key "C-c SPC" 'avy-goto-word-1 conf-mode-map))
                  (setq avy-all-windows 'all-frames)))
 
+(use-package ace-window
+  :ensure t
+  :commands ace-window
+  :bind (("M-o" . ace-window)))
+
 ;; (use-package ace-pinyin
 ;;   :ensure t
 ;;   :commands ace-pinyin-mode
