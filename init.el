@@ -824,7 +824,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
                  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
                  ;; remap ace--word-mode (org-mode automatically disables)
-                 (add-hook 'org-mode-hook '(lambda () (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)))
+                 (define-key org-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
                  (define-key org-mode-map (kbd "M-<tab>") 'org-table-insert-row)
                  (define-key org-mode-map (kbd "M-h") 'help-command)
                  (define-key org-mode-map (kbd "C-c C-x C-q") 'org-columns-quit)
