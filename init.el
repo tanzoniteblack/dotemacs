@@ -681,8 +681,10 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 
 (use-package projectile
   :ensure t
+  :init (projectile-mode)
   :config (progn (setq projectile-mode-line '(:eval (format " [%s]" (projectile-project-name)))
-                       projectile-create-missing-test-files t)
+                       projectile-create-missing-test-files t
+                       projectile-require-project-root nil)
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
@@ -712,9 +714,7 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                  ;; use "lein eftest :required" instead of "lein test", more common at work
                  (plist-put (gethash 'lein-test projectile-project-types) 'test-command "lein eftest :required")
                  ;; just ignore midje
-                 (remhash 'lein-midje projectile-project-types)
-
-                 (projectile-global-mode)))
+                 (remhash 'lein-midje projectile-project-types)))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
