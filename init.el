@@ -685,12 +685,14 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                 browse-kill-ring-highlight-inserted-item nil))
 
 (use-package projectile
+  :pin melpa-stable
   :ensure t
   :init (projectile-mode)
   :config (progn (setq projectile-mode-line '(:eval (format " [%s]" (projectile-project-name)))
                        projectile-create-missing-test-files t
                        projectile-require-project-root nil
-                       projectile-keymap-prefix (kbd "C-c p"))
+                       ;; projectile-keymap-prefix (kbd "C-c p")
+                       )
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
