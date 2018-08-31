@@ -727,6 +727,11 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
 
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+
 ;;; ansi colors in compilation mode
 (add-to-list 'compilation-environment "TERM=xterm-256color")
 
@@ -842,6 +847,7 @@ the checking happens for all pairs in auto-minor-mode-alist"
                  (add-hook 'org-shiftdown-final-hook 'windmove-down)
                  (add-hook 'org-shiftright-final-hook 'windmove-right)
                  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+                 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
 
                  (defun endless/org-ispell ()
                    "Configure `ispell-skip-region-alist' for `org-mode'."
@@ -1218,9 +1224,20 @@ magit-mode."
   :defer t
   :ensure t)
 
+(use-package indent-tools
+  :defer t
+  :ensure t
+  :commands (indent-tools-hydra/body))
+
 (use-package yaml-mode
   :defer t
-  :ensure t)
+  :ensure t
+  :bind ("C-c >" . indent-tools-hydra/body))
+
+(use-package highlight-indentation
+  :defer t
+  :ensure t
+  :init (add-hook 'yaml-mode-hook 'highlight-indentation-mode))
 
 (use-package auto-package-update
   :ensure t
