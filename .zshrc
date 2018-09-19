@@ -131,3 +131,8 @@ export NVM_DIR="$HOME/.nvm"
 
 alias copy='xclip -sel clip && xclip -sel clip -o'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if { (( $+commands[bat] )) }
+then
+    alias cat='bat'
+fi
