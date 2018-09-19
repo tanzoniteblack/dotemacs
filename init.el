@@ -916,7 +916,18 @@ magit-mode."
                              (define-key cider-mode-map (kbd "C-c SPC") 'avy-goto-word-1)
                              (define-key cider-mode-map (kbd "C-S-f") 'cider-format-buffer)
                              (define-key cider-mode-map (kbd "C-c C-n") 'cider-refresh)))
-                 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))))
+                 (add-to-list 'cider-jack-in-dependencies `("criterium" "0.4.4"))
+                 ;; work around a bug where you can't create a new session after you've killed an other one
+                 (when (string= cider-version "0.18.0")
+                   (defun cider--gather-session-params (session)
+                     "Gather all params for a SESSION."
+                     (let (params)
+                       (dolist (repl (cdr session))
+                         (when (buffer-name repl)
+                           (setq params (cider--gather-connect-params params repl))))
+                       (when-let* ((server (cider--session-server session)))
+                         (setq params (cider--gather-connect-params params server)))
+                       params)))))
 
 (use-package hugsql-ghosts
   :ensure t
