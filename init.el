@@ -1429,6 +1429,9 @@ magit-mode."
   ;; list any used debuggers here
   :commands (realgud:bashdb))
 
+(use-package hl-line
+  :init (global-hl-line-mode))
+
 ;; (use-package lsp-java
 ;;   :ensure t
 ;;   :commands (lsp-java-enable)
