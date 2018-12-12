@@ -123,6 +123,27 @@ man() {
 		man "$@"
 }
 
+java_use() {
+    local file version versions=()
+    for file in /usr/lib/jvm/.*.jinfo; do
+        [[ -e $file ]] || continue
+        version=${file##*/.} version=${version%.jinfo}
+        versions+=("$version")
+    done
+    if (( ${#versions[@]} == 0 )); then
+        printf >&2 'No java installed\n'
+        return 1
+    fi
+    select version in "${versions[@]}"; do
+        if [[ -n $version ]]; then
+            export JAVA_HOME="/usr/lib/jvm/$version"
+            hash java="$JAVA_HOME/bin/java"
+            break
+        fi
+    done
+    type java
+}
+
 export PAGER=less
 export LESS="-iMSx4 -FX -r"
 
