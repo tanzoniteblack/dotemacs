@@ -6,13 +6,13 @@ set number
 set hidden
 "Set fonts for guis"
 if has("gui_running")
-	:set guioptions-=T  "remove toolbar	
+	:set guioptions-=T  "remove toolbar
 	if has("gui_gtk2")
 		set guifont=Ubuntu\ Mono\ 13
 	elseif has("gui_macvim")
 		set guifont=Ubuntu\ Mono:h16
 	endif
-endif 
+endif
 
 set history=100
 set wildmode=longest,list,full
@@ -43,7 +43,7 @@ filetype plugin indent on
 " Use dark pencil theme "
 colorscheme pencil
 set background=dark
-let g:airline_theme='powerlineish'
+"let g:airline_theme='powerlineish'"
 
 " Easy motion config "
 nmap s <Plug>(easymotion-s)
@@ -57,7 +57,7 @@ set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0 
+let g:syntastic_check_on_wq = 0
 
 " Keyboard shortcuts for ctrlp "
 let g:ctrlp_map = '<c-p>'
