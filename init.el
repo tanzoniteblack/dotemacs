@@ -690,9 +690,8 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
   :init (projectile-mode)
   :config (progn (setq projectile-mode-line '(:eval (format " [%s]" (projectile-project-name)))
                        projectile-create-missing-test-files t
-                       projectile-require-project-root nil
-                       ;; projectile-keymap-prefix (kbd "C-c p")
-                       )
+                       projectile-require-project-root nil)
+                 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
                  ;; add to the globally ignored files
                  (dolist (file-name '("*~" "*.elc"))
                    (add-to-list 'projectile-globally-ignored-files file-name))
@@ -715,14 +714,15 @@ If BACKWARD-ONLY is non-nil, only delete them before point."
                      (projectile-run-compilation mvn-cmd)))
                  (define-key projectile-mode-map (kbd "C-x t u") 'run-junit-test-unit)
 
-                 (projectile-register-project-type 'npm '("package.json") :compile "npm run build-dev" :test "npm run test")
+                 ;; (projectile-register-project-type 'npm '("package.json") :compile "npm run build-dev" :test "npm run test")
 
                  ;; use "lein check" instead of "lein compile"
-                 (plist-put (gethash 'lein-test projectile-project-types) 'compile-command "lein check")
+                 ;(plist-put (gethash 'lein-test projectile-project-types) 'compile-command "lein check")
                  ;; use "lein eftest :required" instead of "lein test", more common at work
-                 (plist-put (gethash 'lein-test projectile-project-types) 'test-command "lein eftest :required")
+                 ;(plist-put (gethash 'lein-test projectile-project-types) 'test-command "lein eftest :required")
                  ;; just ignore midje
-                 (remhash 'lein-midje projectile-project-types)))
+                 ; (remhash 'lein-midje projectile-project-types)
+                 ))
 
 ;;; respect ansi colors
 (ansi-color-for-comint-mode-on)
